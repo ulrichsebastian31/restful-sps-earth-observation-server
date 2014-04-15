@@ -1,0 +1,3 @@
+version = 1.0-SNAPSHOT
+revision = ${prefix.revision}
+date = ${prefix.committedDate}
