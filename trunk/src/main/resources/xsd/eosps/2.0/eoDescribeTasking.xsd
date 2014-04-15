@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:swes="http://www.opengis.net/swes/2.1" 
+		xmlns:om="http://www.opengis.net/om/2.0" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		xmlns:swe="http://www.opengis.net/swe/2.0" 
+		targetNamespace="http://www.opengis.net/eosps/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+		
+	<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swes/2.1" schemaLocation="../../swes/2.1/swes.xsd"/>
+	<import namespace="http://www.opengis.net/swe/2.0" schemaLocation="http://schemas.opengis.net/sweCommon/2.0/swe.xsd"/>
+	<import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd" />
+
+	<include schemaLocation="eoTaskingParameters.xsd"/>
+	<include schemaLocation="eoCommon.xsd"/>
+	<include schemaLocation="eoTaskingExtensions.xsd"/>
+	
+	<!-- ================================================= -->
+	<element name="DescribeTaskingResponse" substitutionGroup="sps:DescribeTaskingResponse" type="eosps:DescribeTaskingResponseType"/>
+	<complexType name="DescribeTaskingResponseType">
+		<complexContent>
+			<extension base="sps:DescribeTaskingResponseType">
+				<sequence>
+                    <element name="eoTaskingParameters" type="eosps:TaskingParametersType">
+                        <annotation>
+                            <documentation>parameter values required to task the sensor</documentation>
+                        </annotation>
+                    </element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="DescribeTaskingResponsePropertyType">
+		<sequence minOccurs="0">
+			<element ref="eosps:DescribeTaskingResponse"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	<!-- ================================================= -->
+	<!-- SPS DescribeTasking request is unchanged -->
+	<element name="DescribeTasking" substitutionGroup="swes:ExtensibleRequest" type="sps:DescribeTaskingType"/>
+	<!--
+	<complexType name="DescribeTaskingType">
+		<complexContent>
+			<extension base="swes:ExtensibleRequestType">
+				<sequence>
+					<element name="procedure" type="anyURI">
+						<annotation>
+							<appinfo>
+								<gml:targetElement>om:OM_Process</gml:targetElement>
+							</appinfo>
+							<documentation>Pointer to the procedure (sensor) for which the tasking description is requested.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="DescribeTaskingPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sps:DescribeTasking"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	-->
+	
+</schema>

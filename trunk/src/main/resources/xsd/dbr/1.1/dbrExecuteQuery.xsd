@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns:dbr="http://www.astrium.eads.net/dbr/1.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.astrium.eads.net/dbr/1.1" xmlns="http://www.w3.org/2001/XMLSchema">
+    <annotation>
+        <documentation>Schema for the ExecuteQuery operation</documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element name="ExecuteQuery" type="dbr:ExecuteQueryType" />
+    <complexType name="ExecuteQueryType">
+        <sequence>
+            <element name="UserName" type="string">
+                <annotation>
+                    <documentation>UserName</documentation>
+                </annotation>
+            </element>
+            <element name="Password" type="string">
+                <annotation>
+                    <documentation>Password</documentation>
+                </annotation>
+            </element>
+			<element name="DataBaseName" type="string">
+                <annotation>
+                    <documentation>DataBaseName</documentation>
+                </annotation>
+            </element>
+            <element name="Query" type="string">
+                <annotation>
+                    <documentation>The Query</documentation>
+                </annotation>
+            </element>
+			<element name="ShowResult" type="boolean">
+                <annotation>
+                    <documentation>True if the result has to be shown</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <element name="ExecuteQueryResponse" type="dbr:ExecuteQueryResponseType" />
+    <complexType name="ExecuteQueryResponseType">
+        <sequence>
+            <element name="response" type="string">
+                <annotation>
+                    <documentation>the response</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+</schema>

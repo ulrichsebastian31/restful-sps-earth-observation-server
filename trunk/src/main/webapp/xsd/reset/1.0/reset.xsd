@@ -1,0 +1,228 @@
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:ows="http://www.opengis.net/ows/1.1" 
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:swes="http://www.opengis.net/swes/2.1" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		xmlns:reset="http://www.opengis.net/reset/1.0" 
+		targetNamespace="http://www.opengis.net/reset/1.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <annotation>
+        <documentation>All component schema for the EO Satellite Tasking Extension of SPS 2.0</documentation>
+    </annotation>
+	
+    <import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+    <import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd"/>
+    <import namespace="http://www.opengis.net/swes/2.1" schemaLocation="../../swes/2.1/swes.xsd"/>
+    <import namespace="http://www.opengis.net/eosps/2.0" schemaLocation="../../eosps/2.0/eosps.xsd"/>
+
+    <annotation>
+    <documentation>Addition to these specifications that permit to implement a RESTful interface.</documentation>
+    </annotation>
+    <!--Redefinition of capabilities to integrate RESTful contents-->
+    <element name="Capabilities">
+        <annotation>
+                <documentation>XML encoded EO Sensor Planning Service GetCapabilities operation response. 
+                This document provides clients with service metadata about a specific service instance. 
+                If the server does not implement the updateSequence parameter, 
+                the server shall always return the complete Capabilities document, 
+                without the updateSequence parameter. 
+                When the server implements the updateSequence parameter and the GetCapabilities operation request 
+                included the updateSequence parameter with the current value, 
+                the server shall return this element with only the "version" and "updateSequence" attributes. 
+                Otherwise, all optional elements shall be included or not depending on the actual value of the 
+                ections parameter in the GetCapabilities operation request. </documentation>
+            </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="ows:CapabilitiesBaseType">
+                    <sequence>
+                        <!--elements from the SPS Capabilities-->
+                        <element name="notifications" minOccurs="0">
+                            <annotation>
+                                <documentation>metadata about the supported notification functionality</documentation>
+                            </annotation>
+                            <complexType>
+                                <sequence>
+                                    <element ref="swes:NotificationProducerMetadata"/>
+                                </sequence>
+                            </complexType>
+                        </element>
+                        <element name="extension" type="anyType" minOccurs="0" maxOccurs="unbounded">
+                            <annotation>
+                                <documentation>container for elements defined by extension specifications</documentation>
+                            </annotation>
+                        </element>
+                        <!--Extension of SPSContents redefined to include RESTful encoding of operations-->
+                        <element ref="reset:Contents" minOccurs="0"/>
+                    </sequence>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
+    <!--Procedures-->
+    <element name="SensorDescription">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service DescribeSensor operation response.
+                This document provides clients with information on a Sensor
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="sensor" type="swes:SensorDescriptionType" />
+                </sequence>
+        </complexType>
+    </element>
+    <element name="TaskingDescription">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service DescribeTasking operation response.
+                This document provides clients with information on the tasking request to send
+                to task a given sensor as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="taskParameters" type="eosps:TaskingParametersType" />
+                </sequence>
+        </complexType>
+    </element>
+    <element name="SensorAvailibility">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service GetSensorAvailibility operation response.
+                This document provides clients with information on the sensor availibility periods
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="responsePeriod">
+                        <annotation>
+                            <documentation>Period for which availability has been assessed by the server. It can be different from the requested period as explained in the specification</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="gml:TimePeriod"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                    <element name="availabilityPeriod" minOccurs="0" maxOccurs="unbounded">
+                        <annotation>
+                            <documentation>Period(s) of availability of the sensor. When no periods are listed, the sensor is not available at all during the response period</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="gml:TimePeriod"/>
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+        </complexType>
+    </element>
+    
+    <!--Feasibility-->
+    <element name="Feasibility">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service Feasibility operation response
+                (EO-SPS GetFeasibility, GetStatus, GetTask). 
+                This document provides clients with information on a Feasibility task
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="status" type="eosps:StatusReportType" />
+                    <element name="feasibility" type="eosps:FeasibilityStudyType" 
+                             minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+        </complexType>
+    </element>
+    
+        <!--Planning-->
+    <element name="Planning">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service Planning operation response
+                (EO-SPS Submit, SubmitSegmentByID, Confirm, GetTask, GetStatus). 
+                This document provides clients with information on a Planning task
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="status" type="eosps:StatusReportType" />
+                    <element name="planning" type="eosps:ProgrammingStatusType" 
+                             minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+        </complexType>
+    </element>
+    
+        <!--Reservation-->
+    <element name="Reservation">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service Reservation operation response
+                (EO-SPS Reserve, Update, GetTask, GetStatus). 
+                This document provides clients with information on a Reservation task
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="reservationExpiration" type="dateTime">
+                        <annotation>
+                            <documentation>
+                                point in time when the (task) reservation will expire
+                            </documentation>
+                        </annotation>
+                    </element>
+                    <element name="status" type="eosps:StatusReportType" />
+                    <element name="reservation" type="eosps:ProgrammingStatusType" 
+                             minOccurs="1" maxOccurs="unbounded" />
+                </sequence>
+        </complexType>
+    </element>
+    <!-- RESTful equivalent to OperationsMetadata as defined in ROSEO 13-042-->
+    <element name="Contents" type="reset:RESETContentsType"/>
+    <complexType name="RESETContentsType">
+        <complexContent>
+            <extension base="sps:SPSContentsType">
+                <sequence>
+                    <element name="SupportedClass" maxOccurs="unbounded">
+                        <complexType>
+                            <attribute name="resource" type="reset:classId" />
+                        </complexType>
+                    </element>
+                    <element name="resourceURL" maxOccurs="unbounded">
+                        <complexType>
+                            <attribute name="resource" type="reset:resourceId" />
+                            <attribute name="URL" type="anyURI"/>
+                            <attribute name="methods" type="anyURI"/>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <simpleType name="classId">
+        <restriction base="string">
+            <enumeration value="feasibility"/>
+            <enumeration value="planning"/>
+            <enumeration value="feasibilityplanning"/>
+            <enumeration value="reservation"/>
+            <enumeration value="cancellation"/>
+        </restriction>
+    </simpleType>
+    <simpleType name="resourceId">
+        <restriction base="string">
+            <enumeration value="capabilities"/>
+            <enumeration value="procedures"/>
+            <enumeration value="feasibility"/>
+            <enumeration value="planning"/>
+            <enumeration value="reservation"/>
+        </restriction>
+    </simpleType>
+</schema>

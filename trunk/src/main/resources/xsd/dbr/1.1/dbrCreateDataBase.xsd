@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns:dbr="http://www.astrium.eads.net/dbr/1.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.astrium.eads.net/dbr/1.1" xmlns="http://www.w3.org/2001/XMLSchema">
+    <annotation>
+        <documentation>Schema for the CreateDatabase operation</documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element name="CreateDataBase" type="dbr:CreateDataBaseType" />
+    <complexType name="CreateDataBaseType">
+        <sequence>
+            <element name="UserName" type="string">
+                <annotation>
+                    <documentation>UserName</documentation>
+                </annotation>
+            </element>
+            <element name="Password" type="string">
+                <annotation>
+                    <documentation>Password</documentation>
+                </annotation>
+            </element>
+			<element name="DataBaseName" type="string">
+                <annotation>
+                    <documentation>DataBaseName</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <element name="CreateDataBaseResponse" type="dbr:CreateDataBaseResponseType" />
+    <complexType name="CreateDataBaseResponseType">
+        <sequence>
+            <element name="response" type="string">
+                <annotation>
+                    <documentation>The name of the Tables in the database if successful</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+</schema>

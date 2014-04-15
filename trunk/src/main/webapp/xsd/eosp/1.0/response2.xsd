@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Created with Liquid XML Studio Developer Edition (Trial) 9.0.11.3078 (http://www.liquid-technologies.com) -->
+<xs:schema xmlns:tns="http://a9.com/-/spec/opensearch/1.1/" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://a9.com/-/spec/opensearch/1.1/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="response3.xsd" namespace="http://a9.com/-/opensearch/extensions/time/1.0/" />
+  <xs:import schemaLocation="response4.xsd" namespace="http://a9.com/-/opensearch/extensions/geo/1.0/" />
+  <xs:element name="totalResults" type="xs:unsignedByte" />
+  <xs:element name="startIndex" type="xs:unsignedByte" />
+  <xs:element name="itemsPerPage" type="xs:unsignedByte" />
+  <xs:element name="Query">
+    <xs:complexType>
+      <xs:attribute name="role" type="xs:string" use="optional" />
+      <xs:attribute name="startIndex" type="xs:unsignedByte" use="optional" />
+      <xs:attribute xmlns:q1="http://a9.com/-/opensearch/extensions/time/1.0/" ref="q1:start" use="optional" />
+      <xs:attribute xmlns:q2="http://a9.com/-/opensearch/extensions/time/1.0/" ref="q2:end" use="optional" />
+      <xs:attribute xmlns:q3="http://a9.com/-/opensearch/extensions/geo/1.0/" ref="q3:box" use="optional" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
