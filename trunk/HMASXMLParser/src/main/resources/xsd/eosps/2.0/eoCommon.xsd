@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML Studio Developer Edition 9.0.11.3078 (http://www.liquid-technologies.com)-->
+<schema 
+		xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:swes="http://www.opengis.net/swes/2.1" 
+		xmlns:ows="http://www.opengis.net/ows/1.1" 
+		xmlns:om="http://www.opengis.net/om/2.0" 
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:swe="http://www.opengis.net/swe/2.0" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.opengis.net/eosps/2.0" >
+
+    <import schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
+    <import schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd" namespace="http://www.opengis.net/ows/1.1" />
+    <import schemaLocation="../../swes/2.1/swes.xsd" namespace="http://www.opengis.net/swes/2.1" />
+    <import schemaLocation="http://schemas.opengis.net/sweCommon/2.0/swe.xsd" namespace="http://www.opengis.net/swe/2.0" />
+    <import schemaLocation="../../sps/2.1/sps.xsd" namespace="http://www.opengis.net/sps/2.1" />
+	
+    <!-- ================================================= -->
+    <!-- Status report is added specific EO parameters     -->
+    <!-- ================================================= -->
+    <element name="StatusReport" type="eosps:StatusReportType" substitutionGroup="swes:AbstractSWES">
+        <annotation>
+            <documentation>provides information about the status of a given EO task / tasking request / request</documentation>
+        </annotation>
+    </element>
+    <complexType name="StatusReportType">
+        <complexContent>
+            <extension base="sps:StatusReportType">
+                <sequence>
+                    <element name="eoTaskingParameters" type="eosps:TaskingParametersType" minOccurs="0" maxOccurs="1">
+                        <annotation>
+                            <documentation>Parameters used in an EO tasking request that led to the current status.</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="StatusReportPropertyType">
+        <sequence minOccurs="0">
+            <element ref="eosps:StatusReport" />
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup" />
+    </complexType>
+    <!-- ================================================= -->
+    <element name="TaskingResponse" type="eosps:TaskingResponseType" substitutionGroup="swes:ExtensibleResponse" abstract="true">
+        <annotation>
+            <documentation>response to a tasking request</documentation>
+        </annotation>
+    </element>
+    <complexType name="TaskingResponseType" abstract="true">
+        <complexContent>
+            <extension base="swes:ExtensibleResponseType">
+                <sequence>
+                    <element name="latestResponseTime" type="dateTime" minOccurs="0" maxOccurs="1">
+                        <annotation>
+                            <documentation>Point in time at which the definite decision about the tasking request (the requested action being accepted or rejected) will be provided by the SPS. The parameter allows clients to understand how long the decision process (accept or reject the tasking request) might take.</documentation>
+                        </annotation>
+                    </element>
+                    <element name="result">
+                        <annotation>
+                            <documentation>provides the outcome of the tasking request</documentation>
+                        </annotation>
+                        <complexType>
+                            <sequence>
+                                <element ref="eosps:StatusReport" />
+                            </sequence>
+                        </complexType>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TaskingResponsePropertyType">
+        <sequence minOccurs="0">
+            <element ref="sps:TaskingResponse" />
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup" />
+    </complexType>
+    <!-- ================================================= -->
+    <!-- Tasking request is added specific EO parameters   -->
+    <!-- ================================================= -->
+    <element name="TaskingRequest" type="eosps:TaskingRequestType" substitutionGroup="swes:ExtensibleRequest" abstract="true">
+        <annotation>
+            <documentation>serves as the super class for all tasking requests such as GetFeasibility, Reserve, Submit and Update requests</documentation>
+        </annotation> 
+    </element>
+    <complexType name="TaskingRequestType" abstract="true">
+        <complexContent>
+            <extension base="sps:TaskingRequestType">
+                <sequence>
+                    <element name="eoTaskingParameters" type="eosps:TaskingParametersType">
+                        <annotation>
+                            <documentation>EO specific parameter values required to task the sensor</documentation>
+                        </annotation>
+                    </element>
+                </sequence>
+            </extension>
+        </complexContent>
+    </complexType>
+    <complexType name="TaskingRequestPropertyType">
+        <sequence minOccurs="0">
+            <element ref="eosps:TaskingRequest" />
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup" />
+    </complexType>
+    
+    
+  <element name="Task" type="eosps:TaskType" substitutionGroup="swes:AbstractSWES">
+    <annotation>
+      <documentation>represents the complete information about a task</documentation>
+    </annotation>
+  </element>
+  <complexType name="TaskType">
+    <complexContent>
+      <extension base="swes:AbstractSWESType">
+        <sequence>
+          <element name="status" type="eosps:StatusReportPropertyType" maxOccurs="unbounded">
+            <annotation>
+              <documentation>Status information of the task.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TaskPropertyType">
+    <sequence minOccurs="0">
+      <element ref="eosps:Task"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+    
+</schema>
