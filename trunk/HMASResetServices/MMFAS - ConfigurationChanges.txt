@@ -1,0 +1,19 @@
+ - %TOMCAT_HOME% / conf / server.xml : add :
+		<Connector id="Dream" connectionTimeout="20000" port="8080" protocol="HTTP/1.1"  address="<serverBaseAddress>" redirectPort="8443" />
+		
+ - DreamServices.war / META-INF / context.xml : change :
+		 <Resource name="jdbc/MSDatabase" auth="Container" type="javax.sql.DataSource" 
+			removeAbandoned="true" removeAbandonedTimeout="30" maxActive="80"   
+			maxIdle="30" maxWait="10000" username="postgres" password="postgres"
+			driverClassName="org.postgresql.Driver"
+			url = "jdbc:postgresql://<databaseBaseAddress>:5432/MSDatabase" useUnicode="true"
+			characterEncoding="utf-8" characterSetResults="utf8"/>
+			
+ - Database :
+		 - Application Server : in asId = 1 , replace serverBaseAddress with <serverBaseAddress>
+		 - UserDatabase : in userId = f9565cf6dba885cf5e25150f936fd9c1 , replace email and phonenumber by your own
+		 - Proxy : create the proxy instance
+		 - ExportServer : in your ExportServer, set mmfas = 'gmes-mmfas' and proxy=<your proxy ID>
+		 - MailingServer : in your MailingServer, set mmfas = 'gmes-mmfas' and proxy=<your proxy ID>
+		 - SMSServer : in your SMSServer, set mmfas = 'gmes-mmfas' and proxy=<your proxy ID>
+		 

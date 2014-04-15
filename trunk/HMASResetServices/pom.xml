@@ -1,0 +1,318 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.eads.astrium.dream</groupId>
+        <artifactId>dream-project</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>${parent.path}</relativePath>
+    </parent>
+
+    <groupId>net.eads.astrium.dream</groupId>
+    <artifactId>HMASResetServices</artifactId>
+    <packaging>war</packaging>
+
+    <properties>
+        
+        <parent.path>../</parent.path>
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <netbeans.hint.jdkPlatform>JDK_1.7_32bit</netbeans.hint.jdkPlatform>
+        <netbeans.hint.deploy.server>Tomcat70</netbeans.hint.deploy.server> 
+        
+        <project.finalName>${project.artifactId}</project.finalName>
+    </properties>
+
+
+    <distributionManagement>
+        <repository>
+            <id>hmas-nexus</id>
+            <name>Internal Releases</name>
+            <url>http://hudson:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>hmas-nexus</id>
+            <name>Internal Releases</name>
+            <url>http://hudson:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4.7</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>7.0</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+        
+        
+        <dependency>
+            <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+            <artifactId>svn-revision-number-maven-plugin</artifactId>
+            <version>1.13</version>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <resources>
+            <!--            <resource>
+                <directory>${eocfi.home.windows}</directory>
+                <includes>
+                    <include>EECFI/WINDOWS/*.jar</include>
+                </includes>
+            </resource>-->
+            
+<!--            <resource>
+                <directory>${project.resources}</directory>
+                <filtering>true</filtering>
+                <targetPath>${basedir}/target/${project.build.finalName}</targetPath>
+                
+            </resource>
+            <resource>
+                <directory>${project.webapp}</directory>
+                <filtering>true</filtering>
+                <targetPath>${basedir}/target/${project.build.finalName}</targetPath>
+            </resource>-->
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <compilerArguments>
+                        <endorseddirs>${endorsed.dir}</endorseddirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            
+            
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/classes</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <directory>${project.resources}/xsd</directory>
+                                    <targetPath>${basedir}/target/classes</targetPath>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.resources}/wps</directory>
+                                    <targetPath>${basedir}/target/classes</targetPath>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <warName>${project.finalName}</warName>
+                    <webappDirectory>${project.webapp}</webappDirectory>
+                    <failOnMissingWebXml>true</failOnMissingWebXml>
+                    <webXml>${project.webapp}/WEB-INF/web.xml</webXml>
+<!--                    <webResources>
+                        <resource>
+                            <directory>${project.resources}</directory>
+                        </resource>
+                        <resource>
+                            <directory>${project.webapp}</directory>
+                        </resource>
+                    </webResources>-->
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <url>http://localhost:8080/manager/text</url>
+                    <server>TomcatServer</server>
+                    <path>/${project.finalName}</path>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.1</version>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${endorsed.dir}</outputDirectory>
+                            <silent>true</silent>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>javax</groupId>
+                                    <artifactId>javaee-endorsed-api</artifactId>
+                                    <version>7.0</version>
+                                    <type>jar</type>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+                
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8</version>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+    </build>
+    <name>HMASResetServices</name>
+    
+    
+    <profiles>
+        <profile>
+            <id>windows</id>
+            <dependencies>
+                <dependency>
+                    <groupId>net.eads.astrium.hmas</groupId>
+                    <artifactId>HMASMissionPlanner</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <classifier>windows</classifier>
+                </dependency>
+            </dependencies>
+            	
+            <build>
+                <directory>${project.basedir}/windows_target</directory>
+        
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>2.3.2</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                            <compilerArguments>
+                                <endorseddirs>${endorsed.dir}</endorseddirs>
+                            </compilerArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.3.2</version>
+                        <configuration>
+                            <classifier>windows</classifier>
+                        </configuration>
+                    </plugin>    
+                     
+                </plugins>
+            </build>
+            
+        </profile>
+        <profile>
+            <id>linux</id>
+            <dependencies>
+                <dependency>
+                    <groupId>net.eads.astrium.hmas</groupId>
+                    <artifactId>HMASMissionPlanner</artifactId>
+                    <version>1.0-SNAPSHOT</version>
+                    <classifier>linux</classifier>
+                </dependency>
+            </dependencies>	
+            <build>
+                <directory>${project.basedir}/linux_target</directory>
+        
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>2.3.2</version>
+                        <configuration>
+                            <source>1.7</source>
+                            <target>1.7</target>
+                            <compilerArguments>
+                                <endorseddirs>${endorsed.dir}</endorseddirs>
+                            </compilerArguments>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <version>2.3.2</version>
+                        <configuration>
+                            <classifier>linux</classifier>
+                        </configuration>
+                    </plugin>    
+                     
+                </plugins>
+            </build>
+            
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
+    
+    
+    
+    
+    
+    
+</project>
