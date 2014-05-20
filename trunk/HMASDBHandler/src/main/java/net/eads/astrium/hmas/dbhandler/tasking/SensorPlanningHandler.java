@@ -30,6 +30,7 @@ import java.util.List;
 import net.eads.astrium.hmas.dbhandler.DBOperations;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.util.structures.tasking.OPTTaskingParameters;
+import net.eads.astrium.hmas.util.structures.tasking.Product;
 import net.eads.astrium.hmas.util.structures.tasking.SARTaskingParameters;
 import net.eads.astrium.hmas.util.structures.tasking.Segment;
 import net.eads.astrium.hmas.util.structures.tasking.Status;
@@ -59,12 +60,11 @@ public class SensorPlanningHandler extends SensorTaskHandler {
     }
     
     public String createPlanningTaskFromFeasibility(
-            String feasibilityTaskId, String mmfasTaskId) throws SQLException {
+            String feasibilityTaskId) throws SQLException {
         
         String sensorTaskId = this.createSensorTask(
                 this.getSensorId(feasibilityTaskId), 
                 TaskType.planning, 
-                mmfasTaskId, 
                 feasibilityTaskId);
         
         this.linkSensorTaskToRequest(sensorTaskId, getRequestId(feasibilityTaskId));
@@ -73,18 +73,18 @@ public class SensorPlanningHandler extends SensorTaskHandler {
     }
     
     public String createOPTPlanningTaskFromMMFASTask(
-            String sensorId, String mmfasTaskId, String requestId) throws SQLException {
+            String sensorId, String requestId) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null);
         this.linkSensorTaskToRequest(sensorTaskId, requestId);
         
         return sensorTaskId;
     }
     
     public String createSARPlanningTaskFromMMFASTask(
-            String sensorId, String mmfasTaskId, String requestId) throws SQLException {
+            String sensorId, String requestId) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null);
         this.linkSensorTaskToRequest(sensorTaskId, requestId);
         
         return sensorTaskId;
@@ -93,7 +93,7 @@ public class SensorPlanningHandler extends SensorTaskHandler {
     public String createSARPlanningTask(
             String sensorId, SARTaskingParameters parameters) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null);
         this.saveSARSubmitRequest(sensorTaskId, parameters);
         
         return sensorTaskId;
@@ -102,7 +102,7 @@ public class SensorPlanningHandler extends SensorTaskHandler {
     public String createOPTPlanningTask(
             String sensorId, OPTTaskingParameters parameters) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.planning, null);
         this.saveOPTSubmitRequest(sensorTaskId, parameters);
         
         return sensorTaskId;
@@ -580,5 +580,100 @@ public class SensorPlanningHandler extends SensorTaskHandler {
     }
     
     
+    
+    /**
+     * Product handling
+     */
+    
+    public List<Product> getSegmentProducts(String segmentID) throws SQLException, ParseException {
+        
+        List<Product> prods = new ArrayList<>();
+        
+        List<String> fields = new ArrayList<>();
+        fields.add("productID");
+        fields.add("segmentId");
+        fields.add("downloadURL");
+        fields.add("availibility");
+        fields.add("lastUpdateTime");
+        fields.add("size");
+        
+        String table = "Product";
+
+        //Filtering the DB results by app server
+        List<String> conditions = new ArrayList<>();
+        conditions.add("segmentId='" + segmentID + "'");
+        
+        List<List<String>> result = this.getDboperations().select(fields, table, conditions);
+
+        if (result != null && result.size() > 0) {
+            for (List<String> list : result) {
+                prods.add(new Product(
+                    list.get(0), 
+                    list.get(1),                               //mmfasSegmentID
+                    list.get(2),                               //downloadURL
+                    list.get(3).equalsIgnoreCase("true"),      //IsAvailable
+                    DateHandler.parseBDDDate(list.get(4)),    //lastUpdateTime
+                    Long.valueOf(list.get(5))));                 //size);
+            }
+        }
+        
+        return prods;        
+    }
+    
+    
+    
+    public String addProduct(String downloadURL, String mmfasSegmentID, boolean isAvailable, long size, Date lastUpdateTime) throws SQLException {
+        
+        String productID = null;
+        
+        String table = "Product";
+
+        List<String> fields = new ArrayList<String>();
+
+        fields.add("downloadURL");
+        fields.add("availibility");
+        fields.add("size");
+        fields.add("lastUpdateTime");
+
+        List<String> depl1 = new ArrayList<String>();
+        depl1.add("'" + downloadURL + "'");
+        depl1.add("'" + isAvailable + "'");
+        depl1.add("'" + size + "'");
+        depl1.add("'" + DateHandler.formatDate(lastUpdateTime) + "'");
+
+        if (mmfasSegmentID != null && !mmfasSegmentID.equals("")) {
+            
+            fields.add("segmentID");
+            depl1.add("'" + mmfasSegmentID + "'");
+        }
+
+        List<List<String>> values = new ArrayList<List<String>>();
+        values.add(depl1);
+
+        productID = this.getDboperations().insertReturningId(
+                table,
+                fields,
+                values,
+                "productID");
+
+        return productID;
+    }
+    
+    public void setSegmentProductsAvailibility(String segmentID, boolean isAvailable) throws SQLException {
+        
+        String table = "Product";
+        
+        List<String> fields = new ArrayList<>();
+        fields.add("availibility");
+        fields.add("lastUpdateTime");
+        
+        List<String> values = new ArrayList<>();
+        values.add("'" + isAvailable + "'");
+        values.add("'" + DateHandler.formatDate(Calendar.getInstance().getTime()) + "'");
+        
+        String condition = "mmfasSegmentID='" +segmentID+ "'";
+        
+        this.getDboperations().update(table, fields, values, condition);
+    }
     
 }

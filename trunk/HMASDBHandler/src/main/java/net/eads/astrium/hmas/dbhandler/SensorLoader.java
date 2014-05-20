@@ -189,7 +189,7 @@ public abstract class SensorLoader extends DatabaseLoader {
         
         List<List<String>> result = this.getDboperations().select(fields, table, conditions);
 
-        if (result != null && result.size() > 0) {
+        if (result != null && !result.isEmpty()) {
             sensorId = result.get(0).get(0);
         }
         
@@ -237,6 +237,7 @@ public abstract class SensorLoader extends DatabaseLoader {
         //Creating the result from the DB results
         List<List<String>> result = getDboperations().select(fields, table, conditions);
 
+        if (result != null && !result.isEmpty())
         for (List<String> entry : result) {
 
             List<String> list = entry;
@@ -309,6 +310,7 @@ public abstract class SensorLoader extends DatabaseLoader {
         //Creating the result from the DB results
         List<List<String>> result = getDboperations().select(fields, table, conditions);
 
+        if (result != null && !result.isEmpty())
         for (List<String> entry : result) {
 
             List<String> list = entry;
@@ -381,34 +383,36 @@ public abstract class SensorLoader extends DatabaseLoader {
 
         List<List<String>> sensors = getDboperations().select(fields, table, conditions);
 
-        List<String> list = sensors.get(0);
-
-        sensor = new Sensor(
-                sensorId,
-                list.get(1),
-                list.get(2),
-                list.get(3),
-                list.get(4),
-                list.get(5),
-                list.get(6),
-                list.get(7),
-                list.get(8),
-                list.get(9),
-                list.get(10),
-                list.get(11),
-                Arrays.asList(list.get(12).split(",")),
-                    list.get(13));
-
-        sensor.setInstrumentModes(getInstrumentModes(sensorId));
-        
-        
-        if (sensor.getSensorType().equalsIgnoreCase("SAR")) {
-            for (String instrumentModeId : sensor.getInstrumentModes().keySet()) {
+        if (sensors != null) {
             
-                sensor.addPolarizationModes(getPolarisationModes(sensor.getSensorId(), instrumentModeId));
+            List<String> list = sensors.get(0);
+
+            sensor = new Sensor(
+                    sensorId,
+                    list.get(1),
+                    list.get(2),
+                    list.get(3),
+                    list.get(4),
+                    list.get(5),
+                    list.get(6),
+                    list.get(7),
+                    list.get(8),
+                    list.get(9),
+                    list.get(10),
+                    list.get(11),
+                    Arrays.asList(list.get(12).split(",")),
+                        list.get(13));
+
+            sensor.setInstrumentModes(getInstrumentModes(sensorId));
+
+
+            if (sensor.getSensorType().equalsIgnoreCase("SAR")) {
+                for (String instrumentModeId : sensor.getInstrumentModes().keySet()) {
+
+                    sensor.addPolarizationModes(getPolarisationModes(sensor.getSensorId(), instrumentModeId));
+                }
             }
         }
-        
         
         return sensor;
     }

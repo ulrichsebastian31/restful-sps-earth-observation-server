@@ -94,35 +94,35 @@ public class SensorFeasibilityHandler extends SensorTaskHandler {
     }
     
     public String createOPTFeasibilityTask(
-            String sensorId, String mmfasTaskId, String requestId) throws SQLException {
+            String sensorId, String requestId) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, null);
         this.linkSensorTaskToRequest(sensorTaskId, requestId);
         
         return sensorTaskId;
     }
     public String createSARFeasibilityTask(
-            String sensorId, String mmfasTaskId, String requestId) throws SQLException {
+            String sensorId, String requestId) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, null);
         this.linkSensorTaskToRequest(sensorTaskId, requestId);
         
         return sensorTaskId;
     }
     
     public String createOPTFeasibilityTask(
-            String sensorId, String mmfasTaskId, OPTTaskingParameters parameters) throws SQLException {
+            String sensorId, OPTTaskingParameters parameters) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, null);
         this.saveOPTFeasibilityRequest(sensorTaskId, parameters);
         
         return sensorTaskId;
     }
     
     public String createSARFeasibilityTask(
-            String sensorId, String mmfasTaskId, SARTaskingParameters parameters) throws SQLException {
+            String sensorId, SARTaskingParameters parameters) throws SQLException {
         
-        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, mmfasTaskId, null);
+        String sensorTaskId = this.createSensorTask(sensorId, TaskType.feasibility, null);
         this.saveSARFeasibilityRequest(sensorTaskId, parameters);
         
         return sensorTaskId;

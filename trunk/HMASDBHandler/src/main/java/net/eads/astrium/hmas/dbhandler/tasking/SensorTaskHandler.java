@@ -60,7 +60,7 @@ public class SensorTaskHandler extends RequestHandler {
         statusHandler = new StatusHandler(databaseURL, user, pass, schemaName);
     }
     
-    String createSensorTask(String sensorId, TaskType type, String mmfasTaskId, String feasibilityTaskId) throws SQLException {
+    String createSensorTask(String sensorId, TaskType type, String feasibilityTaskId) throws SQLException {
         
         String status = statusHandler.createNewStatusPending(StatusParentType.SENSORTASK, type);
         
@@ -83,10 +83,6 @@ public class SensorTaskHandler extends RequestHandler {
         depl1.add("'" + sensorId + "'");
         depl1.add(status);
         
-        if (mmfasTaskId != null) {
-            fields.add("mmfasTask");
-            depl1.add("" + mmfasTaskId);
-        }
         if (feasibilityTaskId != null) {
             fields.add("feasibility");
             depl1.add("" + feasibilityTaskId);
