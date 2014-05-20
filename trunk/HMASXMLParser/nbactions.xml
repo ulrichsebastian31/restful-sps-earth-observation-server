@@ -92,4 +92,29 @@
                 <activatedProfile>ows</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-JustInstallDeploy</actionName>
+            <displayName>JustInstallDeploy</displayName>
+            <goals>
+                <goal>xmlbeans:xmlbeans</goal>
+                <goal>install</goal>
+                <goal>deploy</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-deploy</actionName>
+            <displayName>deploy</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>xmlbeans:xmlbeans</goal>
+                <goal>install</goal>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <proxySet>true</proxySet>
+                <proxyHost>172.17.22.250</proxyHost>
+                <proxyPort>80</proxyPort>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
     </actions>

@@ -90,7 +90,14 @@
                     <schemaDirectory>
                         ${project.resources.xsd}/reset/1.0
                     </schemaDirectory>
+                    
                     <download>true</download>
+                    
+<!--                    <xmlConfigs>
+                        <xmlConfig implementation="java.io.File">
+                           src/main/resources/xsd/xmlconfig.xsdconfig
+                        </xmlConfig>
+                    </xmlConfigs>-->
                 </configuration>
                         
             </plugin>

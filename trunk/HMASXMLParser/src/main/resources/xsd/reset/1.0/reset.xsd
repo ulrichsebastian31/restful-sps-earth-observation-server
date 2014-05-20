@@ -11,6 +11,7 @@
     </annotation>
 	
     <import namespace="http://www.opengis.net/ows/1.1" schemaLocation="http://schemas.opengis.net/ows/1.1.0/owsAll.xsd"/>
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
     <import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd"/>
     <import namespace="http://www.opengis.net/swes/2.1" schemaLocation="../../swes/2.1/swes.xsd"/>
     <import namespace="http://www.opengis.net/eosps/2.0" schemaLocation="../../eosps/2.0/eosps.xsd"/>
@@ -122,6 +123,44 @@
         </complexType>
     </element>
     
+	<!--Sensor Tasking -->
+    <!--This structure permits to describe Status of a given task -->
+	<complexType name="StatusType">
+            <sequence>
+                <element name="status" type="eosps:StatusReportType"/>
+            </sequence>
+	</complexType>
+	<!--This structure permits to describe Feasibility resources, it is based on the eosps:FeasibilityStudyType in the eosps Tasking extensions -->
+	<complexType name="FeasibilityType">
+            <sequence>
+                <element name="feasibility" type="eosps:FeasibilityStudyType"/>
+            </sequence>
+	</complexType>
+	
+	<!--This structure permits to describe Planning and Reservation resources, it is based on the eosps:ProgrammingStatusType in the eosps Tasking extensions -->
+	<complexType name="ProgrammingType">
+            <sequence>
+                <element name="programming" type="eosps:ProgrammingStatusType"/>
+            </sequence>
+	</complexType>
+	
+    <!--Status : This is the response to all the GetStatus requests, independant from the resource (feasibility, planning, reservation) of the task -->
+    <element name="Status">
+        <annotation>
+            <documentation>
+                XML encoded EO Sensor Planning Service Status operation response
+                (EO-SPS GetStatus). 
+                This document provides clients with information on a task
+                as described in OGC-14-012.
+            </documentation>
+        </annotation>
+        <complexType>
+                <sequence>
+                    <element name="status" type="reset:StatusType" />
+                </sequence>
+        </complexType>
+    </element>
+	
     <!--Feasibility-->
     <element name="Feasibility">
         <annotation>
@@ -133,14 +172,14 @@
             </documentation>
         </annotation>
         <complexType>
-                <sequence>
-                    <element name="status" type="eosps:StatusReportType" />
-                    <element name="feasibility" type="eosps:FeasibilityStudyType" 
-                             minOccurs="1" maxOccurs="unbounded" />
-                </sequence>
+            <sequence>
+                <element name="status" type="reset:StatusType" />
+                <element name="feasibility" type="reset:FeasibilityType" 
+                         minOccurs="1" maxOccurs="unbounded" />
+            </sequence>
         </complexType>
     </element>
-    
+	
         <!--Planning-->
     <element name="Planning">
         <annotation>
@@ -153,8 +192,8 @@
         </annotation>
         <complexType>
                 <sequence>
-                    <element name="status" type="eosps:StatusReportType" />
-                    <element name="planning" type="eosps:ProgrammingStatusType" 
+                    <element name="status" type="reset:StatusType" />
+                    <element name="planning" type="reset:ProgrammingType" 
                              minOccurs="1" maxOccurs="unbounded" />
                 </sequence>
         </complexType>
@@ -179,8 +218,8 @@
                             </documentation>
                         </annotation>
                     </element>
-                    <element name="status" type="eosps:StatusReportType" />
-                    <element name="reservation" type="eosps:ProgrammingStatusType" 
+                    <element name="status" type="reset:StatusType" />
+                    <element name="planning" type="reset:ProgrammingType" 
                              minOccurs="1" maxOccurs="unbounded" />
                 </sequence>
         </complexType>
