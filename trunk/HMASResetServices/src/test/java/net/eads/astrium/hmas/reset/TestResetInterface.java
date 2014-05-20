@@ -28,9 +28,6 @@ public class TestResetInterface {
 //    public static String serviceBaseAddr = "/DreamServices/dream/mmfas/gmes-mmfas/reset/1.0.0/";
     public static String serviceBaseAddr = "/HMASResetServices/hmas/reset/1.0.0/";
     
-    
-    
-    
     public static final String testFolderPath = 
             "C:\\Users\\re-sulrich\\.hmas\\Tests\\testResetRequests\\";
     
@@ -205,7 +202,7 @@ public class TestResetInterface {
         writer.close();
         
         FeasibilityDocument resp = FeasibilityDocument.Factory.parse(s);
-        feasibilityTaskID = resp.getFeasibility().getStatus().getTask();
+        feasibilityTaskID = resp.getFeasibility().getStatus().getStatus().getTask();
         
     }
     
@@ -313,10 +310,10 @@ public class TestResetInterface {
         writer.close();
         
         PlanningDocument resp = PlanningDocument.Factory.parse(s);
-        planningTaskID = resp.getPlanning().getStatus().getTask();
+        planningTaskID = resp.getPlanning().getStatus().getStatus().getTask();
         
         
-        if (resp.getPlanning().getStatus().getIdentifier().equalsIgnoreCase("ALREADY DONE")) {
+        if (resp.getPlanning().getStatus().getStatus().getIdentifier().equalsIgnoreCase("ALREADY DONE")) {
             System.out.println("This task has already been done.");
         }
         else {

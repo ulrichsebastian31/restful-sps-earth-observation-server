@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.opengis.eosps.x20.GetFeasibilityDocument;
 import net.opengis.eosps.x20.GetFeasibilityType;
 import net.opengis.eosps.x20.TaskingParametersDocument;
@@ -66,32 +67,38 @@ public class TestGetFeasibility {
         tp.getTaskingParameters().setCoverageProgrammingRequest(EoTaskingParameters.addOPTParams(tp.getTaskingParameters().getCoverageProgrammingRequest()));
         GetFeasibilityType feasibility = doc.addNewGetFeasibility();
         feasibility.setEoTaskingParameters(tp.getTaskingParameters());
-        feasibility.setProcedure("S2OPT");
+        feasibility.setProcedure("S2AOPT");
         
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource webResource = client.resource("http://127.0.0.1:8080/DreamServices-1.0-SNAPSHOT/dream/fas/s2-fas");
+        String foutoidemagueule = doc.xmlText(OGCNamespacesXmlOptions.getInstance());
         
-        MultivaluedMap queryParams = new MultivaluedMapImpl();
+        System.out.println("" + foutoidemagueule);
         
-        queryParams.add("service", "eosps");
-        queryParams.add("version", "2.0");
-        queryParams.add("request", "GetFeasibility");
-        queryParams.add("acceptFormat", "application/xml");
-        
-        String xmlrequest = doc.xmlText();
-        
-        System.out.println("" + xmlrequest);
-        
-        String s = webResource.queryParams(queryParams).entity(xmlrequest, "text/xml").accept("text/xml").post(String.class);
-        
-        System.out.println(s);
-        
-        File file = new File("C:\\Users\\re-sulrich\\.dream\\fas\\feasibilityResultOPT.xml");
-        file.delete();
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(s.getBytes());
-        fos.flush();
+//        GetFeasibilityDocument doc2mescouilles = GetFeasibilityDocument.Factory.pa
+
+//        ClientConfig config = new DefaultClientConfig();
+//        Client client = Client.create(config);
+//        WebResource webResource = client.resource("http://127.0.0.1:8080/DreamServices-1.0-SNAPSHOT/dream/fas/s2a-fas");
+//        
+//        MultivaluedMap queryParams = new MultivaluedMapImpl();
+//        
+//        queryParams.add("service", "eosps");
+//        queryParams.add("version", "2.0");
+//        queryParams.add("request", "GetFeasibility");
+//        queryParams.add("acceptFormat", "application/xml");
+//        
+//        String xmlrequest = doc.xmlText();
+//        
+//        System.out.println("" + xmlrequest);
+//        
+//        String s = webResource.queryParams(queryParams).entity(xmlrequest, "text/xml").accept("text/xml").post(String.class);
+//        
+//        System.out.println(s);
+//        
+//        File file = new File("C:\\Users\\re-sulrich\\.dream\\fas\\feasibilityResultOPT.xml");
+//        file.delete();
+//        FileOutputStream fos = new FileOutputStream(file);
+//        fos.write(s.getBytes());
+//        fos.flush();
         
     }
     
@@ -104,7 +111,7 @@ public class TestGetFeasibility {
     
     
     
-//    @Test
+    @Test
     public void getFeasibilitySAR() throws IOException
     {
         GetFeasibilityDocument doc = GetFeasibilityDocument.Factory.newInstance();
@@ -113,32 +120,35 @@ public class TestGetFeasibility {
         tp.getTaskingParameters().setCoverageProgrammingRequest(EoTaskingParameters.addSARParams(tp.getTaskingParameters().getCoverageProgrammingRequest()));
         GetFeasibilityType feasibility = doc.addNewGetFeasibility();
         feasibility.setEoTaskingParameters(tp.getTaskingParameters());
-        feasibility.setProcedure("S1SAR");
+        feasibility.setProcedure("S1ASAR");
         
-        ClientConfig config = new DefaultClientConfig();
-        Client client = Client.create(config);
-        WebResource webResource = client.resource("http://127.0.0.1:8080/DreamServices-1.0-SNAPSHOT/dream/fas/s1-fas");
         
-        MultivaluedMap queryParams = new MultivaluedMapImpl();
+        System.out.println("" + doc.xmlText(OGCNamespacesXmlOptions.getInstance()));
         
-        queryParams.add("service", "eosps");
-        queryParams.add("version", "2.0");
-        queryParams.add("request", "GetFeasibility");
-        queryParams.add("acceptFormat", "application/xml");
-        
-        String xmlrequest = doc.xmlText();
-        
-        System.out.println("" + xmlrequest);
-        
-        String s = webResource.queryParams(queryParams).entity(xmlrequest, "text/xml").accept("text/xml").post(String.class);
-        
-        System.out.println(s);
-        
-        File file = new File("C:\\Users\\re-sulrich\\.dream\\fas\\feasibilityResultSAR.xml");
-        file.delete();
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.write(s.getBytes());
-        fos.flush();
+//        ClientConfig config = new DefaultClientConfig();
+//        Client client = Client.create(config);
+//        WebResource webResource = client.resource("http://127.0.0.1:8080/DreamServices-1.0-SNAPSHOT/dream/fas/s1-fas");
+//        
+//        MultivaluedMap queryParams = new MultivaluedMapImpl();
+//        
+//        queryParams.add("service", "eosps");
+//        queryParams.add("version", "2.0");
+//        queryParams.add("request", "GetFeasibility");
+//        queryParams.add("acceptFormat", "application/xml");
+//        
+//        String xmlrequest = doc.xmlText();
+//        
+//        System.out.println("" + xmlrequest);
+//        
+//        String s = webResource.queryParams(queryParams).entity(xmlrequest, "text/xml").accept("text/xml").post(String.class);
+//        
+//        System.out.println(s);
+//        
+//        File file = new File("C:\\Users\\re-sulrich\\.dream\\fas\\feasibilityResultSAR.xml");
+//        file.delete();
+//        FileOutputStream fos = new FileOutputStream(file);
+//        fos.write(s.getBytes());
+//        fos.flush();
         
     }
 }

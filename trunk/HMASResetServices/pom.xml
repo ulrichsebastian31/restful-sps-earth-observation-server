@@ -3,13 +3,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>net.eads.astrium.dream</groupId>
-        <artifactId>dream-project</artifactId>
+        <groupId>net.eads.astrium.hmas</groupId>
+        <artifactId>hmas-reset-project</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>${parent.path}</relativePath>
     </parent>
 
-    <groupId>net.eads.astrium.dream</groupId>
+    <groupId>net.eads.astrium.hmas</groupId>
     <artifactId>HMASResetServices</artifactId>
     <packaging>war</packaging>
 
@@ -122,36 +122,6 @@
             
             
             
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>copy-resources</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/classes</outputDirectory>
-                            <includeEmptyDirs>true</includeEmptyDirs>
-                            <resources>
-                                <resource>
-                                    <directory>${project.resources}/xsd</directory>
-                                    <targetPath>${basedir}/target/classes</targetPath>
-                                    <filtering>false</filtering>
-                                </resource>
-                                <resource>
-                                    <directory>${project.resources}/wps</directory>
-                                    <targetPath>${basedir}/target/classes</targetPath>
-                                    <filtering>false</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
             
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -162,14 +132,13 @@
                     <webappDirectory>${project.webapp}</webappDirectory>
                     <failOnMissingWebXml>true</failOnMissingWebXml>
                     <webXml>${project.webapp}/WEB-INF/web.xml</webXml>
-<!--                    <webResources>
-                        <resource>
-                            <directory>${project.resources}</directory>
-                        </resource>
-                        <resource>
-                            <directory>${project.webapp}</directory>
-                        </resource>
-                    </webResources>-->
+                    <webResources>
+<!--                        <resource>
+                            <directory>${project.resources}/xsd</directory>
+                            <directory>${project.resources}/wps</directory>
+                            <directory>${project.resources}/global</directory>
+                        </resource>-->
+                    </webResources>
                 </configuration>
             </plugin>
             
@@ -253,17 +222,56 @@
                             </compilerArguments>
                         </configuration>
                     </plugin>
-                    <plugin>
+<!--                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>2.3.2</version>
                         <configuration>
                             <classifier>windows</classifier>
                         </configuration>
-                    </plugin>    
+                    </plugin>    -->
                      
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.webapp}</outputDirectory>
+                            <includeEmptyDirs>true</includeEmptyDirs>
+                            <resources>
+                                <resource>
+                                    <directory>${project.resources}/xsd</directory>
+                                    <targetPath>${project.webapp}/xsd</targetPath>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.resources}/wps</directory>
+                                    <targetPath>${project.webapp}</targetPath>
+                                    <filtering>false</filtering>
+                                </resource>
+                                <resource>
+                                    <directory>${project.resources}/global</directory>
+                                    <targetPath>${project.webapp}</targetPath>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
                 </plugins>
             </build>
+            
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             
         </profile>
         <profile>
@@ -292,21 +300,52 @@
                             </compilerArguments>
                         </configuration>
                     </plugin>
-                    <plugin>
+<!--                    <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
                         <version>2.3.2</version>
                         <configuration>
                             <classifier>linux</classifier>
                         </configuration>
-                    </plugin>    
+                    </plugin>    -->
                      
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.6</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.webapp}</outputDirectory>
+                                    <includeEmptyDirs>true</includeEmptyDirs>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.resources}/xsd</directory>
+                                            <targetPath>${project.webapp}</targetPath>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>${project.resources}/wps</directory>
+                                            <targetPath>${project.webapp}</targetPath>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                        <resource>
+                                            <directory>${project.resources}/global</directory>
+                                            <targetPath>${project.webapp}</targetPath>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                 </plugins>
             </build>
-            
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
         </profile>
     </profiles>
     

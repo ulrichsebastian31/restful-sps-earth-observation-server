@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:atm="http://earth.esa.int/atm" xmlns:eop="http://earth.esa.int/eop" xmlns:gml="http://www.opengis.net/gml/3.2" elementFormDefault="qualified" targetNamespace="http://earth.esa.int/atm" version="1.2.1beta">
+  <import namespace="http://earth.esa.int/eop" schemaLocation="eop.xsd"/>
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange-->
+  <element name="EarthObservationResult" substitutionGroup="eop:EarthObservationResult" type="atm:EarthObservationResultType"/>
+  <complexType name="EarthObservationResultType">
+    <complexContent>
+      <extension base="eop:EarthObservationResultType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="dataLayers" type="atm:DataLayerPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationResultPropertyType">
+    <sequence minOccurs="0">
+      <element ref="atm:EarthObservationResult"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="EarthObservation" substitutionGroup="eop:EarthObservation" type="atm:EarthObservationType">
+    <annotation>
+      <documentation>Namespace for Atmospheric products EarthObservationProduct.</documentation>
+    </annotation>
+  </element>
+  <complexType name="EarthObservationType">
+    <complexContent>
+      <extension base="eop:EarthObservationType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="atm:EarthObservation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="DataLayer" substitutionGroup="gml:AbstractObject" type="atm:DataLayerType"/>
+  <complexType name="DataLayerType">
+    <sequence>
+      <element minOccurs="0" name="specy" type="string">
+        <annotation>
+          <documentation>Specy contained in data layer</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="unit" type="string">
+        <annotation>
+          <documentation>Unit of specy in data layer</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="highestLocation" type="gml:MeasureType">
+        <annotation>
+          <documentation>Top height of datalayer. Should be expressed in meters.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="lowestLocation" type="gml:MeasureType">
+        <annotation>
+          <documentation>Bottom height of datalayer. Should be expressed in meters.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="algorithmName" type="string">
+        <annotation>
+          <documentation>Name of algorithm used to compute datalayer</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="algorithmVersion" type="string">
+        <annotation>
+          <documentation>Version of algorithm used to compute datalayer</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DataLayerPropertyType">
+    <sequence>
+      <element ref="atm:DataLayer"/>
+    </sequence>
+  </complexType>
+</schema>

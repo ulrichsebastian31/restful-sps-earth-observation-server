@@ -31,6 +31,21 @@ import java.util.List;
 public class CreateReqTaskStruct {
     
     
+    public static void testCreateProductTable() throws SQLException {
+        List<String[]> fields = new ArrayList<String[]>();
+        
+        fields.add(new String[]{"productID", "serial primary key"});
+        fields.add(new String[]{"downloadURL", "varchar(100)"});
+        fields.add(new String[]{"availibility", "boolean"});
+        fields.add(new String[]{"nbFiles", "integer"});
+        fields.add(new String[]{"size", "bigint"});
+        fields.add(new String[]{"lastUpdateTime", "timestamp"});
+        fields.add(new String[]{"segmentId", "integer references Segment(segmentId)"});
+        
+        TestConnexion.create("Product", fields);
+    }
+    
+    
     public static void testCreateLink_TP_InstModes() throws SQLException {
         List<String[]> fields = new ArrayList<String[]>();
         

@@ -166,6 +166,10 @@
 
                 </plugins>
             </build>
+            
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
         </profile>
 
 		
@@ -255,10 +259,6 @@
                 </plugins>
             </build>
   
-            
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
   
   
   

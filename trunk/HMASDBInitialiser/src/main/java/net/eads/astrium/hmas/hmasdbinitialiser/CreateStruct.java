@@ -85,6 +85,7 @@ public class CreateStruct {
         CreateReqTaskStruct.testCreateSegmentTable();
         //Depends on Status and SensorTask
         CreateReqTaskStruct.testCreateResultTable();
+        CreateReqTaskStruct.testCreateProductTable();
         //Depends on Segment
         CreateReqTaskStruct.testCreateDownlinkTable();
         

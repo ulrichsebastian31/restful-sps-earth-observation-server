@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		targetNamespace="http://www.opengis.net/eosps/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+		
+    <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+    <import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd"/>
+    <include schemaLocation="eoCommon.xsd"/>
+	<!-- ================================================= -->
+	<!-- ============  Response unchanged  =============== -->
+    <element name="SubmitResponse" substitutionGroup="eosps:TaskingResponse" type="eosps:SubmitResponseType"/>
+    
+    <complexType name="SubmitResponseType">
+        <complexContent>
+            <extension base="eosps:TaskingResponseType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="SubmitResponsePropertyType">
+        <sequence minOccurs="0">
+            <element ref="eosps:SubmitResponse"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>	
+    </complexType>
+	<!-- ================================================= -->
+    <element name="Submit" substitutionGroup="eosps:TaskingRequest" type="eosps:SubmitType"/>
+    <complexType name="SubmitType">
+        <complexContent>
+            <extension base="eosps:TaskingRequestType"/>
+        </complexContent>
+    </complexType>
+    <complexType name="SubmitPropertyType">
+        <sequence minOccurs="0">
+            <element ref="eosps:Submit"/>
+        </sequence>
+        <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    </complexType>
+</schema>
