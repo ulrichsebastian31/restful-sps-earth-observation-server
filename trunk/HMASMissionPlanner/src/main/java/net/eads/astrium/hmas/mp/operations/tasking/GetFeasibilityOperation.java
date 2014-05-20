@@ -25,6 +25,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.eocfihandler.hmaseocfihandler.EoCfiHndlrError;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.util.structures.SatellitePlatform;
@@ -40,8 +43,10 @@ import net.eads.astrium.hmas.exceptions.GetFeasibilityFault;
 import net.eads.astrium.hmas.mp.feasibilityanalysis.OPTSensorFeasibilityAnalysisHandler;
 import net.eads.astrium.hmas.mp.feasibilityanalysis.SARSensorFeasibilityAnalysisHandler;
 import net.eads.astrium.hmas.mp.feasibilityanalysis.SensorFeasibilityAnalysisHandler;
+import net.eads.astrium.hmas.processes.feasibilitystudygenerator.FeasibilityStudyGenerator;
 import net.eads.astrium.hmas.util.Algorithms;
 import net.eads.astrium.hmas.util.structures.TimePeriod;
+import net.eads.astrium.hmas.util.structures.tasking.enums.TaskHandlerType;
 import net.eads.astrium.hmas.util.structures.tasking.geometries.Circle;
 import net.eads.astrium.hmas.util.structures.tasking.geometries.Geometry;
 import net.opengis.eosps.x20.AcquisitionAngleType;
@@ -107,6 +112,7 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
     private String sensorType;
     
     private SensorFeasibilityAnalysisHandler feasibilityHandler;
+    private String reqStatus;
     
     /**
      *
@@ -120,6 +126,10 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
     @Override
     public void validRequest() throws GetFeasibilityFault {
         
+        
+        System.out.println("Valid request : \r\n"  + this.getRequest().xmlText(OGCNamespacesXmlOptions.getInstance()));
+        
+        
         try {
         
             //Loading data from the database
@@ -130,11 +140,17 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
             //----------------------------------------------------------------------------
             GetFeasibilityType feasibility = this.getRequest().getGetFeasibility();
             
+            System.out.println("Feasibility : \r\n" + feasibility.xmlText(OGCNamespacesXmlOptions.getInstance()));
+            
+            
             String procedure = feasibility.getProcedure();
             if (procedure == null || procedure.equals("")) {
                 throw new GetFeasibilityFault("Please choose sensor or sensor type to task through the 'procedure' parameter.");
             }
             TaskingParametersType taskingParameters = feasibility.getEoTaskingParameters();
+            
+            
+            
             if (taskingParameters == null || taskingParameters.getCoverageProgrammingRequest() == null) {
                 throw new GetFeasibilityFault("Please fill in a TaskingParameter:CoverageProgrammingRequest structure to task a (set of) sensor(s).");
             }
@@ -611,9 +627,22 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
         
         try {
             this.feasibilityHandler.doFeasibility();
-        
+            
+            this.getConfigurationLoader().getFeasibilityHandler().
+                    addNewGetFeasibilityRequestSucceddedStatus(TaskHandlerType.sensor, this.feasibilityHandler.getTaskId());
+            
+            reqStatus = "Accepted";
+            
         } catch (Exception e) {
-                        e.printStackTrace();
+            reqStatus = "Rejected";
+            try {
+                this.getConfigurationLoader().getFeasibilityHandler().
+                        addNewGetFeasibilityRequestFailedStatus(TaskHandlerType.sensor, this.feasibilityHandler.getTaskId());
+            } catch (SQLException|ParseException ex1) {
+                        ex1.printStackTrace();
+                throw new GetFeasibilityFault("" + ex1.getClass().getName() + " : " + ex1.getMessage());
+            }
+            e.printStackTrace();
             throw new GetFeasibilityFault(e.getClass().getName() + " : " + e.getMessage());
         }
         GetFeasibilityResponseDocument response = this.createResponse();
@@ -627,11 +656,11 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
      * NB : this function is only to be used after the feasibilityHandler has performed the doFeasibility method
      * @return the XML response to send back to the client
      */
-    private GetFeasibilityResponseDocument createResponse() {
+    private GetFeasibilityResponseDocument createResponse() throws GetFeasibilityFault {
         
         Status status = this.feasibilityHandler.getStatus();
         
-        GetFeasibilityResponseDocument response = GetFeasibilityResponseDocument.Factory.newInstance();
+        GetFeasibilityResponseDocument response = GetFeasibilityResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetFeasibilityResponseType resp = response.addNewGetFeasibilityResponse();
         
         //------------------------------------------------------------
@@ -643,7 +672,9 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
         
         statusReport.setTask(this.feasibilityHandler.getTaskId());
         
-        statusReport.setIdentifier(status.getIdentifier());
+        statusReport.setRequestStatus(reqStatus);
+        
+        statusReport.setIdentifier(status.getIdentifier().replaceAll(" ", "_"));
         statusReport.setUpdateTime(DateHandler.getCalendar(status.getUpdateTime()));
         statusReport.setEstimatedToC(DateHandler.getCalendar(status.getEstimatedTimeOfCompletion()));
         statusReport.setPercentCompletion(status.getPercentCompletion());
@@ -657,125 +688,23 @@ public class GetFeasibilityOperation extends EOSPSOperation<MissionPlannerDBHand
         //Feasibility study
         //------------------------------------------------------------
         
-        FeasibilityStudyDocument study = this.getFeasibilityStudy();
-        
-        resp.addNewExtension().set(study);
-        
-        return response;
-    }
-    
-    
-    /**
-     * Creates the FeasibilityStudyDocument from the data of the SensorFeasibilityAnalysisHandler
-     * @return 
-     */
-    private FeasibilityStudyDocument getFeasibilityStudy() {
-        
-        FeasibilityStudyDocument studyDoc = FeasibilityStudyDocument.Factory.newInstance();
-        FeasibilityStudyType study = studyDoc.addNewFeasibilityStudy();
-        
-        study.addNewEstimatedCost().setDoubleValue(this.feasibilityHandler.getEstimatedCost());
-        study.getEstimatedCost().setUom(this.feasibilityHandler.getCurrency());
-        study.setId(this.feasibilityHandler.getTaskId());
-        
-        study.setSegmentArray(this.addSegments());
-        
-        return studyDoc;
-    }
-    
-    /**
-     * Creates the Segments response structure from the data of the SensorFeasibilityAnalysisHandler
-     * @return 
-     */
-    private SegmentPropertyType[] addSegments() {
-        
-        List<Segment> segments = this.feasibilityHandler.getSegments();
-        
-        SegmentPropertyType[] ss = new SegmentPropertyType[segments.size()];
-        
-        int i = 0;
-        for (Segment segment : segments) {
+        try {
             
-            SegmentPropertyType s = SegmentPropertyType.Factory.newInstance();
+            FeasibilityStudyDocument study;
+            study = FeasibilityStudyGenerator.getFeasibilityStudy(this.getConfigurationLoader().getFeasibilityHandler(), this.feasibilityHandler.getTaskId());
             
-            SegmentType seg = s.addNewSegment();
+            resp.addNewExtension().set(study
+//                    .getFeasibilityStudy()
+                    );
             
-            //Times
-            seg.setAcquisitionStartTime(segment.getStartOfAcquisition());
-            seg.setAcquisitionStopTime(segment.getEndOfAcquisition());
-
-            seg.setId(segment.getSegmentId());
-
-            //EOP
-            EarthObservationEquipmentType eoEquipment = seg.addNewAcquisitionMethod().addNewEarthObservationEquipment();
-            //Sensor
-            SensorType sensor = eoEquipment.addNewSensor().addNewSensor();
-            //Sensor Type
-            CodeType instType = sensor.addNewSensorType();
-            instType.setCodeSpace("urn:ogc:def:property:OGC:sensorType");
-            instType.setStringValue(sensorType);
-            //Instrument Mode
-            CategoryType instMode = CategoryType.Factory.newInstance();
-            instMode.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentMode");
-            instMode.setValue(segment.getInstrumentMode());
-            sensor.addNewOperationalMode().set(instMode);
-            //Instrument identifier
-            InstrumentType instrument = eoEquipment.addNewInstrument().addNewInstrument();
-            instrument.setShortName(sensorId);
+            System.out.println("Extension on insert : \r\n" + resp.getExtensionArray(0).xmlText());
             
-            //Platform
-            PlatformType plat = eoEquipment.addNewPlatform().addNewPlatform();
-            plat.setSerialIdentifier(platform.getId());
-            
-            if ("LEO GEO".contains(platform.getOrbit().getOrbitType())) {
-                plat.setOrbitType(OrbitTypeValueType.Enum.forString(platform.getOrbit().getOrbitType()));
-            }
-            else
-            {
-                plat.setOrbitType(OrbitTypeValueType.Enum.forString("LEO"));
-            }
-            
-            plat.setShortName(platform.getName());
-
-            eoEquipment.addNewIdentifier().setStringValue(platform.getId() + " - " + sensorId);
-
-            eoEquipment.addNewDescription().setStringValue(platform.getDescription());
-
-            //Polygon
-            PolygonType polygon = seg.addNewFootprint().addNewPolygon();
-
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
-            coords.setDecimal(".");
-            coords.setCs(",");
-            coords.setTs(" ");
-
-            coords.setStringValue(segment.getPolygon().printCoordinatesGML());
-
-            LinearRingType lineRing = LinearRingType.Factory.newInstance();
-            lineRing.setCoordinates(coords);
-            polygon.addNewExterior().setAbstractRing(lineRing);
-            
-            SegmentValidationDataDocument valData = SegmentValidationDataDocument.Factory.newInstance();
-            valData.addNewSegmentValidationData().setCloudCoverSuccessRate(segment.getCloudCoverSuccessRate());
-            seg.addNewExtension().set(valData);
-            
-            DownlinkInformationDocument downlinkDoc = DownlinkInformationDocument.Factory.newInstance();
-            DownlinkInformationType downlink = downlinkDoc.addNewDownlinkInformation();
-            
-            downlink.setAcquisitionDate(segment.getGroundStationDownlink().getStartOfVisibility());
-            
-            CategoryType acqStation = CategoryType.Factory.newInstance();
-            acqStation.setDefinition("urn:ogc:def:property:CEOS:eop:GroundStation");
-            acqStation.setValue(segment.getGroundStationDownlink().getGroundStationId());
-            
-            downlink.addNewAcquisitionStation().set(acqStation);
-            
-            seg.addNewExtension().set(downlinkDoc);
-            
-            ss[i] = s;
-            i++;
+        } catch (SQLException | ParseException ex) {
+                ex.printStackTrace();
+                throw new GetFeasibilityFault("" + ex.getClass().getName() + " : " + ex.getMessage());
         }
         
-        return ss;
+        
+        return response;
     }
 }

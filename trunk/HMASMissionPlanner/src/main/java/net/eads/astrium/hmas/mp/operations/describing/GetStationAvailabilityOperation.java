@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import net.eads.astrium.hmas.operations.EOSPSOperation;
 import java.text.ParseException;
 import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
 import net.eads.astrium.hmas.util.structures.TimePeriod;
@@ -88,7 +89,7 @@ public class GetStationAvailabilityOperation extends EOSPSOperation<MissionPlann
 
 
         GetStationAvailabilityResponseDocument responseDocument =
-                GetStationAvailabilityResponseDocument.Factory.newInstance();
+                GetStationAvailabilityResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetStationAvailabilityResponseType response =
                 responseDocument.addNewGetStationAvailabilityResponse();
 

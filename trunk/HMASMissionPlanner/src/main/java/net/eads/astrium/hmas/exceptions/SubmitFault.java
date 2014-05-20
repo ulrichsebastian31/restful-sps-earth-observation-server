@@ -28,26 +28,26 @@ import javax.xml.ws.WebFault;
 
 public class SubmitFault extends OWSException {
     
+    private static final int CODE = 7;
+    
     public SubmitFault() {
-        super();
+        super(CODE);
     }
     
     public SubmitFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
-    public SubmitFault(String message, Throwable cause) {
-        super(message, cause);
+    public SubmitFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public SubmitFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message, exception);
     }
 
     public SubmitFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

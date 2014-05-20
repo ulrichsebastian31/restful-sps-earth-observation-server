@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.rs.parsers.describing;
 
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
@@ -46,7 +47,7 @@ public class DescribeTaskingParser extends DreamRestEOSPSRequestGetParser{
         String procedure = params.getFirst("procedure");
         
         //Create XML request
-        DescribeTaskingDocument doc = DescribeTaskingDocument.Factory.newInstance();
+        DescribeTaskingDocument doc = DescribeTaskingDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         DescribeTaskingType desc = doc.addNewDescribeTasking();
         
         //Add extensibleRequest parameters

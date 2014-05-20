@@ -19,11 +19,14 @@
 import java.sql.SQLException;
 import net.eads.astrium.hmas.operations.EOSPSOperation;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
 import net.eads.astrium.hmas.util.structures.Sensor;
 import net.eads.astrium.hmas.exceptions.DescribeTaskingFault;
+import net.eads.astrium.hmas.util.DateHandler;
 
 import net.opengis.eosps.x20.AcquisitionAngleType;
 import net.opengis.eosps.x20.AcquisitionParametersOPTType;
@@ -40,12 +43,17 @@ import net.opengis.eosps.x20.RegionOfInterestType;
 import net.opengis.eosps.x20.SurveyPeriodDocument;
 import net.opengis.eosps.x20.TaskingParametersType;
 import net.opengis.eosps.x20.TimeOfInterestType;
+import net.opengis.eosps.x20.ValidationParametersOPTType;
+import net.opengis.eosps.x20.ValidationParametersSARType;
+import net.opengis.eosps.x20.ValidationParametersType;
 import net.opengis.gml.x32.AbstractRingPropertyType;
 import net.opengis.gml.x32.CircleType;
 import net.opengis.gml.x32.CoordinatesType;
+import net.opengis.gml.x32.LinearRingDocument;
 import net.opengis.gml.x32.LinearRingType;
 import net.opengis.gml.x32.PolygonType;
 import net.opengis.gml.x32.StringOrRefType;
+import net.opengis.gml.x32.TimePeriodType;
 import net.opengis.swe.x20.AllowedTokensPropertyType;
 import net.opengis.swe.x20.AllowedTokensType;
 import net.opengis.swe.x20.AllowedValuesPropertyType;
@@ -92,9 +100,12 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 		
 		this.validRequest();
                 
-		DescribeTaskingResponseDocument responseDocument = DescribeTaskingResponseDocument.Factory.newInstance();
+		DescribeTaskingResponseDocument responseDocument = DescribeTaskingResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 		
 		DescribeTaskingResponseType response = responseDocument.addNewDescribeTaskingResponse2();
+                
+//                response.addNewTaskingParameters().setName("EOSPS_Tasking_Parameters");
+//                response.addNewExtension();
                 
                 TaskingParametersType taskingParam = response.addNewEoTaskingParameters();
                 
@@ -107,20 +118,57 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 
 	/**
 	 * Creates a coverage Programming request and fills it in with :
-	 *  - an AcquisitionType
+	 *  - an AcquisitionType, containing a set of Acquisition Parameters
 	 *  - a Region of Interest
 	 *  - a Time of Interest
+	 *  - a set of Validation Parameters
 	 * @return
 	 */
 	public CoverageProgrammingRequestType getCoverageProgrammingRequest() throws DescribeTaskingFault
 	{
-            CoverageProgrammingRequestType coverage = CoverageProgrammingRequestType.Factory.newInstance();
-
-            coverage.setAcquisitionType(this.getAcquisitionType());
+            CoverageProgrammingRequestType coverage = CoverageProgrammingRequestType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
             coverage.setRegionOfInterest(this.getRegionOfInterest());
 
             coverage.setTimeOfInterest(this.getTimeOfInterest());
+            
+            String procedure = this.getRequest().getDescribeTasking().getProcedure();
+            
+            List<Sensor> sensors = null;
+            
+            try {
+                if ("SAR OPT".contains(procedure))
+                {
+                    sensors = this.getConfigurationLoader().getSatelliteLoader().loadSensorsByType(procedure);
+                }
+                else
+                {
+                    sensors = new ArrayList<Sensor>();
+                    
+                    Sensor sensor = this.getConfigurationLoader().getSatelliteLoader().loadSensor(procedure);
+                    if (sensor == null) {
+                        throw new DescribeTaskingFault("Sensor " + procedure + " does not exist on this server.");
+                    }
+                    
+                    sensors.add(sensor);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                
+                throw new DescribeTaskingFault("SQLException ( " + ex.getErrorCode() + " ) : " + ex.getMessage());
+            }
+            
+            
+            String sensorType = "";
+            if (sensors != null && sensors.size() > 0)
+            {
+                sensorType = sensors.get(0).getSensorType();
+            }
+            
+            
+            coverage.setAcquisitionType(this.getAcquisitionType(sensors, sensorType));
+
+            coverage.setValidationParameters(this.getValidationParameters(sensorType));
             
             return coverage;
 	}
@@ -132,26 +180,14 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 	 */
 	private TimeOfInterestType getTimeOfInterest() {
 		
-		TimeOfInterestType toiType = TimeOfInterestType.Factory.newInstance();
+		TimeOfInterestType toiType = TimeOfInterestType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
                 SurveyPeriodDocument.SurveyPeriod surveyPeriod = toiType.addNewSurveyPeriod();
-		surveyPeriod.addNewTimePeriod();
-                        
-//		surveyPeriod.setLabel("Survey Period");
-//		
-//		
-//		AllowedTimesType times = surveyPeriod.addNewConstraint().addNewAllowedTimes();
-//		
-//		
-//		
-//		TimePosition pos= times.addNewValue();
-//		pos.setStringValue("<swe:timePosition>0000-00-00T00:00:00Z</swe:timePosition> ");
-//		
-//		
-//		UnitReference ref = surveyPeriod.addNewUom();
-//		ref.setHref("urn:ogc:def:unit:ISO-8601::DateTime");
-//		
-//		surveyPeriod.setUom(ref);
-		
+                TimePeriodType vt = surveyPeriod.addNewTimePeriod();
+                vt.setId("Survey_Period");
+                
+                vt.addNewBeginPosition().setStringValue(DateHandler.formatDate(DateHandler.getCalendar().getTime()));
+                vt.addNewEndPosition().setStringValue(DateHandler.formatDate(DateHandler.getCalendar().getTime()));
+                
 		return toiType;
 	}
 
@@ -162,16 +198,17 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 	private RegionOfInterestType getRegionOfInterest() {
 		
 
-		CoordinatesType coords = CoordinatesType.Factory.newInstance();
+		CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 		coords.setDecimal(".");
 		coords.setCs(",");
 		coords.setTs(" ");
 		
-		RegionOfInterestType roiType = RegionOfInterestType.Factory.newInstance();
+		RegionOfInterestType roiType = RegionOfInterestType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 		
 		PolygonType polygon = roiType.addNewPolygon();
+                polygon.setId("Region_Of_Interest");
 		
-		StringOrRefType def = StringOrRefType.Factory.newInstance();
+		StringOrRefType def = StringOrRefType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 		def.setStringValue("" +
 				"A Polygon is a special surface that is defined by a single surface patch (see D.3.6). " +
 				"The boundary of this patch is coplanar and the polygon uses planar interpolation in its interior." +
@@ -181,11 +218,11 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 		
 		AbstractRingPropertyType exterior = polygon.addNewExterior();
 		//TODO : Complete
-		LinearRingType lineRing = LinearRingType.Factory.newInstance();
+		LinearRingDocument doc = LinearRingDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+		LinearRingType lineRing = doc.addNewLinearRing();
 		lineRing.setCoordinates(coords);
 		
-		
-		exterior.setAbstractRing(lineRing);
+		exterior.set(doc);
 
 		//TODO : Complete
 		CircleType circle = roiType.addNewCircle();
@@ -272,36 +309,9 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 	 * Creates a Acquisition type
 	 * @return
 	 */
-	public AcquisitionTypeType getAcquisitionType() throws DescribeTaskingFault
+	public AcquisitionTypeType getAcquisitionType(List<Sensor> sensors, String sensorType) throws DescribeTaskingFault
 	{
-            String procedure = this.getRequest().getDescribeTasking().getProcedure();
-            
-            List<Sensor> sensors = null;
-            
-            try {
-                if ("SAR OPT".contains(procedure))
-                {
-                    sensors = this.getConfigurationLoader().getSatelliteLoader().loadSensorsByType(procedure);
-                }
-                else
-                {
-                    sensors = new ArrayList<Sensor>();
-                    sensors.add(this.getConfigurationLoader().getSatelliteLoader().loadSensor(procedure));
-                }
-            } catch (SQLException ex) {
-            ex.printStackTrace();
-                
-                throw new DescribeTaskingFault("SQLException ( " + ex.getErrorCode() + " ) : " + ex.getMessage());
-            }
-            
-            
-            String sensorType = "";
-            if (sensors != null && sensors.size() > 0)
-            {
-                sensorType = sensors.get(0).getSensorType();
-            }
-            
-            AcquisitionTypeType acquisitionType = AcquisitionTypeType.Factory.newInstance();
+            AcquisitionTypeType acquisitionType = AcquisitionTypeType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
             //TODO : Stereoscopic acquisitions
 //            StereoscopicAcquisitionType stereo = acquisitionType.addNewStereoscopicAcquisition();
@@ -311,29 +321,52 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
             //Fill in AcquisitionAngle type
             AcquisitionAngleType acquisitionAngle = mono.addNewAcquisitionAngle();
 
+            
             IncidenceRangeType incidence = acquisitionAngle.addNewIncidenceRange();
+
+            QuantityRangeType azimuth = incidence.addNewAzimuthAngle();
+
+            azimuth.setDescription("Range of acceptable elevation incidence angles");
+            azimuth.setLabel("Elevation Incidence Angle Range");
+
+            UnitReference aziRef = UnitReference.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            aziRef.setCode("deg");
+
+            azimuth.setUom(aziRef);
+
+            ArrayList<String> aziValues = new ArrayList<String>();
+            aziValues.add("-90");																					//config files
+            aziValues.add("90");																					//config files
+
+            azimuth.setValue(aziValues);
+
+            AllowedValuesPropertyType aziAllowedValues = AllowedValuesPropertyType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            AllowedValuesType aziAllowed = aziAllowedValues.addNewAllowedValues();
+            aziAllowed.addInterval(aziValues);
+
+            azimuth.setConstraint(aziAllowedValues);
 
             QuantityRangeType elevation = incidence.addNewElevationAngle();
 
             elevation.setDescription("Range of acceptable elevation incidence angles");
             elevation.setLabel("Elevation Incidence Angle Range");
 
-            UnitReference ref = UnitReference.Factory.newInstance();
-            ref.setCode("deg");
+            UnitReference eleRef = UnitReference.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            eleRef.setCode("deg");
 
-            elevation.setUom(ref);
+            elevation.setUom(eleRef);
 
-            ArrayList<String> values = new ArrayList<String>();
-            values.add("+10");																					//config files
-            values.add("+50");																					//config files
+            ArrayList<String> eleValues = new ArrayList<String>();
+            eleValues.add("-90");																					//config files
+            eleValues.add("90");																					//config files
 
-            elevation.setValue(values);
+            elevation.setValue(eleValues);
 
-            AllowedValuesPropertyType allowedValues = AllowedValuesPropertyType.Factory.newInstance();
-            AllowedValuesType allowed = allowedValues.addNewAllowedValues();
-            allowed.addInterval(values);
+            AllowedValuesPropertyType eleAllowedValues = AllowedValuesPropertyType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            AllowedValuesType eleAllowed = eleAllowedValues.addNewAllowedValues();
+            eleAllowed.addInterval(eleValues);
 
-            elevation.setConstraint(allowedValues);
+            elevation.setConstraint(eleAllowedValues);
 
             //Fill in AcquisitionParameters type
             AcquisitionParametersType acquisitionParameters = mono.addNewAcquisitionParameters();
@@ -353,7 +386,7 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
 	
         public AcquisitionParametersOPTType createOPTAcquisitionParameters() {
             
-            AcquisitionParametersOPTType optAcquisitionParameters = AcquisitionParametersOPTType.Factory.newInstance();
+            AcquisitionParametersOPTType optAcquisitionParameters = AcquisitionParametersOPTType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             
             
 
@@ -377,7 +410,7 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
                     
             
             
-            AcquisitionParametersSARType sarAcquisitionParameters = AcquisitionParametersSARType.Factory.newInstance();
+            AcquisitionParametersSARType sarAcquisitionParameters = AcquisitionParametersSARType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
             List<String> instrumentModes = new ArrayList<String>();
             List<String> polarisationModes = new ArrayList<String>();
@@ -466,5 +499,41 @@ public class DescribeTaskingOperation extends EOSPSOperation<MissionPlannerDBHan
             
             return sarAcquisitionParameters;
         }
-                
+
+    private ValidationParametersType getValidationParameters(String sensorType) {
+        
+        ValidationParametersType validationParameters = ValidationParametersType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        
+        if (sensorType.equalsIgnoreCase("opt")) {
+            validationParameters.setValidationParametersOPT(this.getOPTValidationParameters());
+        }
+        else {
+            validationParameters.setValidationParametersSAR(this.getSARValidationParameters());
+        }
+        
+        return validationParameters;
+    }
+        
+    private ValidationParametersOPTType getOPTValidationParameters() {
+        
+        ValidationParametersOPTType valParams = ValidationParametersOPTType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        
+        valParams.addNewMaxCloudCover().addNewUom().setCode("%");
+        valParams.addNewMaxSnowCover().addNewUom().setCode("%");
+        valParams.addNewMaxSunGlint().addNewUom().setCode("%");
+        valParams.addNewHazeAccepted();
+        valParams.addNewSandWindAccepted();
+        
+        return valParams;
+    }   
+    
+    private ValidationParametersSARType getSARValidationParameters() {
+        
+        ValidationParametersSARType valParams = ValidationParametersSARType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        
+        valParams.addNewMaxNoiseLevel().addNewUom().setCode("W");
+        valParams.addNewMaxAmbiguityLevel().addNewUom().setCode("W");
+        
+        return valParams;
+    }
 }

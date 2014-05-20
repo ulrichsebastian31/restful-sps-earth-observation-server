@@ -22,6 +22,7 @@ package net.eads.astrium.hmas.rs.parsers.describing;
 
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
@@ -49,7 +50,7 @@ public class DescribeSensorParser extends DreamRestEOSPSRequestGetParser{
         String procedureDescriptionFormat = params.getFirst("procedureDescriptionFormat");
         
         //Create XML request
-        DescribeSensorDocument doc = DescribeSensorDocument.Factory.newInstance();
+        DescribeSensorDocument doc = DescribeSensorDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         DescribeSensorType describeSensor = doc.addNewDescribeSensor();
         
         //Add extensibleRequest parameters

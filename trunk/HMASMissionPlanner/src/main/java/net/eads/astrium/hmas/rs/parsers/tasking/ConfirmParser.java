@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.rs.parsers.tasking;
 
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.opengis.eosps.x20.ConfirmDocument;
@@ -45,7 +46,7 @@ public class ConfirmParser extends DreamRestEOSPSRequestGetParser{
         String task = params.getFirst("task");
         
         //Create XML request
-        ConfirmDocument doc = ConfirmDocument.Factory.newInstance();
+        ConfirmDocument doc = ConfirmDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ConfirmType confirm = doc.addNewConfirm();
         
         //Add extensibleRequest parameters

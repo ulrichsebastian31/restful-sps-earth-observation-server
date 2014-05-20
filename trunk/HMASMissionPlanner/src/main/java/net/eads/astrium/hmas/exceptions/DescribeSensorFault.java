@@ -18,6 +18,7 @@
 package net.eads.astrium.hmas.exceptions;
 
 import javax.xml.ws.WebFault;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.opengis.ows.x11.ExceptionDocument;
 
 
@@ -29,30 +30,26 @@ import net.opengis.ows.x11.ExceptionDocument;
 
 public class DescribeSensorFault extends OWSException {
     
+    private static final int CODE = 2;
+    
     public DescribeSensorFault() {
-        super();
+        super(CODE);
     }
     
     public DescribeSensorFault(String message) {
-        super(message);
-        
-        exception = ExceptionDocument.Factory.newInstance();
-        exception.addNewException().addExceptionText(message);
+        super(CODE,message);
     }
     
-    public DescribeSensorFault(String message, Throwable cause) {
-        super(message, cause);
-        exception.addNewException().addExceptionText(message);
+    public DescribeSensorFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public DescribeSensorFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message,exception);
     }
 
     public DescribeSensorFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

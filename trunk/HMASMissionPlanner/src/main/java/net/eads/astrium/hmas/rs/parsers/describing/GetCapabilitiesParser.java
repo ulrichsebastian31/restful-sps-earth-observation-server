@@ -22,6 +22,7 @@ package net.eads.astrium.hmas.rs.parsers.describing;
 
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
 import net.opengis.ows.x11.AcceptFormatsType;
 import net.opengis.ows.x11.AcceptVersionsType;
@@ -41,7 +42,7 @@ public class GetCapabilitiesParser {
         List<String> requestFormats = params.get("acceptFormat");
         List<String> requestVersions = params.get("acceptVersion");
         
-        GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.newInstance();
+        GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetCapabilitiesType getCapabilities = doc.addNewGetCapabilities2();
         
         AcceptFormatsType formats = getCapabilities.addNewAcceptFormats();

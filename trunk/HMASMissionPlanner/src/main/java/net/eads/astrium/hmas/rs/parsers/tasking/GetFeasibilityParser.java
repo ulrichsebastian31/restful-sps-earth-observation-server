@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
 import net.eads.astrium.hmas.rs.exceptions.XMLParsingException;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
@@ -97,7 +98,7 @@ public class GetFeasibilityParser {
         String end = params.getFirst("end");
         
         //Create XML request
-        GetFeasibilityDocument doc = GetFeasibilityDocument.Factory.newInstance();
+        GetFeasibilityDocument doc = GetFeasibilityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetFeasibilityType getFeas = doc.addNewGetFeasibility();
         CoverageProgrammingRequestType eoTP = 
                 getFeas.addNewEoTaskingParameters().addNewCoverageProgrammingRequest();
@@ -107,12 +108,12 @@ public class GetFeasibilityParser {
             AbstractRingPropertyType ext = 
                     eoTP.addNewRegionOfInterest().addNewPolygon().addNewExterior();
 
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
+            CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             coords.setDecimal(".");
             coords.setCs(",");
             coords.setTs(" ");
             coords.setStringValue(geometry.printCoordinatesGML());
-            LinearRingType lineRing = LinearRingType.Factory.newInstance();
+            LinearRingType lineRing = LinearRingType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             lineRing.setCoordinates(coords);
             ext.setAbstractRing(lineRing);
         }
@@ -120,7 +121,7 @@ public class GetFeasibilityParser {
             
             CircleType ext = eoTP.addNewRegionOfInterest().addNewCircle();
 
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
+            CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             coords.setDecimal(".");
             coords.setCs(",");
             coords.setTs(" ");
@@ -148,9 +149,15 @@ public class GetFeasibilityParser {
     public GetFeasibilityDocument createXMLGetFeasibility(String xmlRequest)
             throws MissingParameterException, XMLParsingException
     {
+        
+        System.out.println("Incoming request : ");
+        System.out.println("" + xmlRequest);
+        
         GetFeasibilityDocument doc = null;
         try {
-            doc = GetFeasibilityDocument.Factory.parse(xmlRequest);
+            doc = GetFeasibilityDocument.Factory.parse(xmlRequest
+//                    , OGCNamespacesXmlOptions.getInstance()
+                    );
         } catch (XmlException ex) {
             ex.printStackTrace();
             
@@ -158,6 +165,10 @@ public class GetFeasibilityParser {
                     "Failed parsing XML request : " + ex.getMessage(), 
                     "text/xml");
         }
+        
+        System.out.println("Result of parsing XML : ");
+        System.out.println("Parsing 1\r\n" + doc.xmlText(OGCNamespacesXmlOptions.getInstance()));
+        System.out.println("Parsing 2\r\n" + doc.xmlText(OGCNamespacesXmlOptions.getInstance()));
         
         return doc;
     }

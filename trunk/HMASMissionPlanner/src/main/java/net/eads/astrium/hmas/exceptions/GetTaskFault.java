@@ -27,26 +27,26 @@ package net.eads.astrium.hmas.exceptions;
 public class GetTaskFault extends OWSException {
     
 
+    private static final int CODE = 9;
+    
     public GetTaskFault() {
-        super();
+        super(CODE);
     }
     
     public GetTaskFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
-    public GetTaskFault(String message, Throwable cause) {
-        super(message, cause);
+    public GetTaskFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public GetTaskFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message, exception);
     }
 
     public GetTaskFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

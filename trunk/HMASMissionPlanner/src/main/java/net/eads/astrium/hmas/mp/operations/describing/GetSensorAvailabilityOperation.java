@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import net.eads.astrium.hmas.operations.EOSPSOperation;
 import java.text.ParseException;
 import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
 import net.eads.astrium.hmas.util.structures.TimePeriod;
@@ -84,7 +85,7 @@ public class GetSensorAvailabilityOperation extends EOSPSOperation<MissionPlanne
             throw new GetSensorAvailabilityFault("ParseException : " + ex.getMessage());
         }
 
-        GetSensorAvailabilityResponseDocument responseDocument = GetSensorAvailabilityResponseDocument.Factory.newInstance();
+        GetSensorAvailabilityResponseDocument responseDocument = GetSensorAvailabilityResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetSensorAvailabilityResponseType response = responseDocument.addNewGetSensorAvailabilityResponse();
 
         //Complete response document
@@ -96,16 +97,19 @@ public class GetSensorAvailabilityOperation extends EOSPSOperation<MissionPlanne
         ResponsePeriod responsePeriod = response.addNewResponsePeriod();
 
         TimePeriodType responseTimePeriod = responsePeriod.addNewTimePeriod();
-
+        responseTimePeriod.setId("Response_Period");
+        
         TimePositionType responseTimePeriodBegin = responseTimePeriod.addNewBeginPosition();
         TimePositionType responseTimePeriodEnd = responseTimePeriod.addNewEndPosition();
 
+        
         responseTimePeriodBegin.setStringValue(beginRequest);
         responseTimePeriodEnd.setStringValue(endRequest);
 
         for (TimePeriod anAvailibility : availibilities)
         {
             TimePeriodType tp = response.addNewAvailabilityPeriod().addNewTimePeriod();
+            tp.setId("Availability_Period");
             
             tp.addNewBeginPosition().setStringValue(DateHandler.formatDate(anAvailibility.getBegin()));
             tp.addNewEndPosition().setStringValue(DateHandler.formatDate(anAvailibility.getEnd()));

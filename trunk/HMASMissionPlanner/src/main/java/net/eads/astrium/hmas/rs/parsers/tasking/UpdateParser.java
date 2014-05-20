@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
 import net.eads.astrium.hmas.rs.exceptions.XMLParsingException;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
@@ -96,7 +97,7 @@ public class UpdateParser {
         String end = params.getFirst("end");
         
         //Create XML request
-        UpdateDocument doc = UpdateDocument.Factory.newInstance();
+        UpdateDocument doc = UpdateDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         UpdateType getFeas = doc.addNewUpdate();
         CoverageProgrammingRequestType eoTP = 
                 getFeas.addNewEoTaskingParameters().addNewCoverageProgrammingRequest();
@@ -106,12 +107,12 @@ public class UpdateParser {
             AbstractRingPropertyType ext = 
                     eoTP.addNewRegionOfInterest().addNewPolygon().addNewExterior();
 
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
+            CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             coords.setDecimal(".");
             coords.setCs(",");
             coords.setTs(" ");
             coords.setStringValue(geometry.printCoordinatesGML());
-            LinearRingType lineRing = LinearRingType.Factory.newInstance();
+            LinearRingType lineRing = LinearRingType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             lineRing.setCoordinates(coords);
             ext.setAbstractRing(lineRing);
         }
@@ -119,7 +120,7 @@ public class UpdateParser {
             
             CircleType ext = eoTP.addNewRegionOfInterest().addNewCircle();
 
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
+            CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             coords.setDecimal(".");
             coords.setCs(",");
             coords.setTs(" ");

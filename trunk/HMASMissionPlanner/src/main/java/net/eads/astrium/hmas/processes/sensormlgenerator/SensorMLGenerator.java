@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.dbhandler.SensorLoader;
 import net.eads.astrium.hmas.util.Constants;
@@ -44,12 +45,16 @@ import net.opengis.sensorML.x102.ContactInfoDocument;
 import net.opengis.sensorML.x102.IdentificationDocument;
 import net.opengis.sensorML.x102.IdentificationDocument.Identification;
 import net.opengis.sensorML.x102.ResponsiblePartyDocument;
+import net.opengis.sensorML.x102.SensorMLDocument;
 import net.opengis.sensorML.x102.SensorMLDocument.SensorML;
+import net.opengis.sensorML.x102.SystemDocument;
 import net.opengis.sensorML.x102.SystemType;
 import net.opengis.sensorML.x102.TermDocument;
 import net.opengis.sensorML.x102.ValidTimeDocument.ValidTime;
+import net.opengis.swe.x20.CategoryDocument;
 import net.opengis.swe.x20.CategoryType;
 import net.opengis.swe.x20.DataRecordType;
+import net.opengis.swe.x20.QuantityDocument;
 import net.opengis.swe.x20.QuantityType;
 
 /**
@@ -118,14 +123,18 @@ public class SensorMLGenerator {
     public SensorML createSensorML102Description() {
 
         //Create base structure that will contain the description
-        SensorML sensorML = SensorML.Factory.newInstance();
+        SensorML sensorML = SensorML.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        sensorML.setVersion("1.0.1");
+        
         SensorML.Member member = sensorML.addNewMember();
 
         member.setRole("urn:ogc:def:dictionary:CEOS:documentRoles:v01#instrument_capabilities");
         
+        SystemDocument doc = SystemDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         SystemType system = createSystem();
+        doc.setSystem(system);
         
-        member.setProcess(system);
+        member.set(doc);
 
         return sensorML;
     }
@@ -140,7 +149,7 @@ public class SensorMLGenerator {
 //        String description = "";
 
 
-        SystemType system = SystemType.Factory.newInstance();
+        SystemType system = SystemType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         system.setId(instrumentId);
 
         //Sensor brief description
@@ -164,14 +173,16 @@ public class SensorMLGenerator {
         characteristics.add(createNewPhysicalCharacteristics());
         characteristics.add(createGeometricCharacteristics());
         characteristics.add(createMeasurementCharacteristics());
-
-        characteristics.add(createInstrumentModes());
+        
+        //Only for SAR
+        Characteristics instModes = createInstrumentModes();
+        if (instModes != null) characteristics.add(instModes);
 
         //Set the array of Characteristics to the model
         system.setCharacteristicsArray(characteristics.toArray(new Characteristics[characteristics.size()]));
-
-        //Set components containing the instrument modes if SAR
-        system.setComponents(createComponents());
+        //Set components containing the instrument modes if OPT
+        Components components = createComponents();
+        if (components != null) system.setComponents(components);
 
         return system;
     }
@@ -187,31 +198,31 @@ public class SensorMLGenerator {
         String instrumentShortName = sensor.getSensorName();
         String instrumentLongName = sensor.getSensorName();
 
-        Identification identification = Identification.Factory.newInstance();
+        Identification identification = Identification.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
         Identification.IdentifierList identifierList =
                 identification.addNewIdentifierList();
 
         IdentificationDocument.Identification.IdentifierList.Identifier instId = identifierList.addNewIdentifier();
-        instId.setName("Instrument UID");
+        instId.setName("Instrument_UID");
         TermDocument.Term term = instId.addNewTerm();
         term.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentID");
         term.setValue(instrumentId);
 
         IdentificationDocument.Identification.IdentifierList.Identifier platId = identifierList.addNewIdentifier();
-        platId.setName("Platform UID");
+        platId.setName("Platform_UID");
         TermDocument.Term term1 = platId.addNewTerm();
         term1.setDefinition("urn:ogc:def:property:CEOS:eop:PlatformID");
         term1.setValue(platformId);
 
         IdentificationDocument.Identification.IdentifierList.Identifier sName = identifierList.addNewIdentifier();
-        sName.setName("Short name");
+        sName.setName("Short_name");
         TermDocument.Term term2 = sName.addNewTerm();
-        term2.setDefinition("uurn:ogc:def:property:OGC:shortName");
+        term2.setDefinition("urn:ogc:def:property:OGC:shortName");
         term2.setValue(instrumentShortName);
 
         IdentificationDocument.Identification.IdentifierList.Identifier lName = identifierList.addNewIdentifier();
-        lName.setName("Long name");
+        lName.setName("Long_name");
         TermDocument.Term term3 = lName.addNewTerm();
         term3.setDefinition("urn:ogc:def:property:OGC:longName");
         term3.setValue(instrumentLongName);
@@ -229,14 +240,14 @@ public class SensorMLGenerator {
         String acquisitionMethod = sensor.getAcquisitionMethod();
         List<String> applications = sensor.getApplications();
 
-        Classification classification = Classification.Factory.newInstance();
+        Classification classification = Classification.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
         Classification.ClassifierList classList =
                 classification.addNewClassifierList();
 
         Classification.ClassifierList.Classifier iType =
                 classList.addNewClassifier();
-        iType.setName("Instrument Type");
+        iType.setName("Instrument_Type");
         TermDocument.Term term4 = iType.addNewTerm();
         term4.setDefinition("urn:ogc:def:property:OGC:sensorType");
         term4.addNewCodeSpace().setHref("urn:ogc:def:dictionary:CEOS:eop:InstrumentTypes:v01");
@@ -245,7 +256,7 @@ public class SensorMLGenerator {
 
         ClassificationDocument.Classification.ClassifierList.Classifier acqMethod =
                 classList.addNewClassifier();
-        acqMethod.setName("Acquisition Method");
+        acqMethod.setName("Acquisition_Method");
         TermDocument.Term term5 = acqMethod.addNewTerm();
         term5.setDefinition("urn:ogc:def:property:OGC:sensorType");
         term5.addNewCodeSpace().setHref("urn:ogc:def:dictionary:CEOS:eop:AcquisitionMethods:v01");
@@ -274,10 +285,12 @@ public class SensorMLGenerator {
         Date begin = new Date();
         Date end = new Date();
 
-        ValidTime validTime = ValidTime.Factory.newInstance();
+        ValidTime validTime = ValidTime.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
         TimePeriodType vt = validTime.addNewTimePeriod();
-
+        vt.setId("Validity_Period");
+        
+        
         vt.addNewBeginPosition().setStringValue(DateHandler.formatDate(begin));
         vt.addNewEndPosition().setStringValue(DateHandler.formatDate(end));
 //        vt.addNewEndPosition().setIndeterminatePosition(TimeIndeterminateValueType.Enum.forString("now"));
@@ -305,27 +318,29 @@ public class SensorMLGenerator {
         }
 
 
-        Characteristics physicalCharacteristics = Characteristics.Factory.newInstance();
+        Characteristics physicalCharacteristics = Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
         physicalCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:PhysicalCharacteristics");
         DataRecordType phcdr = physicalCharacteristics.addNewDataRecord();
-        phcdr.setLabel("Physical Characteristics");
+        phcdr.setLabel("Physical_Characteristics");
 
         DataRecordType.Field m = phcdr.addNewField();
-        m.setName("Mass");
-        QuantityType t1 = QuantityType.Factory.newInstance();
+        QuantityDocument d1 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t1 = d1.addNewQuantity();
         t1.addNewUom().setCode("kg");
         t1.setDefinition("urn:ogc:def:property:OGC:mass");
         t1.setValue(instrumentMass);
-        m.setAbstractDataComponent(t1);
+        m.set(d1);
+        m.setName("Mass");
 
         DataRecordType.Field pc = phcdr.addNewField();
-        pc.setName("Maximum Power Consumption");
-        QuantityType t2 = QuantityType.Factory.newInstance();
+        QuantityDocument d2 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t2 = d2.addNewQuantity();
         t2.addNewUom().setCode("W");
         t2.setDefinition("urn:ogc:def:property:CEOS:eop:MaximumPowerConsumption");
         t2.setValue(maxPowerConsumption);
-        pc.setAbstractDataComponent(t2);
+        pc.set(d2);
+        pc.setName("Maximum_Power_Consumption");
 
         return physicalCharacteristics;
     }
@@ -337,7 +352,7 @@ public class SensorMLGenerator {
      */
     private Contact createNewContactSection() {
 
-        Contact contact = Contact.Factory.newInstance();
+        Contact contact = Contact.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ResponsiblePartyDocument.ResponsibleParty responsible = contact.addNewResponsibleParty();
         responsible.setIndividualName("");
         responsible.setOrganizationName("");
@@ -386,26 +401,30 @@ public class SensorMLGenerator {
 
         String url = "127.0.0.1:8080/"+Constants.WAR_FILE_PATH+"/";
         
-
         String sensorModeDescriptionURL = "" + url + "reset/1.0.0/procedures/" + sensor.getSensorId();
 
-        Characteristics c = Characteristics.Factory.newInstance();
+        Characteristics c = null;
 
         if (instrumentType.equalsIgnoreCase("sar")) {
 
+            c = Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            
             modes = sarSensor.getInstrumentModesDescriptions();
 
             c.setRole("urn:ogc:def:role:CEOS:eop:InstrumentConfigurations");
             DataRecordType dr = c.addNewDataRecord();
-            dr.setLabel("Possible Instrument Configurations");
+            dr.setLabel("Possible_Instrument_Configurations");
 
             for (SARSensorMode mode : modes.values()) {
 
                 DataRecordType.Field f = dr.addNewField();
-                f.setName(mode.getName());
-                CategoryType type = CategoryType.Factory.newInstance();
+                CategoryDocument doc = CategoryDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+                CategoryType type = doc.addNewCategory();
                 type.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentMode");
                 type.setValue(sensorModeDescriptionURL + File.separator + mode.getId());
+                
+                f.set(doc);
+                f.setName(mode.getName());
             }
         }
 
@@ -421,10 +440,11 @@ public class SensorMLGenerator {
 
         String sensorModeDescriptionURL = "" + url + "reset/1.0.0/procedures/" + sensor.getSensorId();
 
-        Components components = Components.Factory.newInstance();
-        Components.ComponentList list = components.addNewComponentList();
-
+        Components components = null;
         if (instrumentType.equalsIgnoreCase("opt")) {
+            components = Components.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            Components.ComponentList list = components.addNewComponentList();
+
             modes = optSensor.getInstrumentModesDescriptions();
 
             for (OPTSensorMode mode : modes.values()) {

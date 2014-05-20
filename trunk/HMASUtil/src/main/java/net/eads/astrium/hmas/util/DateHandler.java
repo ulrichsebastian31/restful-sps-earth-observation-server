@@ -117,7 +117,13 @@ public class DateHandler {
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         
-        return dateFormat.format(date);
+        String d =  dateFormat.format(date);
+        
+        if (d.endsWith("+0000")) {
+            d = d.substring(0, d.indexOf("+0000")) + "Z";
+        }
+        
+        return d;
     }
 
     public static String formatDateToSimple(Date date) {
@@ -134,6 +140,13 @@ public class DateHandler {
         eocfiDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         
         return eocfiDateFormat.format(date);
+    }
+    
+    public static Calendar getCalendar() {
+        
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        
+        return calendar;
     }
     
     public static Calendar getCalendar(Date date) {

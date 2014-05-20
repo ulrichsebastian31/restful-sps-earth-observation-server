@@ -21,6 +21,8 @@
 package net.eads.astrium.hmas.util.structures.tasking;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import net.eads.astrium.hmas.util.structures.tasking.enums.TaskType;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class SensorTask {
     private String sensorTaskId;
     private TaskType type;
     private Status status;
+    private double cost;
+    private Date expirationTime;
     
     private List<Segment> segments;
     
@@ -41,6 +45,17 @@ public class SensorTask {
         this.sensorTaskId = sensorTaskId;
         this.type = type;
         this.status = status;
+        this.cost = 0.0;
+        this.expirationTime = status.getEstimatedTimeOfCompletion();
+    }
+
+    public SensorTask(String sensorTaskId, TaskType type, Status status, double cost, Date expirationTime) {
+        
+        this.sensorTaskId = sensorTaskId;
+        this.type = type;
+        this.status = status;
+        this.cost = cost;
+        this.expirationTime = expirationTime;
     }
 
     public String getSensorTaskId() {
@@ -65,6 +80,22 @@ public class SensorTask {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public Date getExpirationTime() {
+        return expirationTime;
+    }
+
+    public void setExpirationTime(Date expirationTime) {
+        this.expirationTime = expirationTime;
     }
 
     /**

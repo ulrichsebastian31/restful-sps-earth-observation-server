@@ -28,26 +28,26 @@ import javax.xml.ws.WebFault;
 
 public class ConfirmFault extends OWSException {
     
+    private static final int CODE = 13;
+    
     public ConfirmFault() {
-        super();
+        super(CODE);
     }
     
     public ConfirmFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
     public ConfirmFault(String message, Throwable cause) {
-        super(message, cause);
+        super(CODE,cause);
     }
 
     public ConfirmFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message,exception);
     }
 
     public ConfirmFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

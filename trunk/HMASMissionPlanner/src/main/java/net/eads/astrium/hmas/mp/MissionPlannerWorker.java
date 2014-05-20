@@ -248,7 +248,7 @@ public class MissionPlannerWorker extends GenericEOSPSWorker
     
     @Override
     public SubmitResponseDocument submit(SubmitDocument request) throws SubmitFault {
-        SubmitOperation operation = new SubmitOperation(databaseConfiguration, request);
+        SubmitOperation operation = new SubmitOperation(databaseConfiguration, request, serverBaseURI);
         
         operation.executeRequest();
         
@@ -281,7 +281,7 @@ public class MissionPlannerWorker extends GenericEOSPSWorker
      */
     @Override
     public SubmitResponseDocument submitSegmentByID(SubmitSegmentByIDDocument request) throws SubmitFault {
-        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation( databaseConfiguration, request, 
+        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation(databaseConfiguration, request, serverBaseURI,
                 SensorFeasibilityPlanningServiceHandler.ExecutionType.allSynchronous);
         
         operation.executeRequest();
@@ -298,7 +298,7 @@ public class MissionPlannerWorker extends GenericEOSPSWorker
      * @throws SubmitFault 
      */
     public SubmitResponseDocument submitSegmentByIDPlanningSynchronous(SubmitSegmentByIDDocument request) throws SubmitFault {
-        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation( databaseConfiguration, request, 
+        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation( databaseConfiguration, request, serverBaseURI,
                 SensorFeasibilityPlanningServiceHandler.ExecutionType.planningSynchronous);
         
         operation.executeRequest();
@@ -315,7 +315,7 @@ public class MissionPlannerWorker extends GenericEOSPSWorker
      * @throws SubmitFault 
      */
     public SubmitResponseDocument submitSegmentByIDAllAsynchronous(SubmitSegmentByIDDocument request) throws SubmitFault {
-        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation( databaseConfiguration, request, 
+        SubmitSegmentByIDOperation operation = new SubmitSegmentByIDOperation( databaseConfiguration, request, serverBaseURI,
                 SensorFeasibilityPlanningServiceHandler.ExecutionType.allAsynchronous);
         
         operation.executeRequest();

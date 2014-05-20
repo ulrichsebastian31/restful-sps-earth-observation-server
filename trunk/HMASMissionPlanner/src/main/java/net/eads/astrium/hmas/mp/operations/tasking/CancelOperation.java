@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.dbhandler.tasking.SensorPlanningHandler;
 import net.eads.astrium.hmas.exceptions.CancelFault;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
@@ -81,7 +82,7 @@ public class CancelOperation extends EOSPSOperation<MissionPlannerDBHandler,Canc
             String acceptFormat = req.getAcceptFormat();
             String task = req.getTask();
             
-            CancelResponseDocument responseDocument = CancelResponseDocument.Factory.newInstance();
+            CancelResponseDocument responseDocument = CancelResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             CancelResponseType resp = responseDocument.addNewCancelResponse();
             CancelResponseType.Result result = resp.addNewResult();
             

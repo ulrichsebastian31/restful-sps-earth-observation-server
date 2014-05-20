@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.eospsstruct;
 
 import java.util.Calendar;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.opengis.eosps.x20.CancelResponseDocument;
 import net.opengis.eosps.x20.CancelResponseType;
 import net.opengis.eosps.x20.ConfirmResponseDocument;
@@ -96,7 +97,7 @@ public class Responses {
     
     private DescribeResultAccessResponseDocument describeResultAccess()
     {
-        DescribeResultAccessResponseDocument responseDocument = DescribeResultAccessResponseDocument.Factory.newInstance();
+        DescribeResultAccessResponseDocument responseDocument = DescribeResultAccessResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         DescribeResultAccessResponseType resp = responseDocument.addNewDescribeResultAccessResponse();
         DescribeResultAccessResponseType.Availability availability = resp.addNewAvailability();
 
@@ -117,7 +118,7 @@ public class Responses {
 
     private GetStatusResponseDocument getStatus()
     {
-        GetStatusResponseDocument doc = GetStatusResponseDocument.Factory.newInstance();
+        GetStatusResponseDocument doc = GetStatusResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         StatusReportType statusReport = doc.addNewGetStatusResponse().addNewStatus().addNewStatusReport();
         
@@ -135,7 +136,7 @@ public class Responses {
     
     private ExceptionDocument getException()
     {
-        ExceptionDocument doc = ExceptionDocument.Factory.newInstance();
+        ExceptionDocument doc = ExceptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ExceptionType exc = doc.addNewException();
         exc.setExceptionCode("001");
         exc.addExceptionText("IOException : reading configuration file.");
@@ -145,7 +146,7 @@ public class Responses {
     
     private GetTaskResponseDocument getTask()
     {
-        GetTaskResponseDocument doc = GetTaskResponseDocument.Factory.newInstance();
+        GetTaskResponseDocument doc = GetTaskResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         net.opengis.eosps.x20.TaskType task = doc.addNewGetTaskResponse().addNewTask().addNewTask();
         StatusReportType statusReport = task.addNewStatus().addNewStatusReport();
 //        statusReport.setEoTaskingParameters(getTP());
@@ -161,7 +162,7 @@ public class Responses {
     private CancelResponseDocument cancel() {
 
 
-        CancelResponseDocument responseDocument = CancelResponseDocument.Factory.newInstance();
+        CancelResponseDocument responseDocument = CancelResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         CancelResponseType resp = responseDocument.addNewCancelResponse();
         CancelResponseType.Result result = resp.addNewResult();
 
@@ -179,7 +180,7 @@ public class Responses {
 
     private ConfirmResponseDocument confirm() {
         
-        ConfirmResponseDocument responseDocument = ConfirmResponseDocument.Factory.newInstance();
+        ConfirmResponseDocument responseDocument = ConfirmResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ConfirmResponseType resp = responseDocument.addNewConfirmResponse();
 
         ConfirmResponseType.Result result = resp.addNewResult();
@@ -197,7 +198,7 @@ public class Responses {
     }
     
     private GetFeasibilityResponseDocument getFeasibility() {
-        GetFeasibilityResponseDocument doc = GetFeasibilityResponseDocument.Factory.newInstance();
+        GetFeasibilityResponseDocument doc = GetFeasibilityResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         GetFeasibilityResponseType resp = doc.addNewGetFeasibilityResponse();
         
@@ -212,7 +213,7 @@ public class Responses {
         statusReport.addNewEoTaskingParameters().set(EoTaskingParameters.createEOTaskingParameters());
         
         
-        FeasibilityStudyDocument studyDoc = FeasibilityStudyDocument.Factory.newInstance();
+        FeasibilityStudyDocument studyDoc = FeasibilityStudyDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         FeasibilityStudyType study = studyDoc.addNewFeasibilityStudy();
         
         study.addNewEstimatedCost().setStringValue("1");
@@ -244,7 +245,7 @@ public class Responses {
         
         PolygonType polygon = segment.addNewFootprint().addNewPolygon();
         
-        CoordinatesType coords = CoordinatesType.Factory.newInstance();
+        CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         coords.setDecimal(".");
         coords.setCs(",");
         coords.setTs(" ");
@@ -256,7 +257,7 @@ public class Responses {
                 + "1.0,0.0 "
                 + "0.0,0.0");
 
-        LinearRingType lineRing = LinearRingType.Factory.newInstance();
+        LinearRingType lineRing = LinearRingType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         lineRing.setCoordinates(coords);
 
         polygon.addNewExterior().setAbstractRing(lineRing);
@@ -269,7 +270,7 @@ public class Responses {
     }
 
     private ReserveResponseDocument reserve() {
-        ReserveResponseDocument doc = ReserveResponseDocument.Factory.newInstance();
+        ReserveResponseDocument doc = ReserveResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         ReserveResponseType resp = doc.addNewReserveResponse();
         
@@ -295,7 +296,7 @@ public class Responses {
 
     private SubmitResponseDocument submitSegmentById() {
         
-        SubmitResponseDocument doc = SubmitResponseDocument.Factory.newInstance();
+        SubmitResponseDocument doc = SubmitResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         SubmitResponseType resp = doc.addNewSubmitResponse();
         
@@ -317,7 +318,7 @@ public class Responses {
 
     private UpdateResponseDocument update() {
         
-        UpdateResponseDocument doc = UpdateResponseDocument.Factory.newInstance();
+        UpdateResponseDocument doc = UpdateResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         UpdateResponseType resp = doc.addNewUpdateResponse();
         
@@ -335,7 +336,7 @@ public class Responses {
     }
 
     private SubmitResponseDocument submit() {
-        SubmitResponseDocument doc = SubmitResponseDocument.Factory.newInstance();
+        SubmitResponseDocument doc = SubmitResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         SubmitResponseType resp = doc.addNewSubmitResponse();
         

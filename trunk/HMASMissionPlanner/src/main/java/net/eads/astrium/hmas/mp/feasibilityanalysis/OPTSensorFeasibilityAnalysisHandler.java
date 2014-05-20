@@ -55,30 +55,7 @@ public class OPTSensorFeasibilityAnalysisHandler extends SensorFeasibilityAnalys
         this.optParameters = optParameters;
         
         taskId = dbHandler.getFeasibilityHandler().createOPTFeasibilityTask(
-                sensorId, null, optParameters);
-    }
-
-    public OPTSensorFeasibilityAnalysisHandler(
-            String mmfasTaskId, String requestId, 
-            String satelliteId, String sensorId, 
-            MissionPlannerDBHandler handler
-        ) throws EoCfiHndlrError, SQLException, ParseException {
-        
-        super(satelliteId, "sar", sensorId, handler);
-        
-        taskId = this.dbHandler.getFeasibilityHandler().createOPTFeasibilityTask(sensorId, mmfasTaskId, requestId);
-        status = dbHandler.getFeasibilityHandler().getStatus(taskId);
-        
-        OPTTaskingRequest optRequest = this.dbHandler.getFeasibilityHandler().getOPTRequest(TaskHandlerType.mmfas, mmfasTaskId, requestId);
-        this.dbHandler.getFeasibilityHandler().linkSensorTaskToRequest(taskId, requestId);
-        
-        optParameters = optRequest.getParameters();
-        
-        if (optParameters.getInstrumentModes() == null|| optParameters.getInstrumentModes().isEmpty()) {
-            optParameters.setInstrumentModes(new ArrayList<String>());
-            optParameters.getInstrumentModes().addAll(this.dbHandler.getSatelliteLoader().getInstrumentModes(sensorId).keySet());
-        }
-        
+                sensorId, optParameters);
     }
 
     @Override

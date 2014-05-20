@@ -22,11 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.dbhandler.tasking.SensorPlanningHandler;
 import net.eads.astrium.hmas.exceptions.SubmitFault;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
 import net.eads.astrium.hmas.mp.tasking.SensorFeasibilityPlanningServiceHandler;
 import net.eads.astrium.hmas.operations.EOSPSOperation;
+import net.eads.astrium.hmas.processes.feasibilitystudygenerator.FeasibilityStudyGenerator;
 import net.eads.astrium.hmas.processes.taskingparametersgenerator.TaskingParametersGenerator;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.util.structures.tasking.EarthObservationEquipment;
@@ -77,6 +79,8 @@ import xint.esa.earth.eop.SensorType;
 public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBHandler,SubmitSegmentByIDDocument,SubmitResponseDocument,SubmitFault> {
 
     
+    private String serverBaseURI;
+    
     private String sensorFeasibilityTaskId;
     private SensorFeasibilityPlanningServiceHandler handler;
 
@@ -87,10 +91,11 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
      * 
      * @param request
      */
-    public SubmitSegmentByIDOperation(MissionPlannerDBHandler dbHandler, SubmitSegmentByIDDocument request, SensorFeasibilityPlanningServiceHandler.ExecutionType executionType){
+    public SubmitSegmentByIDOperation(MissionPlannerDBHandler dbHandler, SubmitSegmentByIDDocument request, String serverBaseURI, SensorFeasibilityPlanningServiceHandler.ExecutionType executionType){
 
             super(dbHandler,request);
             this.executionType = executionType;
+            this.serverBaseURI = serverBaseURI;
     }
 
     @Override
@@ -162,7 +167,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
                     sensorFeasibilityTaskId, 
                     segments, 
                     this.getConfigurationLoader().getPlanningHandler(), 
-                    mmfasTask);
+                    serverBaseURI);
             
         } catch (ParseException|SQLException ex) {
             ex.printStackTrace();
@@ -188,7 +193,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
             }
         }
         
-        SubmitResponseDocument responseDocument = SubmitResponseDocument.Factory.newInstance();
+        SubmitResponseDocument responseDocument = SubmitResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         if (!allPlanned) {
             
             SensorPlanningHandler dbHandler = (this.getConfigurationLoader()).getPlanningHandler();
@@ -225,7 +230,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
                 throw new SubmitFault("" + ex.getClass().getName() + " - " + ex.getMessage());
             }
 
-            responseDocument = SubmitResponseDocument.Factory.newInstance();
+            responseDocument = SubmitResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             SubmitResponseType resp = responseDocument.addNewSubmitResponse();
             StatusReportType statusReport = resp.addNewResult().addNewStatusReport();
 
@@ -246,27 +251,36 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
 
 
             try {
-                //Adding the segments results
-                ProgrammingStatusType programmingStatus = ProgrammingStatusType.Factory.newInstance();
-                programmingStatus.setId(this.handler.getSensorPlanningTaskId());
-                programmingStatus.setSegmentArray(addSegments(handler.getSegments()));
-                resp.addNewExtension().set(programmingStatus);
+                String taskId = this.handler.getSensorPlanningTaskId();
+                ProgrammingStatusDocument study = 
+                        FeasibilityStudyGenerator.getProgrammingStatus(
+                                this.getConfigurationLoader().getPlanningHandler(), 
+                                taskId);
+
+                resp.addNewExtension().set(study);
                 
+                String requestStatus = null;
                 //Setting new request status
                 if (!status.getIdentifier().equals("PLANNING IN_EXECUTION")) {
 
                     Status reqStat = null;
                     if (status.getIdentifier().equals("PLANNING ACCEPTED") ||
                             status.getIdentifier().equals("PLANNING COMPLETED")) {
+                        
+                        requestStatus = "Accepted";
                         reqStat = dbHandler.
                                 addNewSubmitSegmentsRequestSucceddedStatus(TaskHandlerType.sensor, handler.getSensorPlanningTaskId());
                     }
                     else {
+                        requestStatus = "Rejected";
                         reqStat = dbHandler.
                                 addNewSubmitSegmentsRequestFailedStatus(TaskHandlerType.sensor, handler.getSensorPlanningTaskId());
                     }
-                    statusReport.setRequestStatus(reqStat.getIdentifier());
                 }
+                else {
+                        requestStatus = "Pending";
+                }
+                statusReport.setRequestStatus(requestStatus);
                 
             } catch (SQLException|ParseException ex) {
             ex.printStackTrace();
@@ -274,7 +288,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
             }
         }
         else {
-            responseDocument = SubmitResponseDocument.Factory.newInstance();
+            responseDocument = SubmitResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             SubmitResponseType res = responseDocument.addNewSubmitResponse();
 
             StatusReportType statusReport = res.addNewResult().addNewStatusReport();
@@ -294,7 +308,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
 
             System.out.println("Already asked segments nb : " + alreadyPlannedSegments.size());
 
-            ProgrammingStatusDocument studyDoc = ProgrammingStatusDocument.Factory.newInstance();
+            ProgrammingStatusDocument studyDoc = ProgrammingStatusDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             ProgrammingStatusType study = studyDoc.addNewProgrammingStatus();
             
             study.setId("PREVIOUS");
@@ -334,7 +348,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
         int i = 0;
         for (Segment segment : segments) {
             
-            SegmentPropertyType s = SegmentPropertyType.Factory.newInstance();
+            SegmentPropertyType s = SegmentPropertyType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             
             SegmentType seg = s.addNewSegment();
             
@@ -357,7 +371,7 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
             instType.setCodeSpace("urn:ogc:def:property:OGC:sensorType");
             instType.setStringValue(eoe.getSensorType());
             //Instrument Mode
-            CategoryType instMode = CategoryType.Factory.newInstance();
+            CategoryType instMode = CategoryType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             instMode.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentMode");
             instMode.setValue(segment.getInstrumentMode());
             sensor.addNewOperationalMode().set(instMode);
@@ -387,27 +401,27 @@ public class SubmitSegmentByIDOperation extends EOSPSOperation<MissionPlannerDBH
             //Polygon
             PolygonType polygon = seg.addNewFootprint().addNewPolygon();
 
-            CoordinatesType coords = CoordinatesType.Factory.newInstance();
+            CoordinatesType coords = CoordinatesType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             coords.setDecimal(".");
             coords.setCs(",");
             coords.setTs(" ");
 
             coords.setStringValue(segment.getPolygon().printCoordinatesGML());
 
-            LinearRingType lineRing = LinearRingType.Factory.newInstance();
+            LinearRingType lineRing = LinearRingType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             lineRing.setCoordinates(coords);
             polygon.addNewExterior().setAbstractRing(lineRing);
             
-            SegmentValidationDataDocument valData = SegmentValidationDataDocument.Factory.newInstance();
+            SegmentValidationDataDocument valData = SegmentValidationDataDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             valData.addNewSegmentValidationData().setCloudCoverSuccessRate(segment.getCloudCoverSuccessRate());
             seg.addNewExtension().set(valData);
             
-            DownlinkInformationDocument downlinkDoc = DownlinkInformationDocument.Factory.newInstance();
+            DownlinkInformationDocument downlinkDoc = DownlinkInformationDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             DownlinkInformationType downlink = downlinkDoc.addNewDownlinkInformation();
             
             downlink.setAcquisitionDate(segment.getGroundStationDownlink().getStartOfVisibility());
             
-            CategoryType acqStation = CategoryType.Factory.newInstance();
+            CategoryType acqStation = CategoryType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             acqStation.setDefinition("urn:ogc:def:property:CEOS:eop:GroundStation");
             acqStation.setValue(segment.getGroundStationDownlink().getGroundStationId());
             

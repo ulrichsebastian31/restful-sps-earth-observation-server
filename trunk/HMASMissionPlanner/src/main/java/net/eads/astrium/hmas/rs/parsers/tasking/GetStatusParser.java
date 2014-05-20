@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.rs.parsers.tasking;
 
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
@@ -45,7 +46,7 @@ public class GetStatusParser extends DreamRestEOSPSRequestGetParser{
         ExtensibleRequestDocument extensibleRequestDocument = ExtensibleRequestParser.getExtensibleRequest(params);
         ExtensibleRequestType extensibleRequest = extensibleRequestDocument.getExtensibleRequest();
         
-        GetStatusDocument doc = GetStatusDocument.Factory.newInstance();
+        GetStatusDocument doc = GetStatusDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetStatusType getStatus = doc.addNewGetStatus();
         
         //Add extensibleRequest parameters

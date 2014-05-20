@@ -55,39 +55,8 @@ public class SARSensorFeasibilityAnalysisHandler extends SensorFeasibilityAnalys
         super(satelliteId, "sar", sensorId, dbHandler);
         this.sarParameters = sarParameters;
         
-        taskId = dbHandler.getFeasibilityHandler().createSARFeasibilityTask(sensorId, null, sarParameters);
+        taskId = dbHandler.getFeasibilityHandler().createSARFeasibilityTask(sensorId, sarParameters);
         status = dbHandler.getFeasibilityHandler().getStatus(taskId);
-    }
-
-    public SARSensorFeasibilityAnalysisHandler(Thread parent,
-            String userID,
-            String mmfasTaskId, String requestId,
-            String satelliteId, String sensorId, 
-            MissionPlannerDBHandler dbHandler
-        ) throws EoCfiHndlrError, SQLException, ParseException {
-        
-        super(satelliteId, "sar", sensorId, dbHandler);
-        
-        System.out.println("Init feasibility haandler : \n"
-                + " - userID = " + userID + "\n"
-                + " - sensorId = " + sensorId + "\n"
-                + " - mmfasTaskId = " + mmfasTaskId + "\n"
-                + " - requestId = " + requestId + "\n"
-                + " - sensorId = " + sensorId + "\n"
-                + "");
-        
-        taskId = dbHandler.getFeasibilityHandler().createSARFeasibilityTask(sensorId, mmfasTaskId, requestId);
-        status = dbHandler.getFeasibilityHandler().getStatus(taskId);
-        
-        SARTaskingRequest sarRequest = this.dbHandler.getFeasibilityHandler().getSARRequest(TaskHandlerType.mmfas, mmfasTaskId, requestId);
-        dbHandler.getFeasibilityHandler().linkSensorTaskToRequest(taskId, requestId);
-        
-        sarParameters = sarRequest.getParameters();
-        
-        if (sarParameters.getInstrumentModes() == null|| sarParameters.getInstrumentModes().isEmpty()) {
-            sarParameters.setInstrumentModes(new ArrayList<String>());
-            sarParameters.getInstrumentModes().addAll(this.dbHandler.getSatelliteLoader().getInstrumentModes(sensorId).keySet());
-        }
     }
 
     @Override

@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.exceptions.GetFeasibilityFault;
 import net.eads.astrium.hmas.exceptions.SubmitFault;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
@@ -50,6 +53,8 @@ import net.opengis.eosps.x20.ValidationParametersSARType;
 import net.opengis.gml.x32.CoordinatesType;
 import net.opengis.gml.x32.LinearRingType;
 import net.opengis.gml.x32.TimePeriodType;
+import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 
 
@@ -68,14 +73,17 @@ import org.apache.xmlbeans.XmlObject;
  */
 public class SubmitOperation extends EOSPSOperation<MissionPlannerDBHandler,SubmitDocument,SubmitResponseDocument,SubmitFault> {
 
+    private String serverBaseURI;
+
     
     /**
      * 
      * @param request
      */
-    public SubmitOperation(MissionPlannerDBHandler handler, SubmitDocument request){
+    public SubmitOperation(MissionPlannerDBHandler handler, SubmitDocument request, String serverBaseURI){
 
             super(handler,request);
+            this.serverBaseURI = serverBaseURI;
     }
 
     @Override
@@ -87,7 +95,7 @@ public class SubmitOperation extends EOSPSOperation<MissionPlannerDBHandler,Subm
 
         SubmitType sub = this.getRequest().getSubmit();
         //Create the GetFeasibility request from the current request
-        GetFeasibilityDocument getFeasibilityRequest = GetFeasibilityDocument.Factory.newInstance();
+        GetFeasibilityDocument getFeasibilityRequest = GetFeasibilityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetFeasibilityType getFeasibility = getFeasibilityRequest.addNewGetFeasibility();
         getFeasibility.setService(sub.getService());
         getFeasibility.setVersion(sub.getVersion());
@@ -115,26 +123,37 @@ public class SubmitOperation extends EOSPSOperation<MissionPlannerDBHandler,Subm
         
         for (XmlObject xmlObject : extensions) {
             FeasibilityStudyType feasibilityStudy = null;
-            if (xmlObject instanceof FeasibilityStudyDocument) {
-                System.out.println("Document");
-                FeasibilityStudyDocument doc = (FeasibilityStudyDocument)xmlObject;
-                feasibilityStudy = doc.getFeasibilityStudy();
-            }
-            if (xmlObject instanceof FeasibilityStudyType) {
-                System.out.println("Type");
-                feasibilityStudy = (FeasibilityStudyType)xmlObject;
-            }
             
+            XmlCursor cursor = xmlObject.newCursor();
+            cursor.toFirstChild();
+
+            XmlObject curs = cursor.getObject();
+            try {
+                FeasibilityStudyDocument doc = 
+                        FeasibilityStudyDocument.Factory.parse(curs.xmlText(OGCNamespacesXmlOptions.getInstance()));
+                feasibilityStudy = doc.getFeasibilityStudy();
+            } catch (XmlException ex) {
+                System.out.println("Error finding Feasibility study");
+                ex.printStackTrace();
+            }
+
             if (feasibilityStudy != null) {
                 for (SegmentPropertyType segmentPropertyType : feasibilityStudy.getSegmentArray()) {
                     String segmentId = segmentPropertyType.getSegment().getId();
+                    
+                    if (segmentId.contains("_")) {
+                        segmentId = segmentId.substring(segmentId.indexOf("_") + 1);
+                    }
+                    
+                    System.out.println("Adding segment " + segmentId);
+                    
                     segments.add(segmentId);
                 }
             }
         }
         
         //Create the SubmitSegmentByID request
-        SubmitSegmentByIDDocument submitRequestDocument = SubmitSegmentByIDDocument.Factory.newInstance();
+        SubmitSegmentByIDDocument submitRequestDocument = SubmitSegmentByIDDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         SubmitSegmentByIDType submitRequest = submitRequestDocument.addNewSubmitSegmentByID();
         submitRequest.setService(sub.getService());
         submitRequest.setVersion(sub.getVersion());
@@ -150,7 +169,7 @@ public class SubmitOperation extends EOSPSOperation<MissionPlannerDBHandler,Subm
         SubmitSegmentByIDOperation submitOperation = 
                 new SubmitSegmentByIDOperation(
                         this.getConfigurationLoader(), 
-                        submitRequestDocument, SensorFeasibilityPlanningServiceHandler.ExecutionType.planningSynchronous);
+                        submitRequestDocument, serverBaseURI, SensorFeasibilityPlanningServiceHandler.ExecutionType.planningSynchronous);
         
         submitOperation.executeRequest();
         

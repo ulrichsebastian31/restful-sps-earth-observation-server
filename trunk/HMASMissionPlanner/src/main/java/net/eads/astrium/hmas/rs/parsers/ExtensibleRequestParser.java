@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.rs.parsers;
 
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
 
 import net.opengis.swes.x21.ExtensibleRequestDocument;
@@ -49,7 +50,7 @@ public class ExtensibleRequestParser {
             acceptFormat = "text/xml";
         }
         
-        ExtensibleRequestDocument doc = ExtensibleRequestDocument.Factory.newInstance();
+        ExtensibleRequestDocument doc = ExtensibleRequestDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ExtensibleRequestType extensibleRequest = doc.addNewExtensibleRequest();
         
         extensibleRequest.setVersion(version);

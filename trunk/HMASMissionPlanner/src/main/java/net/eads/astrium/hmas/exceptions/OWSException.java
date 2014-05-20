@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.exceptions;
 
 import javax.xml.ws.WebFault;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.opengis.ows.x11.ExceptionDocument;
 import net.opengis.ows.x11.ExceptionType;
 
@@ -34,33 +35,42 @@ public class OWSException extends Exception {
     protected static final long serialVersionUID = -6279041538977056569L;
     protected ExceptionDocument exception;
     
-    public OWSException() {
+    public OWSException(int code) {
         super();
-        this.exception = ExceptionDocument.Factory.newInstance();
+        this.exception = ExceptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ExceptionType exc = this.exception.addNewException();
-        exc.addExceptionText("" + this.getClass().getName());
+        exc.setExceptionCode("" + code);
+        exc.addExceptionText("" + this.getMessage());
     }
     
-    public OWSException(String message) {
+    public OWSException(int code, String message) {
         super(message);
-        this.exception = ExceptionDocument.Factory.newInstance();
+        this.exception = ExceptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ExceptionType exc = this.exception.addNewException();
-        exc.addExceptionText(this.getClass().getName() + " : " + message);
+        exc.setExceptionCode("" + code);
+        exc.addExceptionText("" + this.getMessage());
     }
     
-    public OWSException(String message, Throwable cause) {
-        super(message, cause);
-        this.exception = ExceptionDocument.Factory.newInstance();
+    public OWSException(int code, Throwable cause) {
+        super(cause.getMessage(), cause);
+        this.exception = ExceptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         ExceptionType exc = this.exception.addNewException();
-        exc.addExceptionText(message);
+        exc.setExceptionCode("" + code);
+        exc.addExceptionText(cause.getMessage());
     }
 
-    public OWSException(String message, ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+    public OWSException(int code, String message, ExceptionDocument exception) {
+        this(code, message);
+        if (exception != null) {
+            exception.getException().setExceptionCode("" + code);
+            exception.getException().setExceptionTextArray(
+                    0, this.exception.getException().getExceptionTextArray(0).concat("\r\nCaused by : \r\n" + message));
+
+            this.exception = exception;
+        }
     }
 
-    public OWSException(String message, ExceptionDocument exception, Throwable cause) {
+    public OWSException(int code, String message, ExceptionDocument exception, Throwable cause) {
         super(message, cause);
         this.exception = exception;
     }

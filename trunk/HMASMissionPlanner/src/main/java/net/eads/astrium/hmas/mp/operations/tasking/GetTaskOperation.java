@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.dbhandler.tasking.SensorPlanningHandler;
 import net.eads.astrium.hmas.exceptions.GetTaskFault;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
@@ -97,7 +98,7 @@ public class GetTaskOperation extends EOSPSOperation<MissionPlannerDBHandler,Get
 
         this.validRequest();
 
-        GetTaskResponseDocument responseDocument = GetTaskResponseDocument.Factory.newInstance();
+        GetTaskResponseDocument responseDocument = GetTaskResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         GetTaskResponseType resp = responseDocument.addNewGetTaskResponse();
 
         try {
@@ -110,17 +111,35 @@ public class GetTaskOperation extends EOSPSOperation<MissionPlannerDBHandler,Get
                 String taskId = tasks[i];
                 Status status = taskHandler.getStatus(taskId);
 
+                String sensorId = taskHandler.getSensorId(taskId);
                 String sensorType = taskHandler.getSensorRequestSensorType(taskId);
+                String reqStatus = "";
 
                 TaskingParametersType parameters = null;
 
                 if (sensorType.equalsIgnoreCase("OPT")) {
                     OPTTaskingRequest req = taskHandler.getOPTRequest(TaskHandlerType.sensor, taskId, null);
                     parameters = TaskingParametersGenerator.createOPTTaskingParameters(req.getParameters());
+                    
+                    String reqStat = req.getStatus().getIdentifier();
+                    if (reqStat.contains("SUCCEDDED")) {
+                        reqStatus = "Accepted";
+                    }
+                    else {
+                        reqStatus = "Rejected";
+                    }
                 }
                 if (sensorType.equalsIgnoreCase("SAR")) {
                     SARTaskingRequest req = taskHandler.getSARRequest(TaskHandlerType.sensor, taskId, null);
                     parameters = TaskingParametersGenerator.createSARTaskingParameters(req.getParameters());
+                    
+                    String reqStat = req.getStatus().getIdentifier();
+                    if (reqStat.contains("SUCCEDDED")) {
+                        reqStatus = "Accepted";
+                    }
+                    else {
+                        reqStatus = "Rejected";
+                    }
                 }
 
                 TaskType task = resp.addNewTask().addNewTask();
@@ -128,9 +147,11 @@ public class GetTaskOperation extends EOSPSOperation<MissionPlannerDBHandler,Get
 
                 StatusReportType statusReport = task.addNewStatus().addNewStatusReport();
 
-                statusReport.setProcedure(sensorType);
+                statusReport.setProcedure(sensorId);
 
                 statusReport.setTask(taskId);
+
+                statusReport.setRequestStatus(reqStatus);
 
                 statusReport.setIdentifier(status.getIdentifier());
                 statusReport.setUpdateTime(DateHandler.getCalendar(status.getUpdateTime()));

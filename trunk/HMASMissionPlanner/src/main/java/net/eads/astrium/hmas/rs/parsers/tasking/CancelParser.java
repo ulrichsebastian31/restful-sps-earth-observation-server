@@ -21,6 +21,7 @@
 package net.eads.astrium.hmas.rs.parsers.tasking;
 
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.opengis.eosps.x20.CancelDocument;
@@ -45,7 +46,7 @@ public class CancelParser extends DreamRestEOSPSRequestGetParser{
         String task = params.getFirst("task");
         
         //Create XML request
-        CancelDocument doc = CancelDocument.Factory.newInstance();
+        CancelDocument doc = CancelDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         CancelType cancel = doc.addNewCancel();
         
         //Add extensibleRequest parameters

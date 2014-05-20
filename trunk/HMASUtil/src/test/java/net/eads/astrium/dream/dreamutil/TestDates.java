@@ -42,7 +42,7 @@ public class TestDates {
         System.out.println("" + DateHandler.formatDateToEocfi(d2));
         System.out.println("" + DateHandler.formatDateToSimple(d3));
     }
-    @Test
+//    @Test
     public void test2() throws ParseException {
         
         Date d1 = (DateHandler.parseDate("2013-10-10T00:00:00.000Z"));
@@ -54,5 +54,19 @@ public class TestDates {
         System.out.println("" + DateHandler.formatDateToEocfi(d2));
         System.out.println("" + DateHandler.formatDateToSimple(d3));
         System.out.println("" + DateHandler.formatDate(d4));
+    }
+    
+    @Test
+    public void test3() throws ParseException {
+        
+        Date d1 = (DateHandler.parseDate("2013-10-10T00:00:00.000Z"));
+//        Date d4 = (DateHandler.parseDate("2013-10-10T00:00:00Z"));
+//        Date d2 = (DateHandler.parseDate("2013-10-10T00:00:00+0000"));
+//        Date d3 = (DateHandler.parseDate("2013-10-10T10:00:00"));
+        
+        System.out.println("" + d1 + " - " + DateHandler.formatDate(d1));
+//        System.out.println("" + DateHandler.formatDateToEocfi(d2));
+//        System.out.println("" + DateHandler.formatDateToSimple(d3));
+//        System.out.println("" + DateHandler.formatDate(d4));
     }
 }

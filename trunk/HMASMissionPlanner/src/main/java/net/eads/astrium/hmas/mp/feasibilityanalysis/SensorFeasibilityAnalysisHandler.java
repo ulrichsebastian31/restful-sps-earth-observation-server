@@ -87,6 +87,9 @@ public abstract class SensorFeasibilityAnalysisHandler extends Thread {
         this.sensorId = sensorId;
         this.dbHandler = dbHandler;
         
+        //Default
+        this.currency = "Euros";
+        
         handler = EOCFIHandling.Factory.newInstance(satelliteId);
     }
     

@@ -28,26 +28,26 @@ import javax.xml.ws.WebFault;
 
 public class ReserveFault extends OWSException {
     
+    private static final int CODE = 11;
+    
     public ReserveFault() {
-        super();
+        super(CODE);
     }
     
     public ReserveFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
-    public ReserveFault(String message, Throwable cause) {
-        super(message, cause);
+    public ReserveFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public ReserveFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message, exception);
     }
 
     public ReserveFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

@@ -28,26 +28,26 @@ import javax.xml.ws.WebFault;
 
 public class DescribeResultAccessFault extends OWSException {
     
+    private static final int CODE = 10;
+    
     public DescribeResultAccessFault() {
-        super();
+        super(CODE);
     }
     
     public DescribeResultAccessFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
-    public DescribeResultAccessFault(String message, Throwable cause) {
-        super(message, cause);
+    public DescribeResultAccessFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public DescribeResultAccessFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message,exception);
     }
 
     public DescribeResultAccessFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

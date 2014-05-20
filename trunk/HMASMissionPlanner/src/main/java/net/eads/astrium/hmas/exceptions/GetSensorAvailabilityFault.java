@@ -28,26 +28,26 @@ import javax.xml.ws.WebFault;
 
 public class GetSensorAvailabilityFault extends OWSException {
     
+    private static final int CODE = 4;
+    
     public GetSensorAvailabilityFault() {
-        super();
+        super(CODE);
     }
     
     public GetSensorAvailabilityFault(String message) {
-        super(message);
+        super(CODE,message);
     }
     
-    public GetSensorAvailabilityFault(String message, Throwable cause) {
-        super(message, cause);
+    public GetSensorAvailabilityFault(Throwable cause) {
+        super(CODE,cause);
     }
 
     public GetSensorAvailabilityFault(String message, net.opengis.ows.x11.ExceptionDocument exception) {
-        super(message);
-        this.exception = exception;
+        super(CODE,message, exception);
     }
 
     public GetSensorAvailabilityFault(String message, net.opengis.ows.x11.ExceptionDocument exception, Throwable cause) {
-        super(message, cause);
-        this.exception = exception;
+        super(CODE,message, exception, cause);
     }
 
     public net.opengis.ows.x11.ExceptionDocument getFaultInfo() {

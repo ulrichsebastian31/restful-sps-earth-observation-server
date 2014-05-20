@@ -17,6 +17,8 @@
  */package net.eads.astrium.hmas.mp.operations.describing;
 
 import java.sql.SQLException;
+import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.processes.sensormlgenerator.SensorMLGenerator;
 import net.eads.astrium.hmas.exceptions.DescribeSensorFault;
 import net.eads.astrium.hmas.mp.database.MissionPlannerDBHandler;
@@ -24,6 +26,7 @@ import net.eads.astrium.hmas.operations.EOSPSOperation;
 
 import net.opengis.eosps.x20.DescribeSensorDocument;
 import net.opengis.eosps.x20.DescribeSensorResponseDocument;
+import net.opengis.sensorML.x102.SensorMLDocument;
 import net.opengis.sensorML.x102.SensorMLDocument.SensorML;
 import net.opengis.swes.x21.DescribeSensorResponseType;
 import net.opengis.swes.x21.DescribeSensorType;
@@ -72,6 +75,12 @@ public class DescribeSensorOperation extends EOSPSOperation<MissionPlannerDBHand
         DescribeSensorType req = this.getRequest().getDescribeSensor();
         
         String procedure = req.getProcedure();
+        
+        if (procedure == null || procedure.equals("")) {
+            throw new DescribeSensorFault("Procedure parameter is missing.");
+        }
+        
+        
         String[] ids = req.getProcedure().split("::");
         String instrumentId = ids[0];
         
@@ -79,7 +88,7 @@ public class DescribeSensorOperation extends EOSPSOperation<MissionPlannerDBHand
         if (ids.length > 1)
             instrumentModeId = ids[1];
         
-        DescribeSensorResponseDocument responseDocument = DescribeSensorResponseDocument.Factory.newInstance();
+        DescribeSensorResponseDocument responseDocument = DescribeSensorResponseDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
 
         DescribeSensorResponseType resp = responseDocument.addNewDescribeSensorResponse2();
         resp.setProcedureDescriptionFormat("http://www.opengis.net/sensorml/1.0.2");
@@ -90,17 +99,29 @@ public class DescribeSensorOperation extends EOSPSOperation<MissionPlannerDBHand
         SensorDescriptionType sensor = resp.addNewDescription().addNewSensorDescription();
         SensorDescriptionType.Data data = sensor.addNewData();
         
-        SensorML sensorML = null;
+        SensorMLDocument sensorML = SensorMLDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         
         try {
+            
+            List<String> sensors = this.getConfigurationLoader().getSatelliteLoader().getSensorsIds();
+            boolean exists = false;
+            for (String sensorId : sensors) {
+                if (instrumentId.equals(sensorId)) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                throw new DescribeSensorFault("Sensor " + procedure + " does not exist on this server.");
+            }
+            
             SensorMLGenerator generator = new SensorMLGenerator(this.getConfigurationLoader().getSatelliteLoader(), instrumentId);
             if (instrumentModeId != null) {
 
-                sensorML = generator.createInstrumentModeSensorML102Description(instrumentModeId);
+                sensorML.addNewSensorML().set(generator.createInstrumentModeSensorML102Description(instrumentModeId));
             }
             else
             {
-                sensorML = generator.createSensorML102Description();
+                sensorML.addNewSensorML().set(generator.createSensorML102Description());
             }
             
             
@@ -109,7 +130,7 @@ public class DescribeSensorOperation extends EOSPSOperation<MissionPlannerDBHand
             
             throw new DescribeSensorFault("SQLException loading sensor description: " + ex.getMessage());
         }
-        
+
         data.set(sensorML);
         
         this.setResponse(responseDocument);

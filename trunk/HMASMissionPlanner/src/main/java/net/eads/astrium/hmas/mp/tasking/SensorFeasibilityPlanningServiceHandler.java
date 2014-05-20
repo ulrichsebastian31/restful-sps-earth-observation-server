@@ -43,6 +43,7 @@ public class SensorFeasibilityPlanningServiceHandler extends Thread {
     public boolean isCancelled;
     public boolean isComplete;
     public final ExecutionType executionType;
+    private String serverBaseURI;
     private String sensorFeasibilityTaskId;
     private String sensorPlanningTaskId;
     private boolean isThreadRunFinished;
@@ -76,17 +77,18 @@ public class SensorFeasibilityPlanningServiceHandler extends Thread {
             String sensorFeasibilityTaskId,
             List<Segment> segments,
             SensorPlanningHandler dbHandler,
-            String mmfasTaskID) throws SQLException, ParseException {
+            String serverBaseURI) throws SQLException, ParseException {
         super();
 
         isCancelled = false;
         this.executionType = executionType;
+        this.serverBaseURI = serverBaseURI;
         this.sensorFeasibilityTaskId = sensorFeasibilityTaskId;
         this.segments = segments;
         this.planningDBHandler = dbHandler;
 
         this.sensorPlanningTaskId =
-                dbHandler.createPlanningTaskFromFeasibility(sensorFeasibilityTaskId, mmfasTaskID);
+                dbHandler.createPlanningTaskFromFeasibility(sensorFeasibilityTaskId);
 
         dbHandler.createRequest(TaskHandlerType.sensor, sensorPlanningTaskId, RequestType.submitSegmentByID);
 
@@ -273,6 +275,7 @@ public class SensorFeasibilityPlanningServiceHandler extends Thread {
                 }
             } else {
                 status = this.planningDBHandler.addNewAcceptedStatus(sensorPlanningTaskId, percentCompletion, estimatedTOC.getTime());
+                this.addDownloadProducts(accepted);
             }
         }
 
@@ -348,6 +351,10 @@ public class SensorFeasibilityPlanningServiceHandler extends Thread {
                             estimatedTOC = accepted.get(i).getGroundStationDownlink().getEndOfVisibility();
                         }
                         
+                        this.planningDBHandler.setSegmentProductsAvailibility(
+                                accepted.get(i).getSegmentId(),
+                                true);
+                        
                     } else {//Segment is not acquirable
                         segmentStatus = this.planningDBHandler.setSegmentFailedStatus(accepted.get(i).getSegmentId());
                     }
@@ -386,5 +393,82 @@ public class SensorFeasibilityPlanningServiceHandler extends Thread {
                 }
             }
         }
+    }
+    
+    
+    
+    
+    
+    private void addDownloadProducts(List<Segment> acc) throws SQLException, ParseException, SubmitFault {
+        
+        System.out.println("Putting products with base address : " + serverBaseURI);
+
+        //Adding dar for least busy DownloadManager
+        //Now done on the user side
+        for (Segment segment : acc) {
+
+            String downloadURL = "";
+            long productSize = 0;
+
+            int prod = this.getProduct(segment);
+
+            switch (prod) {
+                case 1:
+                    downloadURL = serverBaseURI + "/examples/zip/" + nbProducts + "/100MB.zip";
+                    productSize = (100 * 1024 * 1024);
+                    break;
+                case 2:
+                    downloadURL = serverBaseURI + "/examples/zip/" + nbProducts + "/200MB.zip";
+                    productSize = (200 * 1024 * 1024);
+                    break;
+                case 3:
+                    downloadURL = serverBaseURI + "/examples/zip/" + nbProducts + "/512MB.zip";
+                    productSize = (512 * 1024 * 1024);
+                    break;
+                case 4:
+                    downloadURL = serverBaseURI + "/examples/zip/" + nbProducts + "/1GB.zip";
+                    productSize = (1024 * 1024 * 1024);
+                    break;
+            }
+            //Download manager debug : the products are identified by their URL, so we have to create different URLs for each product
+            nbProducts++;
+            //Add new available product
+            String productID = this.planningDBHandler.addProduct(
+                    downloadURL, segment.getSegmentId(), false,
+                    productSize, Calendar.getInstance().getTime());
+
+            System.out.println("Segment : " + segment.getSegmentId() + " - Add product : " + productID);
+            //Link this product to the DAR created by this sensor task
+            //Cancelled, now done on the user side
+//            this.downloadManagerDBHandler.addNewProductDownload(darID, productID, 
+//                    "This product will be acquired on "+
+//                    segment.getGroundStationDownlink().getEndOfVisibility().getTime()+".");
+        }
+    }
+
+    /**
+     * Gets one of the products depending on the
+     *
+     * @param segment
+     * @return
+     */
+    public int getProduct(Segment segment) {
+
+        int productID = 1;
+        long diff = segment.getEndOfAcquisition().getTimeInMillis() - segment.getStartOfAcquisition().getTimeInMillis();
+
+        long diffInMin = diff / (60 * 1000);
+
+        if (diffInMin >= 2) {
+            productID = 2;
+        }
+        if (diffInMin >= 5) {
+            productID = 3;
+        }
+        if (diffInMin >= 10) {
+            productID = 4;
+        }
+
+        return productID;
     }
 }

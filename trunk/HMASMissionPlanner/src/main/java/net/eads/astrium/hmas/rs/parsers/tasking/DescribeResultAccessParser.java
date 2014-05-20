@@ -22,6 +22,7 @@ package net.eads.astrium.hmas.rs.parsers.tasking;
 
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.eads.astrium.hmas.rs.exceptions.MissingParameterException;
@@ -51,7 +52,7 @@ public class DescribeResultAccessParser extends DreamRestEOSPSRequestGetParser{
         String mmfasTask = params.getFirst("task");
         
         //Create XML request
-        DescribeResultAccessDocument doc = DescribeResultAccessDocument.Factory.newInstance();
+        DescribeResultAccessDocument doc = DescribeResultAccessDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         DescribeResultAccessType describeResultAccess = doc.addNewDescribeResultAccess();
         
         //Add extensibleRequest parameters

@@ -24,6 +24,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.util.structures.OPTSensor;
 import net.opengis.gml.x32.TimePeriodType;
@@ -33,9 +34,13 @@ import net.opengis.sensorML.x102.IdentificationDocument;
 import net.opengis.sensorML.x102.SensorMLDocument.SensorML;
 import net.opengis.sensorML.x102.TermDocument;
 import net.opengis.sensorML.x102.ValidTimeDocument;
+import net.opengis.swe.x20.CategoryDocument;
 import net.opengis.swe.x20.CategoryType;
+import net.opengis.swe.x20.CountDocument;
 import net.opengis.swe.x20.CountType;
 import net.opengis.swe.x20.DataRecordType;
+import net.opengis.swe.x20.QuantityDocument;
+import net.opengis.swe.x20.QuantityRangeDocument;
 import net.opengis.swe.x20.QuantityRangeType;
 import net.opengis.swe.x20.QuantityType;
 
@@ -103,22 +108,23 @@ public class OptSpecificParametersGenerator {
         
         
         
-        Characteristics geometricCharacteristics = Characteristics.Factory.newInstance();
+        Characteristics geometricCharacteristics = Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         geometricCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:GeometricCharacteristics");
         DataRecordType gcdr = geometricCharacteristics.addNewDataRecord();
-        gcdr.setLabel("Geometric Characteristics");
+        gcdr.setLabel("Geometric_Characteristics");
         
         DataRecordType.Field fov = gcdr.addNewField();
-        fov.setName("Across-Track FOV");
-        QuantityType t = QuantityType.Factory.newInstance();
+        QuantityDocument d = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t = d.addNewQuantity();
         t.addNewUom().setCode("deg");
         t.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackFOV");
         t.setValue(acrossTrackFOV);
-        fov.setAbstractDataComponent(t);
+        fov.set(d);
+        fov.setName("Across-Track_FOV");
         
         DataRecordType.Field across = gcdr.addNewField();
-        across.setName("Across-Track Pointing Range");
-        QuantityRangeType t1 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d1 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t1 = d1.addNewQuantityRange();
         t1.addNewUom().setCode("deg");
         t1.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackPointingRange");
         
@@ -128,11 +134,12 @@ public class OptSpecificParametersGenerator {
         t1.setValue(l1);
 //        t1.setValue(Arrays.asList(new double[]{minAcrossTrackAngle, maxAcrossTrackAngle}));
         
-        across.setAbstractDataComponent(t1);
+        across.set(d1);
+        across.setName("Across-Track_Pointing_Range");
         
         DataRecordType.Field along = gcdr.addNewField();
-        along.setName("Along-Track Pointing Range");
-        QuantityRangeType t2 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d2 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t2 = d2.addNewQuantityRange();
         t2.addNewUom().setCode("deg");
         t2.setDefinition("urn:ogc:def:property:CEOS:eop:AlongTrackPointingRange");
         
@@ -141,31 +148,35 @@ public class OptSpecificParametersGenerator {
         l2.add(maxAlongTrackAngle);
         t2.setValue(l2);
 //        t2.setValue(Arrays.asList(new double[]{minAlongTrackAngle, maxAlongTrackAngle}));
-        along.setAbstractDataComponent(t2);
+        along.set(d2);
+        along.setName("Along-Track_Pointing_Range");
         
         DataRecordType.Field sw =  gcdr.addNewField();
-        sw.setName("Swath Width");
-        QuantityType t3 = QuantityType.Factory.newInstance();
+        QuantityDocument d3 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t3 = d3.addNewQuantity();
         t3.addNewUom().setCode("km");
         t3.setDefinition("urn:ogc:def:property:CEOS:eop:NadirSwathWidth");
         t3.setValue(swathWidth);
-        sw.setAbstractDataComponent(t3);
+        sw.set(d3);
+        sw.setName("Swath_Width");
         
         DataRecordType.Field gla =  gcdr.addNewField();
-        gla.setName("Ground Location Accuracy");
-        QuantityType t4 = QuantityType.Factory.newInstance();
+        QuantityDocument d4 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t4 = d4.addNewQuantity();
         t4.addNewUom().setCode("m");
         t4.setDefinition("urn:ogc:def:property:CEOS:eop:GroundLocationAccuracy");
         t4.setValue(groundLocationAccuracy);
-        gla.setAbstractDataComponent(t4);
+        gla.set(d4);
+        gla.setName("Ground_Location_Accuracy");
         
         DataRecordType.Field revTime =  gcdr.addNewField();
-        revTime.setName("Revisit Time");
-        QuantityType t5 = QuantityType.Factory.newInstance();
+        QuantityDocument d5 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t5 = d5.addNewQuantity();
         t5.addNewUom().setCode("d");
         t5.setDefinition("urn:ogc:def:property:CEOS:eop:RevisitTime");
         t5.setValue(revisitTimeInDays);
-        revTime.setAbstractDataComponent(t5);
+        revTime.set(d5);
+        revTime.setName("Revisit_Time");
         
         return geometricCharacteristics;
     }
@@ -183,17 +194,18 @@ public class OptSpecificParametersGenerator {
         
         
         
-        Characteristics measurementCharacteristics = Characteristics.Factory.newInstance();
+        Characteristics measurementCharacteristics = Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         measurementCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:MeasurementCharacteristics");
         DataRecordType mcdr = measurementCharacteristics.addNewDataRecord();
-        mcdr.setLabel("Measurement Characteristics");
+        mcdr.setLabel("Measurement_Characteristics");
         
         DataRecordType.Field nos =  mcdr.addNewField();
-        nos.setName("Number of Samples");
-        CountType t = CountType.Factory.newInstance();
+        CountDocument d = CountDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        CountType t = d.addNewCount();
         t.setDefinition("urn:ogc:def:property:CEOS:eop:NumberOfBands");
         t.setValue(BigInteger.valueOf(numberOfBands));
-        nos.setAbstractDataComponent(t);
+        nos.set(d);
+        nos.setName("Number_of_Samples");
         
         return measurementCharacteristics;
     }
@@ -277,12 +289,12 @@ public class OptSpecificParametersGenerator {
         
         
         
-        SensorML sensorML = SensorML.Factory.newInstance();
+        SensorML sensorML = SensorML.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         SensorML.Member member = sensorML.addNewMember();
 
         member.setRole("urn:ogc:def:dictionary:CEOS:documentRoles:v01#instrument_configuration");
 
-        ComponentType descriptor = ComponentType.Factory.newInstance();
+        ComponentType descriptor = ComponentType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         descriptor.setId(instrumentId);
         descriptor.addNewDescription().setStringValue(description);
         /**
@@ -291,19 +303,19 @@ public class OptSpecificParametersGenerator {
         IdentificationDocument.Identification.IdentifierList identification = descriptor.addNewIdentification().addNewIdentifierList();
         
         IdentificationDocument.Identification.IdentifierList.Identifier modeIdentifier = identification.addNewIdentifier();
-        modeIdentifier.setName("Configuration UID");
+        modeIdentifier.setName("Configuration_UID");
         TermDocument.Term term = modeIdentifier.addNewTerm();
         term.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentMode");
         term.setValue(instrumentModeId);
         
         IdentificationDocument.Identification.IdentifierList.Identifier instIdentifier = identification.addNewIdentifier();
-        instIdentifier.setName("Instrument UID");
+        instIdentifier.setName("Instrument_UID");
         TermDocument.Term term1 = instIdentifier.addNewTerm();
         term1.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentID");
         term1.setValue(instrumentId);
         
         IdentificationDocument.Identification.IdentifierList.Identifier sNameIdentifier = identification.addNewIdentifier();
-        sNameIdentifier.setName("Short Name");
+        sNameIdentifier.setName("Short_Name");
         TermDocument.Term term2 = sNameIdentifier.addNewTerm();
         term2.setDefinition("urn:ogc:def:property:OGC:shortName");
         term2.setValue(modeShortName);
@@ -314,7 +326,8 @@ public class OptSpecificParametersGenerator {
         ValidTimeDocument.ValidTime validTime = descriptor.addNewValidTime();
         
         TimePeriodType vt = validTime.addNewTimePeriod();
-
+        vt.setId("urn:ogc:data:time:iso8601");
+        
         vt.addNewBeginPosition().setStringValue(DateHandler.formatDate(begin));
         vt.addNewEndPosition().setStringValue(DateHandler.formatDate(end));
 //        vt.addNewEndPosition().setIndeterminatePosition(TimeIndeterminateValueType.Enum.forString("now"));
@@ -325,15 +338,16 @@ public class OptSpecificParametersGenerator {
         Characteristics physicalCharacteristics = descriptor.addNewCharacteristics();
         physicalCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:PhysicalCharacteristics");
         DataRecordType phcdr = physicalCharacteristics.addNewDataRecord();
-        phcdr.setLabel("Physical Characteristics");
+        phcdr.setLabel("Physical_Characteristics");
 
         DataRecordType.Field pc = phcdr.addNewField();
-        pc.setName("Maximum Power Consumption");
-        QuantityType t = QuantityType.Factory.newInstance();
+        QuantityDocument d = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t = d.addNewQuantity();
         t.addNewUom().setCode("W");
         t.setDefinition("urn:ogc:def:property:CEOS:eop:MaximumPowerConsumption");
         t.setValue(maxPowerConsumption);
-        pc.setAbstractDataComponent(t);
+        pc.set(d);
+        pc.setName("Maximum_Power_Consumption");
         
         /**
          * Geometric Characteristics
@@ -341,30 +355,33 @@ public class OptSpecificParametersGenerator {
         Characteristics geometricCharacteristics = descriptor.addNewCharacteristics();
         geometricCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:GeometricCharacteristics");
         DataRecordType gcdr = geometricCharacteristics.addNewDataRecord();
-        gcdr.setLabel("Geometric Characteristics");
+        gcdr.setLabel("Geometric_Characteristics");
         
         DataRecordType.Field across = gcdr.addNewField();
-        across.setName("Across-Track Ground Resolution");
-        QuantityType t1 = QuantityType.Factory.newInstance();
+        QuantityDocument d1 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t1 = d1.addNewQuantity();
         t1.addNewUom().setCode("m");
         t1.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackGroundResolution");
         t1.setValue(acrossTrackResolution);
-        across.setAbstractDataComponent(t1);
+        across.set(d1);
+        across.setName("Across-Track_Ground_Resolution");
         
         DataRecordType.Field along = gcdr.addNewField();
-        along.setName("Along-Track Ground Resolution");
-        QuantityType t2 = QuantityType.Factory.newInstance();
+        QuantityDocument d2 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t2 = d2.addNewQuantity();
         t2.addNewUom().setCode("m");
         t2.setDefinition("urn:ogc:def:property:CEOS:eop:AlongTrackGroundResolution");
         t2.setValue(alongTrackResolution);
-        along.setAbstractDataComponent(t2);
+        along.set(d2);
+        along.setName("Along-Track_Ground_Resolution");
         
         DataRecordType.Field nos =  gcdr.addNewField();
-        nos.setName("Number of Samples");
-        CountType t3 = CountType.Factory.newInstance();
+        CountDocument d3 = CountDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        CountType t3 = d3.addNewCount();
         t3.setDefinition("urn:ogc:def:property:CEOS:eop:NumberOfSamples");
         t3.setValue(BigInteger.valueOf(numberOfSamples));
-        nos.setAbstractDataComponent(t3);
+        nos.set(d3);
+        nos.setName("Number_of_Samples");
         
         /**
          * Measurement Characteristics
@@ -372,18 +389,19 @@ public class OptSpecificParametersGenerator {
         Characteristics measurementCharacteristics = descriptor.addNewCharacteristics();
         measurementCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:MeasurementCharacteristics");
         DataRecordType mcdr = measurementCharacteristics.addNewDataRecord();
-        mcdr.setLabel("Measurement Characteristics");
+        mcdr.setLabel("Measurement_Characteristics");
         
         DataRecordType.Field bt = mcdr.addNewField();
-        bt.setName("Band Type");
-        CategoryType t4 = CategoryType.Factory.newInstance();
+        CategoryDocument d4 = CategoryDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        CategoryType t4 = d4.addNewCategory();
         t4.setValue(bandType);
         t4.setDefinition("urn:ogc:def:property:CEOS:eop:BandType");
-        bt.setAbstractDataComponent(t4);
+        bt.set(d4);
+        bt.setName("Band_Type");
         
         DataRecordType.Field sr = mcdr.addNewField();
-        sr.setName("Spectral Range");
-        QuantityRangeType t5 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d5 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t5 = d5.addNewQuantityRange();
         
         List l5 = new ArrayList<Double>();
         l5.add(minSpectralRange_nm);
@@ -393,30 +411,29 @@ public class OptSpecificParametersGenerator {
         
         t5.addNewUom().setCode("nm");
         t5.setDefinition("urn:ogc:def:property:CEOS:eop:SpectralRange");
-        sr.setAbstractDataComponent(t5);
+        sr.set(d5);
+        sr.setName("Spectral_Range");
         
         DataRecordType.Field snr = mcdr.addNewField();
-        snr.setName("SNR Ratio");
-        QuantityType t6 = QuantityType.Factory.newInstance();
+        QuantityDocument d6 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t6 = d6.addNewQuantity();
         t6.setValue(snrRatio_dB);
         t6.addNewUom().setCode("dB");
         t6.setDefinition("urn:ogc:def:property:CEOS:eop:SNR");
-        snr.setAbstractDataComponent(t6);
+        snr.set(d6);
+        snr.setName("SNR_Ratio");
         
         DataRecordType.Field ner = mcdr.addNewField();
-        ner.setName("Noise Equivalent Radiance");
-        QuantityType t7 = QuantityType.Factory.newInstance();
+        QuantityDocument d7 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t7 = d7.addNewQuantity();
         t7.setValue(noiseEquivalentRadiance);
         t7.addNewUom().setCode("W.m-2.sr.um-1");
         t7.setDefinition("urn:ogc:def:property:CEOS:eop:NEDR");
-        ner.setAbstractDataComponent(t7);
-        
-        
+        ner.set(d7);
+        ner.setName("Noise_Equivalent_Radiance");
         
         //Set the created structure in the SensorML structure
         member.setProcess(descriptor);
-        
-        
         
         return sensorML;
     } 

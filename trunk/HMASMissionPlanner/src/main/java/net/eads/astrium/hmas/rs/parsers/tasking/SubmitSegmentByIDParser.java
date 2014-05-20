@@ -23,6 +23,7 @@ package net.eads.astrium.hmas.rs.parsers.tasking;
 import java.util.Arrays;
 import java.util.List;
 import javax.ws.rs.core.MultivaluedMap;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.rs.parsers.DreamRestEOSPSRequestGetParser;
 import net.eads.astrium.hmas.rs.parsers.ExtensibleRequestParser;
 import net.opengis.eosps.x20.SubmitSegmentByIDDocument;
@@ -49,7 +50,7 @@ public class SubmitSegmentByIDParser extends DreamRestEOSPSRequestGetParser{
         List<String> segments = Arrays.asList(params.getFirst("segment").split(","));
         
         //Create XML request
-        SubmitSegmentByIDDocument doc = SubmitSegmentByIDDocument.Factory.newInstance();
+        SubmitSegmentByIDDocument doc = SubmitSegmentByIDDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         SubmitSegmentByIDType submitSegmentByID = doc.addNewSubmitSegmentByID();
         
         //Add extensibleRequest parameters
@@ -66,7 +67,7 @@ public class SubmitSegmentByIDParser extends DreamRestEOSPSRequestGetParser{
         
         String mmfasTask = params.getFirst("mmfasTask");
         if (mmfasTask != null && !mmfasTask.equals("")) {
-            CategoryType str = CategoryType.Factory.newInstance();
+            CategoryType str = CategoryType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             str.setDefinition("mmfasTask");
             str.setValue(mmfasTask);
             submitSegmentByID.addNewExtension().set(str);

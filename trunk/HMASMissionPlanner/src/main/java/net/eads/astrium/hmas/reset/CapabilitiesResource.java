@@ -29,6 +29,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.core.Response;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
+import net.eads.astrium.hmas.exceptions.GetCapabilitiesFault;
+import net.eads.astrium.hmas.exceptions.OWSException;
 import net.eads.astrium.hmas.rs.exceptions.RequestNotFoundException;
 import net.eads.astrium.hmas.util.logging.SysoRedirect;
 import net.opengis.ows.x11.OperationDocument;
@@ -65,16 +69,24 @@ public class CapabilitiesResource extends AbstractResource {
         Response response = null;
         
         try {
+            try {
+                SysoRedirect.redirectSysoToFiles("log", "log");
+            } catch (Exception ex) {
+                Logger.getLogger(CapabilitiesResource.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
-            SysoRedirect.redirectSysoToFiles("log", "log");
+            System.out.println("Getting namespace prefixes for pretty print...");
+            OGCNamespacesXmlOptions.getInstance();
+            System.out.println("Getting namespace prefixes done.");
             
             //Add a default request
             //TODO: put parameters (format ? osdd ?)
-            GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.newInstance();
+            GetCapabilitiesDocument doc = GetCapabilitiesDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
             doc.addNewGetCapabilities2();
             
             net.opengis.sps.x21.CapabilitiesDocument capabilities = worker.getCapabilities(doc);
             CapabilitiesDocument respdoc = getRESETCapabilities(capabilities);
+            
             
             String responseText = "";
             
@@ -89,28 +101,38 @@ public class CapabilitiesResource extends AbstractResource {
                 
                 switch (section) {
                     case "ServiceIdentification":
-                        responseText = respdoc.getCapabilities().getServiceIdentification().xmlText();
+                        responseText = respdoc.getCapabilities().getServiceIdentification().xmlText(OGCNamespacesXmlOptions.getInstance());
                     break;
                     case "ServiceProvider":
-                        responseText = respdoc.getCapabilities().getServiceProvider().xmlText();
+                        responseText = respdoc.getCapabilities().getServiceProvider().xmlText(OGCNamespacesXmlOptions.getInstance());
                     break;
                     case "Notifications":
-                        responseText = respdoc.getCapabilities().getNotifications().xmlText();
+                        responseText = respdoc.getCapabilities().getNotifications().xmlText(OGCNamespacesXmlOptions.getInstance());
                     break;
                     case "Contents":
-                        responseText = respdoc.getCapabilities().getContents().xmlText();
+                        responseText = respdoc.getCapabilities().getContents().xmlText(OGCNamespacesXmlOptions.getInstance());
                     break;
+                    default:
+                        throw new GetCapabilitiesFault("Section " + section + " not found.");
                 }
             }
             //If no section chosen, put the whole Capabilities
             if (responseText == null || responseText.equals("")) {
-                responseText = respdoc.xmlText();
+                responseText = respdoc.xmlText(OGCNamespacesXmlOptions.getInstance());
             }
             
             response = Response.ok(responseText, "text/xml").build();
             
-        } catch (Exception ex) {
-            Logger.getLogger(CapabilitiesResource.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (OWSException e) {
+            
+            e.printStackTrace();
+            System.out.println(e.getClass().getName() + " : " + e.getMessage());
+
+            response = Response
+                    .status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .type(MediaType.APPLICATION_XML)
+                    .entity(e.getFaultInfo().xmlText(OGCNamespacesXmlOptions.getInstance()))
+                    .build();
         }
         
         if (response == null) {
@@ -128,10 +150,13 @@ public class CapabilitiesResource extends AbstractResource {
         
         CapabilitiesType capabilities = capabilitiesDocument.getCapabilities();
         
-        CapabilitiesDocument doc = CapabilitiesDocument.Factory.newInstance();
+        CapabilitiesDocument doc = CapabilitiesDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         CapabilitiesDocument.Capabilities caps = doc.addNewCapabilities();
-
+        caps.setVersion("1.0.0");
+        
+        
         caps.setServiceIdentification(capabilities.getServiceIdentification());
+        System.out.println("RESET Service Provider : \r\n" + capabilities.getServiceProvider().xmlText());
         caps.setServiceProvider(capabilities.getServiceProvider());
         caps.setExtensionArray(capabilities.getExtensionArray());
         caps.setUpdateSequence(capabilities.getUpdateSequence());
@@ -141,15 +166,19 @@ public class CapabilitiesResource extends AbstractResource {
             );
         SPSContentsType contents = capabilities.getContents().getSPSContents();
         
+        System.out.println("RESET Contents : \r\n" + contents.xmlText(OGCNamespacesXmlOptions.getInstance()));
+        
         RESETContentsType conts = caps.addNewContents();
         conts.setIdentifier(contents.getIdentifier());
         conts.setNameArray(contents.getNameArray());
         conts.setDescription(contents.getDescription());
         conts.setExtensionArray(contents.getExtensionArray());
-        conts.setMinStatusTime(conts.getMinStatusTime());
+        conts.setMinStatusTime(contents.getMinStatusTime());
         conts.setObservablePropertyArray(contents.getObservablePropertyArray());
         conts.setProcedureDescriptionFormatArray(contents.getProcedureDescriptionFormatArray());
         conts.setSupportedEncodingArray(contents.getSupportedEncodingArray());
+        
+        conts.setOfferingArray(contents.getOfferingArray());
         
         Set<String> implementedClasses = new HashSet<>();
         Set<String> implementedResources = new HashSet<>();

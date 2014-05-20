@@ -25,6 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.util.DateHandler;
 import net.eads.astrium.hmas.util.structures.SARSensor;
 import net.opengis.gml.x32.TimePeriodType;
@@ -34,8 +35,11 @@ import net.opengis.sensorML.x102.SensorMLDocument.SensorML;
 import net.opengis.sensorML.x102.SystemType;
 import net.opengis.sensorML.x102.TermDocument;
 import net.opengis.sensorML.x102.ValidTimeDocument;
+import net.opengis.swe.x20.CategoryDocument;
 import net.opengis.swe.x20.CategoryType;
 import net.opengis.swe.x20.DataRecordType;
+import net.opengis.swe.x20.QuantityDocument;
+import net.opengis.swe.x20.QuantityRangeDocument;
 import net.opengis.swe.x20.QuantityRangeType;
 import net.opengis.swe.x20.QuantityType;
 
@@ -73,42 +77,46 @@ public class SarSpecificParametersGenerator {
             
         }
         
-        CharacteristicsDocument.Characteristics geometricCharacteristics = CharacteristicsDocument.Characteristics.Factory.newInstance();
+        CharacteristicsDocument.Characteristics geometricCharacteristics = CharacteristicsDocument.Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         geometricCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:GeometricCharacteristics");
         DataRecordType gcdr = geometricCharacteristics.addNewDataRecord();
-        gcdr.setLabel("Geometric Characteristics");
+        gcdr.setLabel("Geometric_Characteristics");
 
         DataRecordType.Field fov = gcdr.addNewField();
-        fov.setName("Antenna Length");
-        QuantityType t = QuantityType.Factory.newInstance();
+        QuantityDocument d = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t = d.addNewQuantity();
         t.addNewUom().setCode("m");
         t.setDefinition("urn:ogc:def:property:CEOS:sar:AntennaLength");
         t.setValue(antennaLength);
-        fov.setAbstractDataComponent(t);
+        fov.set(d);
+        fov.setName("Antenna_Length");
 
         DataRecordType.Field sw = gcdr.addNewField();
-        sw.setName("Antenna Width");
-        QuantityType t1 = QuantityType.Factory.newInstance();
+        QuantityDocument d1 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t1 = d1.addNewQuantity();
         t1.addNewUom().setCode("m");
         t1.setDefinition("urn:ogc:def:property:CEOS:sar:AntennaWidth");
         t1.setValue(antennaWidth);
-        sw.setAbstractDataComponent(t1);
+        sw.set(d1);
+        sw.setName("Antenna_Width");
 
         DataRecordType.Field gla = gcdr.addNewField();
-        gla.setName("Ground Location Accuracy");
-        QuantityType t2 = QuantityType.Factory.newInstance();
+        QuantityDocument d2 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t2 = d2.addNewQuantity();
         t2.addNewUom().setCode("m");
         t2.setDefinition("urn:ogc:def:property:CEOS:eop:GroundLocationAccuracy");
         t2.setValue(groundLocationAccuracy);
-        gla.setAbstractDataComponent(t2);
+        gla.set(d2);
+        gla.setName("Ground_Location_Accuracy");
 
         DataRecordType.Field revTime = gcdr.addNewField();
-        revTime.setName("Revisit Time");
-        QuantityType t3 = QuantityType.Factory.newInstance();
+        QuantityDocument d3 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t3 = d3.addNewQuantity();
         t3.addNewUom().setCode("d");
         t3.setDefinition("urn:ogc:def:property:CEOS:eop:RevisitTime");
         t3.setValue(revisitTimeInDays);
-        revTime.setAbstractDataComponent(t3);
+        revTime.set(d3);
+        revTime.setName("Revisit_Time");
 
         return geometricCharacteristics;
     }
@@ -129,25 +137,27 @@ public class SarSpecificParametersGenerator {
             
         }
         
-        CharacteristicsDocument.Characteristics measurementCharacteristics = CharacteristicsDocument.Characteristics.Factory.newInstance();
+        CharacteristicsDocument.Characteristics measurementCharacteristics = CharacteristicsDocument.Characteristics.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         measurementCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:MeasurementCharacteristics");
         DataRecordType mcdr = measurementCharacteristics.addNewDataRecord();
-        mcdr.setLabel("Measurement Characteristics");
+        mcdr.setLabel("Measurement_Characteristics");
         
         DataRecordType.Field tcf = mcdr.addNewField();
-        tcf.setName("Transmit Center Frequency");
-        QuantityType t = QuantityType.Factory.newInstance();
+        QuantityDocument d = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t = d.addNewQuantity();
         t.addNewUom().setCode("GHz");
         t.setDefinition("urn:ogc:def:property:CEOS:sar:TransmitCenterFrequency");
         t.setValue(transmitCenterFrequency);
-        tcf.setAbstractDataComponent(t);
+        tcf.set(d);
+        tcf.setName("Transmit_Center_Frequency");
 
         DataRecordType.Field tfb = mcdr.addNewField();
-        tfb.setName("Transmit Frequency Band");
-        CategoryType t1 = CategoryType.Factory.newInstance();
+        CategoryDocument d1 = CategoryDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        CategoryType t1 = d1.addNewCategory();
         t1.setDefinition("urn:ogc:def:property:CEOS:sar:TransmitFrequencyBand");
         t1.setValue(transmitFrequencyBand);
-        tfb.setAbstractDataComponent(t1);
+        tfb.set(d1);
+        tfb.setName("Transmit_Frequency_Band");
 
         return measurementCharacteristics;
     }
@@ -286,12 +296,12 @@ public class SarSpecificParametersGenerator {
         polarizationModes = sensorMode.getPolarizationModes();
         
         
-        SensorML sensorML = SensorML.Factory.newInstance();
+        SensorML sensorML = SensorML.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         SensorML.Member member = sensorML.addNewMember();
 
         member.setRole("urn:ogc:def:dictionary:CEOS:documentRoles:v01#instrument_configuration");
 
-        SystemType system = SystemType.Factory.newInstance();
+        SystemType system = SystemType.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
         system.setId(instrumentModeId);
         system.addNewDescription().setStringValue(description);
 
@@ -301,19 +311,19 @@ public class SarSpecificParametersGenerator {
         IdentificationDocument.Identification.IdentifierList identification = system.addNewIdentification().addNewIdentifierList();
 
         IdentificationDocument.Identification.IdentifierList.Identifier modeIdentifier = identification.addNewIdentifier();
-        modeIdentifier.setName("Configuration UID");
+        modeIdentifier.setName("Configuration_UID");
         TermDocument.Term term = modeIdentifier.addNewTerm();
         term.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentMode");
         term.setValue(instrumentModeId);
 
         IdentificationDocument.Identification.IdentifierList.Identifier instIdentifier = identification.addNewIdentifier();
-        instIdentifier.setName("Instrument UID");
+        instIdentifier.setName("Instrument_UID");
         TermDocument.Term term1 = instIdentifier.addNewTerm();
         term1.setDefinition("urn:ogc:def:property:CEOS:eop:InstrumentID");
         term1.setValue(instrumentId);
 
         IdentificationDocument.Identification.IdentifierList.Identifier sNameIdentifier = identification.addNewIdentifier();
-        sNameIdentifier.setName("Short Name");
+        sNameIdentifier.setName("Short_Name");
         TermDocument.Term term2 = sNameIdentifier.addNewTerm();
         term2.setDefinition("urn:ogc:def:property:OGC:shortName");
         term2.setValue(modeShortName);
@@ -324,7 +334,8 @@ public class SarSpecificParametersGenerator {
         ValidTimeDocument.ValidTime validTime = system.addNewValidTime();
 
         TimePeriodType vt = validTime.addNewTimePeriod();
-
+        vt.setId("urn:ogc:data:time:iso8601");
+        
         vt.addNewBeginPosition().setStringValue(DateHandler.formatDate(begin));
         vt.addNewEndPosition().setStringValue(DateHandler.formatDate(end));
 //        vt.addNewEndPosition().setIndeterminatePosition(TimeIndeterminateValueType.Enum.forString("now"));
@@ -335,15 +346,16 @@ public class SarSpecificParametersGenerator {
         CharacteristicsDocument.Characteristics physicalCharacteristics = system.addNewCharacteristics();
         physicalCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:PhysicalCharacteristics");
         DataRecordType phcdr = physicalCharacteristics.addNewDataRecord();
-        phcdr.setLabel("Physical Characteristics");
+        phcdr.setLabel("Physical_Characteristics");
 
         DataRecordType.Field pc = phcdr.addNewField();
-        pc.setName("Maximum Power Consumption");
-        QuantityType t = QuantityType.Factory.newInstance();
+        QuantityDocument d = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t = d.addNewQuantity();
         t.addNewUom().setCode("W");
         t.setDefinition("urn:ogc:def:property:CEOS:eop:MaximumPowerConsumption");
         t.setValue(maxPowerConsumption);
-        pc.setAbstractDataComponent(t);
+        pc.set(d);
+        pc.setName("Maximum_Power_Consumption");
 
         /**
          * Geometric Characteristics
@@ -351,12 +363,12 @@ public class SarSpecificParametersGenerator {
         CharacteristicsDocument.Characteristics geometricCharacteristics = system.addNewCharacteristics();
         geometricCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:GeometricCharacteristics");
         DataRecordType gcdr = geometricCharacteristics.addNewDataRecord();
-        gcdr.setLabel("Geometric Characteristics");
+        gcdr.setLabel("Geometric_Characteristics");
 
 
         DataRecordType.Field across = gcdr.addNewField();
-        across.setName("Across-Track Pointing Range");
-        QuantityRangeType t1 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d1 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t1 = d1.addNewQuantityRange();
         t1.addNewUom().setCode("deg");
         t1.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackPointingRange");
         
@@ -366,11 +378,12 @@ public class SarSpecificParametersGenerator {
         t1.setValue(l1);
 //        t1.setValue(Arrays.asList(new double[]{minAcrossTrackAngle, maxAcrossTrackAngle}));
         
-        across.setAbstractDataComponent(t1);
+        across.set(d1);
+        across.setName("Across-Track_Pointing_Range");
         
         DataRecordType.Field along = gcdr.addNewField();
-        along.setName("Along-Track Pointing Range");
-        QuantityRangeType t2 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d2 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t2 = d2.addNewQuantityRange();
         t2.addNewUom().setCode("deg");
         t2.setDefinition("urn:ogc:def:property:CEOS:eop:AlongTrackPointingRange");
         
@@ -379,31 +392,35 @@ public class SarSpecificParametersGenerator {
         l2.add(maxAlongTrackAngle);
         t2.setValue(l2);
 //        t2.setValue(Arrays.asList(new double[]{minAlongTrackAngle, maxAlongTrackAngle}));
-        along.setAbstractDataComponent(t2);
+        along.set(d2);
+        along.setName("Along-Track_Pointing_Range");
 
         DataRecordType.Field sw = gcdr.addNewField();
-        sw.setName("Swath Width");
-        QuantityType t3 = QuantityType.Factory.newInstance();
+        QuantityDocument d3 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t3 = d3.addNewQuantity();
         t3.addNewUom().setCode("km");
         t3.setDefinition("urn:ogc:def:property:CEOS:eop:NadirSwathWidth");
         t3.setValue(swathWidth);
-        sw.setAbstractDataComponent(t3);
+        sw.set(d3);
+        sw.setName("Swath_Width");
 
         DataRecordType.Field acrossRes = gcdr.addNewField();
-        acrossRes.setName("Across-Track Ground Resolution");
-        QuantityType t4 = QuantityType.Factory.newInstance();
+        QuantityDocument d4 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t4 = d4.addNewQuantity();
         t4.addNewUom().setCode("m");
         t4.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackGroundResolution");
         t4.setValue(acrossTrackResolution);
-        acrossRes.setAbstractDataComponent(t4);
+        acrossRes.set(d4);
+        acrossRes.setName("Across-Track_Ground_Resolution");
 
         DataRecordType.Field alongRes = gcdr.addNewField();
-        alongRes.setName("Along-Track Ground Resolution");
-        QuantityType t5 = QuantityType.Factory.newInstance();
+        QuantityDocument d5 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t5 = d5.addNewQuantity();
         t5.addNewUom().setCode("m");
         t5.setDefinition("urn:ogc:def:property:CEOS:eop:AlongTrackGroundResolution");
         t5.setValue(alongTrackResolution);
-        alongRes.setAbstractDataComponent(t5);
+        alongRes.set(d5);
+        alongRes.setName("Along-Track_Ground_Resolution");
 
 
         /**
@@ -412,19 +429,20 @@ public class SarSpecificParametersGenerator {
         CharacteristicsDocument.Characteristics measurementCharacteristics = system.addNewCharacteristics();
         measurementCharacteristics.setRole("urn:ogc:def:role:CEOS:eop:MeasurementCharacteristics");
         DataRecordType mcdr = measurementCharacteristics.addNewDataRecord();
-        mcdr.setLabel("Measurement Characteristics");
+        mcdr.setLabel("Measurement_Characteristics");
 
         DataRecordType.Field rr = mcdr.addNewField();
-        rr.setName("Radiometric Resolution");
-        QuantityType t6 = QuantityType.Factory.newInstance();
+        QuantityDocument d6 = QuantityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityType t6 = d6.addNewQuantity();
         t6.addNewUom().setCode("m");
         t6.setValue(radiometricResolution);
         t6.setDefinition("urn:ogc:def:property:CEOS:eop:RadiometricResolution");
-        rr.setAbstractDataComponent(t6);
+        rr.set(d6);
+        rr.setName("Radiometric_Resolution");
 
         DataRecordType.Field rs = mcdr.addNewField();
-        rs.setName("Radiometric Stability");
-        QuantityRangeType t7 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d7 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t7 = d7.addNewQuantityRange();
         t7.addNewUom().setCode("dB");
         
         List l7 = new ArrayList<Double>();
@@ -434,11 +452,12 @@ public class SarSpecificParametersGenerator {
         
 //        t7.setValue(Arrays.asList(new double[]{minRadioStab, maxRadioStab}));
         t7.setDefinition("urn:ogc:def:property:CEOS:sar:RadiometricStability");
-        rs.setAbstractDataComponent(t7);
+        rs.set(d7);
+        rs.setName("Radiometric_Stability");
 
         DataRecordType.Field alongAR = mcdr.addNewField();
-        alongAR.setName("Along-Track Ambiguity Ratio");
-        QuantityRangeType t8 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d8 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t8 = d8.addNewQuantityRange();
         t8.addNewUom().setCode("dB");
         
         List l8 = new ArrayList<Double>();
@@ -448,12 +467,13 @@ public class SarSpecificParametersGenerator {
         
 //        t8.setValue(Arrays.asList(new double[]{minAlongTrackAmbRatio, maxAlongTrackAmbRatio}));
         t8.setDefinition("urn:ogc:def:property:CEOS:eop:AlongTrackAmbiguityRatio");
-        alongAR.setAbstractDataComponent(t8);
+        alongAR.set(d8);
+        alongAR.setName("Along-Track_Ambiguity_Ratio");
 
 
         DataRecordType.Field acrossAR = mcdr.addNewField();
-        acrossAR.setName("Across-Track Ambiguity Ratio");
-        QuantityRangeType t9 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d9 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t9 = d9.addNewQuantityRange();
         t9.addNewUom().setCode("dB");
         
         List l9 = new ArrayList<Double>();
@@ -463,11 +483,12 @@ public class SarSpecificParametersGenerator {
 //        t9.setValue(Arrays.asList(new double[]{minAcrossTrackAmbRatio, maxAcrossTrackAmbRatio}));
         
         t9.setDefinition("urn:ogc:def:property:CEOS:eop:AcrossTrackAmbiguityRatio");
-        acrossAR.setAbstractDataComponent(t9);
+        acrossAR.set(d9);
+        acrossAR.setName("Across-Track_Ambiguity_Ratio");
 
         DataRecordType.Field neso = mcdr.addNewField();
-        neso.setName("Noise Equivalent S0");
-        QuantityRangeType t10 = QuantityRangeType.Factory.newInstance();
+        QuantityRangeDocument d10 = QuantityRangeDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+        QuantityRangeType t10 = d10.addNewQuantityRange();
         t10.addNewUom().setCode("dB");
         
         List l10 = new ArrayList<Double>();
@@ -477,17 +498,19 @@ public class SarSpecificParametersGenerator {
 //        t10.setValue(Arrays.asList(new double[]{minNoiseEquivalentSO, maxNoiseEquivalentSO}));
         
         t10.setDefinition("urn:ogc:def:property:CEOS:eop:NoiseEquivalentS0");
-        neso.setAbstractDataComponent(t10);
+        neso.set(d10);
+        neso.setName("Noise_Equivalent_S0");
 
         //Polarization modes from 
         for (String polarizationMode : polarizationModes.keySet()) {
             DataRecordType.Field polMode = mcdr.addNewField();
-            polMode.setName("Polarization");
-            CategoryType t11 = CategoryType.Factory.newInstance();
+            CategoryDocument d11 = CategoryDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            CategoryType t11 = d11.addNewCategory();
             t11.setDefinition("urn:ogc:def:property:CEOS:sar:PolarizationMode");
             t11.setValue(polarizationMode);
             t11.addNewCodeSpace().setHref("urn:ogc:def:dictionary:CEOS:sar:PolarizationTypes:v01");
-            polMode.setAbstractDataComponent(t11);
+            polMode.set(d11);
+            polMode.setName("Polarization");
         }
 
         //Set the created structure in the SensorML structure

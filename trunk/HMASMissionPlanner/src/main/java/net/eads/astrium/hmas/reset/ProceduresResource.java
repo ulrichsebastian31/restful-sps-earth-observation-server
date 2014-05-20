@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import net.eads.astrium.dream.xml.generating.OGCNamespacesXmlOptions;
 import net.eads.astrium.hmas.exceptions.DescribeSensorFault;
 import net.eads.astrium.hmas.exceptions.DescribeTaskingFault;
 import net.eads.astrium.hmas.exceptions.GetSensorAvailabilityFault;
@@ -38,6 +39,13 @@ import net.opengis.eosps.x20.DescribeTaskingDocument;
 import net.opengis.eosps.x20.DescribeTaskingResponseDocument;
 import net.opengis.eosps.x20.GetSensorAvailabilityDocument;
 import net.opengis.eosps.x20.GetSensorAvailabilityResponseDocument;
+import net.opengis.eosps.x20.GetSensorAvailabilityResponseType;
+import net.opengis.reset.x10.SensorAvailibilityDocument;
+import net.opengis.reset.x10.SensorDescriptionDocument;
+import net.opengis.reset.x10.TaskingDescriptionDocument;
+import net.opengis.sensorML.x102.SensorMLDocument;
+import net.opengis.sensorML.x102.SensorMLDocument.SensorML;
+import org.apache.xmlbeans.XmlObject;
 
 /**
  *
@@ -67,9 +75,13 @@ public class ProceduresResource extends AbstractResource {
             
             DescribeSensorResponseDocument resp = worker.describeSensor(describeSensor);
             
+            SensorDescriptionDocument doc = SensorDescriptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInnerInstance());
+            SensorDescriptionDocument.SensorDescription sensDesc = doc.addNewSensorDescription();
+            sensDesc.setSensor(resp.getDescribeSensorResponse2().getDescriptionArray(0).
+                            getSensorDescription());
+            
             response = Response.ok(
-                    resp.getDescribeSensorResponse2().getDescriptionArray(0).
-                            getSensorDescription().getData().xmlText(), 
+                    sensDesc.xmlText(OGCNamespacesXmlOptions.getInstance()), 
                     format).build();
             
         } catch (DescribeSensorFault ex) {
@@ -78,7 +90,7 @@ public class ProceduresResource extends AbstractResource {
                 response = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .type(MediaType.APPLICATION_XML)
-                    .entity(ex.getFaultInfo().xmlText())
+                    .entity(ex.getFaultInfo().xmlText(OGCNamespacesXmlOptions.getInstance()))
                     .build();
             }
             else {
@@ -129,7 +141,13 @@ public class ProceduresResource extends AbstractResource {
             
             DescribeTaskingResponseDocument resp = worker.describeTasking(describeTasking);
             
-            response = Response.ok(resp.getDescribeTaskingResponse2().xmlText(), format).build();
+            TaskingDescriptionDocument doc = TaskingDescriptionDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            TaskingDescriptionDocument.TaskingDescription taskDesc = doc.addNewTaskingDescription();
+            taskDesc.setTaskParameters(resp.getDescribeTaskingResponse2().getEoTaskingParameters());
+            
+            String respText = doc.xmlText(OGCNamespacesXmlOptions.getInstance());
+            
+            response = Response.ok(respText, format).build();
             
         } catch (DescribeTaskingFault ex) {
             
@@ -137,7 +155,7 @@ public class ProceduresResource extends AbstractResource {
                 response = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .type(MediaType.APPLICATION_XML)
-                    .entity(ex.getFaultInfo().xmlText())
+                    .entity(ex.getFaultInfo().xmlText(OGCNamespacesXmlOptions.getInstance()))
                     .build();
             }
             else {
@@ -189,7 +207,17 @@ public class ProceduresResource extends AbstractResource {
             SysoRedirect.redirectSysoToFiles("log", "log");
             GetSensorAvailabilityResponseDocument resp = worker.getSensorAvailability(getSensorAvailibility);
             
-            response = Response.ok(resp.xmlText(), format).build();
+            SensorAvailibilityDocument doc = SensorAvailibilityDocument.Factory.newInstance(OGCNamespacesXmlOptions.getInstance());
+            SensorAvailibilityDocument.SensorAvailibility avail = doc.addNewSensorAvailibility();
+            
+            avail.addNewResponsePeriod().setTimePeriod(resp.getGetSensorAvailabilityResponse().getResponsePeriod().getTimePeriod());
+            
+            for (int i = 0; i < resp.getGetSensorAvailabilityResponse().getAvailabilityPeriodArray().length; i++) {
+                GetSensorAvailabilityResponseType.AvailabilityPeriod availI = resp.getGetSensorAvailabilityResponse().getAvailabilityPeriodArray(i);
+                avail.addNewAvailabilityPeriod().setTimePeriod(availI.getTimePeriod());
+            }
+            
+            response = Response.ok(doc.xmlText(OGCNamespacesXmlOptions.getInstance()), format).build();
             
         } catch (GetSensorAvailabilityFault ex) {
             
@@ -197,7 +225,7 @@ public class ProceduresResource extends AbstractResource {
                 response = Response
                     .status(Response.Status.INTERNAL_SERVER_ERROR)
                     .type(MediaType.APPLICATION_XML)
-                    .entity(ex.getFaultInfo().xmlText())
+                    .entity(ex.getFaultInfo().xmlText(OGCNamespacesXmlOptions.getInstance()))
                     .build();
             }
             else {
