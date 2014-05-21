@@ -47,4 +47,40 @@
                 <activatedProfile>linux</activatedProfile>
             </activatedProfiles>
         </action>
+        <action>
+            <actionName>CUSTOM-windows depl</actionName>
+            <displayName>windows depl</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <proxySet>true</proxySet>
+                <proxyHost>172.17.22.250</proxyHost>
+                <proxyPort>80</proxyPort>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>windows</activatedProfile>
+            </activatedProfiles>
+        </action>
+        <action>
+            <actionName>CUSTOM-windowsDepl</actionName>
+            <displayName>windowsDepl</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <proxySet>true</proxySet>
+                <proxyHost>172.17.22.250</proxyHost>
+                <proxyPort>80</proxyPort>
+                <skipTests>true</skipTests>
+            </properties>
+            <activatedProfiles>
+                <activatedProfile>windows</activatedProfile>
+            </activatedProfiles>
+        </action>
     </actions>
