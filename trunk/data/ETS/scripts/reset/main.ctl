@@ -61,15 +61,15 @@
 								</td>
 							</tr>
 							<tr>
-								<td align="left">Reference of the OPT sensors procedure</td>
+								<td align="left">Reference of the sensor</td>
 								<td align="left">
-									<input name="stringvalue.cc.procedure.opt" size="70" type="text" value=""/>
+									<input name="stringvalue.cc.procedure" size="70" type="text" value="S1ASAR"/>
 								</td>
 							</tr>
 							<tr>
-								<td align="left">Reference of the SAR sensors procedure</td>
+								<td align="left">Reference of the sensor type</td>
 								<td align="left">
-									<input name="stringvalue.cc.procedure.sar" size="70" type="text" value="S1ASAR"/>
+									<input name="stringvalue.cc.sensor.type" size="70" type="text" value="SAR"/>
 								</td>
 							</tr>
 						</table>
@@ -80,8 +80,8 @@
 			<!-- ************************************************************************************************* -->
 			<!-- DEFINITION OF COMMON PARAMETERS -->
 			<xsl:variable name="sp.endpoint.HTTP.url" select="$form-values/values/value[@key='stringvalue.sp.endpoint.HTTP.url' ]"/>
-			<xsl:variable name="cc.procedure.opt" select="$form-values/values/value[@key='stringvalue.cc.procedure.opt' ]"/>
-			<xsl:variable name="cc.procedure.sar" select="$form-values/values/value[@key='stringvalue.cc.procedure.sar' ]"/>
+			<xsl:variable name="cc.procedure" select="$form-values/values/value[@key='stringvalue.cc.procedure' ]"/>
+			<xsl:variable name="cc.sensor.type" select="$form-values/values/value[@key='stringvalue.cc.sensor.type' ]"/>
 			<!-- ************************************************************************************************* -->
 					
 			<!-- ############################################################################################################ -->
@@ -126,8 +126,8 @@
 				<ctl:with-param name="cc.resetschema_URL" select="$cc.resetschema_URL"/>
 				<ctl:with-param name="cc.ows_schema_URL" select="$cc.ows_schema_URL"/>
 				<ctl:with-param name="cc.messagedir" select="$cc.messagedir"/>
-				<ctl:with-param name="cc.procedure.opt" select="$cc.procedure.opt"/>
-				<ctl:with-param name="cc.procedure.sar" select="$cc.procedure.sar"/>
+				<ctl:with-param name="cc.procedure" select="$cc.procedure"/>
+				<ctl:with-param name="cc.sensor.type" select="$cc.sensor.type"/>
 			</ctl:call-test>
 <!--			
 			<ctl:message>##############################################</ctl:message>
@@ -139,8 +139,8 @@
 				<ctl:with-param name="cc.resetschema_URL" select="$cc.resetschema_URL"/>
 				<ctl:with-param name="cc.ows_schema_URL" select="$cc.ows_schema_URL"/>
 				<ctl:with-param name="cc.messagedir" select="$cc.messagedir"/>
-				<ctl:with-param name="cc.procedure.opt" select="$cc.procedure.opt"/>
-				<ctl:with-param name="cc.procedure.sar" select="$cc.procedure.sar"/>
+				<ctl:with-param name="cc.procedure" select="$cc.procedure"/>
+				<ctl:with-param name="cc.sensor.type" select="$cc.sensor.type"/>
 			</ctl:call-test>
 <!--			
 			<ctl:message>##############################################</ctl:message>
@@ -152,8 +152,8 @@
 				<ctl:with-param name="cc.resetschema_URL" select="$cc.resetschema_URL"/>
 				<ctl:with-param name="cc.ows_schema_URL" select="$cc.ows_schema_URL"/>
 				<ctl:with-param name="cc.messagedir" select="$cc.messagedir"/>
-				<ctl:with-param name="cc.procedure.opt" select="$cc.procedure.opt"/>
-				<ctl:with-param name="cc.procedure.sar" select="$cc.procedure.sar"/>
+				<ctl:with-param name="cc.procedure" select="$cc.procedure"/>
+				<ctl:with-param name="cc.sensor.type" select="$cc.sensor.type"/>
 			</ctl:call-test>
 			<!--
 			-->
