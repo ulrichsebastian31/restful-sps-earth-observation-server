@@ -1,0 +1,7 @@
+# Visibility Start Time (in the format yyyy-mm-dd_hh:mm:ss)
+2002-03-01_09:20:00
+
+
+# Visibility End Time (in the format yyyy-mm-dd_hh:mm:ss)
+2002-03-01_10:58:46
+

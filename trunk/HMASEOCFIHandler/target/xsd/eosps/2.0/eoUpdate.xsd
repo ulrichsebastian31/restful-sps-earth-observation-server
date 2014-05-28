@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+	xmlns:gml="http://www.opengis.net/gml/3.2" 
+	xmlns:sps="http://www.opengis.net/sps/2.1" 
+	xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+	targetNamespace="http://www.opengis.net/eosps/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd"/>
+  <include schemaLocation="eoCommon.xsd"/>
+  <!-- ================================================= -->
+  <!-- ==========    Response unchanged      =========== -->
+  <element name="UpdateResponse" type="eosps:UpdateResponseType" substitutionGroup="eosps:TaskingResponse"/>
+
+  <complexType name="UpdateResponseType">
+    <complexContent>
+      <extension base="eosps:TaskingResponseType">
+        <sequence>
+          <element name="targetTask" type="anyURI">
+            <annotation>
+              <appinfo>
+                <gml:targetElement>eosps:Task</gml:targetElement>
+              </appinfo>
+              <documentation>Pointer to the (scheduled) task to update.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="UpdateResponsePropertyType">
+    <sequence minOccurs="0">
+      <element ref="eosps:UpdateResponse"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+
+  <!-- ================================================= -->
+  <element name="Update" type="eosps:UpdateType" substitutionGroup="eosps:TaskingRequest"/>
+  <complexType name="UpdateType">
+    <complexContent>
+      <extension base="eosps:TaskingRequestType">
+        <sequence>
+          <element name="targetTask" type="anyURI">
+            <annotation>
+              <appinfo>
+                <gml:targetElement>sps:Task</gml:targetElement>
+              </appinfo>
+              <documentation>Pointer to the (scheduled) task to update.</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="UpdatePropertyType">
+    <sequence minOccurs="0">
+      <element ref="eosps:Update"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+</schema>

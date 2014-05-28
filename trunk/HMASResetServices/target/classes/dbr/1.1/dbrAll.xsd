@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.astrium.eads.net/dbr/1.1" 
+xmlns:dbr="http://www.astrium.eads.net/dbr/1.1" 
+xmlns="http://www.w3.org/2001/XMLSchema" 
+elementFormDefault="qualified" version="1.1 2012-07-24" xml:lang="en">
+	<annotation>
+		<appinfo>dbrAll.xsd 2012-07-24</appinfo>
+		<documentation>This XML Schema Document includes and imports, directly and indirectly, all the XML Schemas needed for endpoints database handling
+		</documentation>
+	</annotation>
+	<!-- ==============================================================
+		includes and imports
+	============================================================== -->
+	<include schemaLocation="dbrCreateDataBase.xsd"/>
+	<include schemaLocation="dbrInsertEntry.xsd"/>
+	<include schemaLocation="dbrUpdateEntry.xsd"/>
+	<include schemaLocation="dbrDeleteEntry.xsd"/>
+	<include schemaLocation="dbrGetEntries.xsd"/>
+	<include schemaLocation="dbrExecuteQuery.xsd"/>
+</schema>

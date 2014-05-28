@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:swes="http://www.opengis.net/swes/2.1" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		targetNamespace="http://www.opengis.net/eosps/2.0" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+	<import namespace="http://www.opengis.net/swes/2.1" schemaLocation="../../swes/2.1/swes.xsd"/>
+	<import namespace="http://www.opengis.net/sps/2.1" schemaLocation="../../sps/2.1/sps.xsd"/>
+	<include schemaLocation="eoCommon.xsd"/>
+	<!-- ================================================= -->
+	<!-- ==============  Request unchanged =============== -->
+	<element name="Cancel" substitutionGroup="swes:ExtensibleRequest" type="sps:CancelType"/>
+	<!--
+	<complexType name="CancelType">
+		<complexContent>
+			<extension base="swes:ExtensibleRequestType">
+				<sequence>
+					<element name="task" type="anyURI">
+						<annotation>
+							<appinfo>
+								<gml:targetElement>sps:Task</gml:targetElement>
+							</appinfo>
+							<documentation>Pointer to the (scheduled) task to cancel.</documentation>
+						</annotation>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="CancelPropertyType">
+		<sequence minOccurs="0">
+			<element ref="sps:Cancel"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+	-->
+	<!-- ================================================= -->
+	<element name="CancelResponse" substitutionGroup="swes:ExtensibleResponse" type="eosps:CancelResponseType"/>
+	<complexType name="CancelResponseType">
+		<complexContent>
+			<extension base="swes:ExtensibleResponseType">
+				<sequence>
+					<element name="result">
+						<annotation>
+							<documentation>report with the outcome of the cancellation request</documentation>
+						</annotation>
+						<complexType>
+							<sequence>
+								<element ref="eosps:StatusReport"/>
+							</sequence>
+						</complexType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="CancelResponsePropertyType">
+		<sequence minOccurs="0">
+			<element ref="eosps:CancelResponse"/>
+		</sequence>
+		<attributeGroup ref="gml:AssociationAttributeGroup"/>
+	</complexType>
+</schema>
