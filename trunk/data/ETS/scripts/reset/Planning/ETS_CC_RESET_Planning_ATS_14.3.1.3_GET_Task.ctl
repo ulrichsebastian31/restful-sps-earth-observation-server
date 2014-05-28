@@ -204,17 +204,21 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:if test="$resp.segment//eosps:status != 'PLANNED'">
-			
-				<ctl:message>The Segment does not have the 'PLANNED' status.</ctl:message>
-				
-				<xsl:if test="$resp.segment//eosps:status != 'REJECTED'">
-					<ctl:message>The Segment does not have the 'REJECTED' status.</ctl:message>
-					<ctl:message>Status <xsl:copy-of select="$resp.segment//eosps:status"/> is not valid.</ctl:message>
-					<ctl:fail/>
-				</xsl:if>
-			</xsl:if>
+			<xsl:variable name="resp.segment.status" select="$resp.segment//eosps:status"/>
 
+			<xsl:choose>
+				<xsl:when test="$resp.segment.status != 'PLANNED'">
+
+				</xsl:when>
+				<xsl:when test="$resp.segment.status != 'REJECTED'">
+
+				</xsl:when>
+				<xsl:otherwise>
+					<ctl:message>Status <xsl:value-of select="$resp.segment.status"/> is not valid.</ctl:message>
+					<ctl:fail/>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 			<xsl:if test="not($resp.segment//eosps:footprint)">
 				<ctl:message>The Segment element does not contain a footprint element.</ctl:message>
 				<ctl:fail/>
