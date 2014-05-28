@@ -1,3 +1,0 @@
-version = ${project.version}
-revision = ${prefix.revision}
-date = ${prefix.committedDate}
