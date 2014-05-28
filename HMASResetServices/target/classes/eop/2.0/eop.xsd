@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:eop="http://earth.esa.int/eop" xmlns:gml="http://www.opengis.net/gml/3.2" elementFormDefault="qualified" targetNamespace="http://earth.esa.int/eop" version="1.2.1beta">
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange-->
+  <element name="Platform" substitutionGroup="gml:AbstractObject" type="eop:PlatformType"/>
+  <complexType name="PlatformType">
+    <sequence>
+      <element name="shortName" type="string">
+        <annotation>
+          <documentation>Platform short name (eg. PHR).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="serialIdentifier" type="string">
+        <annotation>
+          <documentation>Platform serial identifier (eg. for PHR : 1A).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="orbitType" type="eop:OrbitTypeValueType">
+        <annotation>
+          <documentation>High level characterisation of main mission types (GEO/LEO).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="PlatformPropertyType">
+    <sequence>
+      <element ref="eop:Platform"/>
+    </sequence>
+  </complexType>
+  <element name="Histogram" substitutionGroup="gml:AbstractObject" type="eop:HistogramType"/>
+  <complexType name="HistogramType">
+    <sequence>
+      <element minOccurs="0" name="bandId" type="string">
+        <annotation>
+          <documentation>Histrogram specific : identifier of the spectral band used to compute histogram values</documentation>
+        </annotation>
+      </element>
+      <element name="min" type="integer">
+        <annotation>
+          <documentation>Histogram specific : minimum value</documentation>
+        </annotation>
+      </element>
+      <element name="max" type="integer">
+        <annotation>
+          <documentation>Histogram specific : maximum value</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="mean" type="double">
+        <annotation>
+          <documentation>Histogram specific : mean value</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="stdDeviation" type="double">
+        <annotation>
+          <documentation>Histogram specific : standard deviation value</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="HistogramPropertyType">
+    <sequence>
+      <element ref="eop:Histogram"/>
+    </sequence>
+  </complexType>
+  <element name="Acquisition" substitutionGroup="gml:AbstractObject" type="eop:AcquisitionType"/>
+  <complexType name="AcquisitionType">
+    <sequence>
+      <element minOccurs="0" name="orbitNumber" type="integer">
+        <annotation>
+          <documentation>EOLI : orbit (F B b s)&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="lastOrbitNumber" type="integer">
+        <annotation>
+          <documentation>EOLI : lastOrbit (F)&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="orbitDirection" type="eop:OrbitDirectionValueType">
+        <annotation>
+          <documentation>EOLI : orbitDir (F B b s)&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="wrsLongitudeGrid" type="gml:CodeType">
+        <annotation>
+          <documentation>Neutral wrsLongitudeGrid to replace track in track/frame,  K in K/J, etc. The optional attribute "eop:codeSpace" is used to point the reference grid.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="wrsLatitudeGrid" type="gml:CodeType">
+        <annotation>
+          <documentation>Neutral wrsLatitudeGrid to replace frame in track/frame,  J in K/J, etc. The optional attribute "codeSpace" is used to point the reference grid.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="ascendingNodeDate" type="dateTime">
+        <annotation>
+          <documentation>UTC date and time at ascending node of orbit&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="ascendingNodeLongitude" type="gml:MeasureType">
+        <annotation>
+          <documentation>Longitude at ascending node of orbit. should be expressed in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="startTimeFromAscendingNode" type="gml:MeasureType">
+        <annotation>
+          <documentation>Start time of acquisition in milliseconds from Ascending node date.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="completionTimeFromAscendingNode" type="gml:MeasureType">
+        <annotation>
+          <documentation>Completion time of acquisition in milliseconds from Ascending node date.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="orbitDuration" type="gml:MeasureType">
+        <annotation>
+          <documentation>Actual orbit duration in milliseconds.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="acrossTrackIncidenceAngle" type="gml:AngleType">
+        <annotation>
+          <documentation>Across Track Incidence angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="alongTrackIncidenceAngle" type="gml:AngleType">
+        <annotation>
+          <documentation>Along Track Incidence angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="incidenceAngle" type="gml:AngleType">
+        <annotation>
+          <documentation>Global Incidence angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="pitch" type="gml:AngleType">
+        <annotation>
+          <documentation>Pitch angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="roll" type="gml:AngleType">
+        <annotation>
+          <documentation>Roll angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="yaw" type="gml:AngleType">
+        <annotation>
+          <documentation>Yaw angle given in degrees.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="AcquisitionPropertyType">
+    <sequence>
+      <element ref="eop:Acquisition"/>
+    </sequence>
+  </complexType>
+  <simpleType name="CompositeTypeValueType">
+    <restriction base="string">
+      <enumeration value="DAILY"/>
+      <enumeration value="WEEKLY"/>
+      <enumeration value="MONTHLY"/>
+    </restriction>
+  </simpleType>
+  <element name="EarthObservation" substitutionGroup="gml:Observation" type="eop:EarthObservationType"/>
+  <complexType name="EarthObservationType">
+    <complexContent>
+      <extension base="gml:ObservationType">
+        <sequence>
+          <element name="metaDataProperty" type="eop:EarthObservationMetaDataPropertyType"/>
+          <element name="version" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="eop:EarthObservation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="EarthObservationEquipment" substitutionGroup="gml:AbstractFeature" type="eop:EarthObservationEquipmentType"/>
+  <complexType name="EarthObservationEquipmentType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element minOccurs="0" name="platform" type="eop:PlatformPropertyType"/>
+          <element minOccurs="0" name="instrument" type="eop:InstrumentPropertyType"/>
+          <element minOccurs="0" name="sensor" type="eop:SensorPropertyType"/>
+          <element minOccurs="0" name="acquisitionParameters" type="eop:AcquisitionPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationEquipmentPropertyType">
+    <sequence minOccurs="0">
+      <element ref="eop:EarthObservationEquipment"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <simpleType name="ProcessingLevelValueType">
+    <restriction base="string">
+      <enumeration value="1A"/>
+      <enumeration value="1B"/>
+      <enumeration value="2"/>
+      <enumeration value="3"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="AcquisitionTypeValueType">
+    <restriction base="string">
+      <enumeration value="CALIBRATION"/>
+      <enumeration value="NOMINAL"/>
+      <enumeration value="OTHER"/>
+    </restriction>
+  </simpleType>
+  <element name="ArchivingInformation" substitutionGroup="gml:AbstractObject" type="eop:ArchivingInformationType"/>
+  <complexType name="ArchivingInformationType">
+    <sequence>
+      <element name="archivingCenter">
+        <annotation>
+          <documentation>Archiving centre code. Possible values are mission specific and should be retrieved using codespace.</documentation>
+        </annotation>
+      </element>
+      <element name="archivingDate" type="dateTime">
+        <annotation>
+          <documentation>Archiving date time</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="archivingIdentifier">
+        <annotation>
+          <documentation>Local archiving id as created by the mission ground segment that may required to allow subsequent order processing.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ArchivingInformationPropertyType">
+    <sequence>
+      <element ref="eop:ArchivingInformation"/>
+    </sequence>
+  </complexType>
+  <element name="BrowseInformation" substitutionGroup="gml:AbstractObject" type="eop:BrowseInformationType"/>
+  <complexType name="BrowseInformationType">
+    <sequence>
+      <element name="type" type="gml:CodeType">
+        <annotation>
+          <documentation>Browse type. Possible values are : THUMBNAIL, QUICKLOOK and ALBUM.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="subType">
+        <annotation>
+          <documentation>Value is mission specific. Value list can be retrieved with codeSpace. Not used by PHR. For MODIS : OPTICAL, THERMAL&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="referenceSystemIdentifier" type="gml:CodeType">
+        <annotation>
+          <documentation>Indicates if browse is geo-referenced, and thus can be assumed to be displayed directly on a map (in which case should point to a code space for the CRS), when not supplied it is assumed that the browse is provided in "raw" satellite frame of reference.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="fileName" type="string">
+        <annotation>
+          <documentation>Path to the browse image (could be any kind of URL : &#13;
+direct link to the image or WMS/WCS interface), it is assumed that if a client is prepared to "manage" a browse delivered by e.g. WMS they would parse the URL to identify that it contains the OGC standard SERVICE=WMS.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="BrowseInformationPropertyType">
+    <sequence>
+      <element ref="eop:BrowseInformation"/>
+    </sequence>
+  </complexType>
+  <simpleType name="OrbitDirectionValueType">
+    <restriction base="string">
+      <enumeration value="ASCENDING"/>
+      <enumeration value="DESCENDING"/>
+    </restriction>
+  </simpleType>
+  <element name="ProductInformation" substitutionGroup="gml:AbstractObject" type="eop:ProductInformationType"/>
+  <complexType name="ProductInformationType">
+    <sequence>
+      <element minOccurs="0" name="referenceSystemIdentifier" type="gml:CodeType">
+        <annotation>
+          <documentation>Indicates if product is geo-referenced, (in which case should point to a code space for the CRS), when not supplied it is assumed that the browse is provided in "raw" satellite frame of reference.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="fileName" type="string">
+        <annotation>
+          <documentation>Path to the actual product data if available online (could be any kind of URL : &#13;
+direct link to the image or WMS/WCS interface), it is assumed that if a client is prepared to "manage" a product delivered by e.g. WCS they would parse the URL to identify that it contains the OGC standard SERVICE=WCS.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="version" type="string">
+        <annotation>
+          <documentation>Product version.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="size">
+        <annotation>
+          <documentation>Product size (bytes) allowing the user to realise how long a download is likely to take.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ProductInformationPropertyType">
+    <sequence>
+      <element ref="eop:ProductInformation"/>
+    </sequence>
+  </complexType>
+  <simpleType name="OrbitTypeValueType">
+    <restriction base="string">
+      <enumeration value="LEO"/>
+      <enumeration value="GEO"/>
+    </restriction>
+  </simpleType>
+  <element name="DownlinkInformation" substitutionGroup="gml:AbstractObject" type="eop:DownlinkInformationType"/>
+  <complexType name="DownlinkInformationType">
+    <sequence>
+      <element name="acquisitionStation">
+        <annotation>
+          <documentation>Acquisition / receiving station code. Possible values are mission specific and should be retrieved using codespace.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="acquisitionDate" type="dateTime">
+        <annotation>
+          <documentation>Acquisition date time.</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="DownlinkInformationPropertyType">
+    <sequence>
+      <element ref="eop:DownlinkInformation"/>
+    </sequence>
+  </complexType>
+  <element name="Footprint" substitutionGroup="gml:AbstractFeature" type="eop:FootprintType"/>
+  <complexType name="FootprintType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element name="multiExtentOf" type="gml:MultiSurfacePropertyType">
+            <annotation>
+              <documentation>Acquisition footprint coordinates, described by a closed polygon (last point=first point), using CRS:WGS84, Latitude,Longitude pairs (per-WGS84 definition of point ordering, not necessarily per all WFS implementations). Expected structure is gml:Polygon/gml:exterior/gml:LinearRing/gml:posList.&#13;
+&#13;
+eop/EOLI : polygon/coordinates (F B b s)&#13;
+&#13;
+[06-080r4]</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="centerOf" type="gml:PointPropertyType">
+            <annotation>
+              <documentation>Acquisition center coordinates.  Expected structure is gml:Point/gml:pos.&#13;
+&#13;
+eop/EOLI : scCenter/coordinates (F B b s)&#13;
+&#13;
+[06-080r4]</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="FootprintPropertyType">
+    <sequence minOccurs="0">
+      <element ref="eop:Footprint"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="EarthObservationMetaData" substitutionGroup="gml:AbstractObject" type="eop:EarthObservationMetaDataType"/>
+  <complexType name="EarthObservationMetaDataType">
+    <sequence>
+      <element name="identifier" type="string">
+        <annotation>
+          <documentation>Identifier for metadata item, includes ground segment namespace to guarantee uniqueness within EOP.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="doi" type="string">
+        <annotation>
+          <documentation>Digital Object Identifier identifying the product (see http://www.doi.org).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="parentIdentifier" type="string">
+        <annotation>
+          <documentation>Collection Identifier.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="acquisitionType" type="eop:AcquisitionTypeValueType">
+        <annotation>
+          <documentation>Used to distinguish at a high level the appropriateness of the acquisition for "general" use, whether the product is a nominal acquisition, special calibration product or other.&#13;
+Values:&#13;
+      - NOMINAL&#13;
+      - CALIBRATION&#13;
+      - OTHER&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="acquisitionSubType">
+        <annotation>
+          <documentation>The broad value is however too restrictive, so mission specific type definition should refer to mission/ground segment dedicated codeSpace.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="productType" type="gml:CodeType">
+        <annotation>
+          <documentation>Describes product type in case that mixed types are available within a single collection, this is ground segment specific definition.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="status" type="gml:CodeType">
+        <annotation>
+          <documentation>Refers to product status.&#13;
+Values :&#13;
+      - ARCHIVED&#13;
+      - ACQUIRED&#13;
+      - CANCELLED&#13;
+      - FAILED &#13;
+      - PLANNED&#13;
+      - POTENTIAL&#13;
+      - REJECTED&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="statusDetail" type="string">
+        <annotation>
+          <documentation>This field refers to the eop:status value. It should be used to motivate the reason of a failure deletion or rejection&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="downlinkedTo" type="eop:DownlinkInformationPropertyType"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="archivedIn" type="eop:ArchivingInformationPropertyType"/>
+      <element minOccurs="0" name="imageQualityDegradation" type="gml:MeasureType">
+        <annotation>
+          <documentation>Quality degradation percentage (i.e. uom='%').&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="imageQualityDegradationQuotationMode" type="gml:CodeType">
+        <annotation>
+          <documentation>Indicator to know how the quality degradation percentage has been calculated.&#13;
+&#13;
+Value : AUTOMATIC, MANUAL&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="histograms" type="eop:HistogramPropertyType"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="composedOf">
+        <annotation>
+          <documentation>Link to an EO product that is part of this EO product (e.g. a phr:DataStrip is composed of one or more phr:Scene).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+        <complexType>
+          <complexContent>
+            <extension base="gml:AbstractMemberType">
+              <sequence minOccurs="0">
+                <element ref="eop:EarthObservation"/>
+              </sequence>
+              <attributeGroup ref="gml:AssociationAttributeGroup"/>
+            </extension>
+          </complexContent>
+        </complexType>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="subsetOf">
+        <annotation>
+          <documentation>Link to the "father" EO product (e.g. a phr:Scene is a subset of a phr:DataStrip).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+        <complexType>
+          <complexContent>
+            <extension base="gml:AbstractMemberType">
+              <sequence minOccurs="0">
+                <element ref="eop:EarthObservation"/>
+              </sequence>
+              <attributeGroup ref="gml:AssociationAttributeGroup"/>
+            </extension>
+          </complexContent>
+        </complexType>
+      </element>
+      <element maxOccurs="unbounded" minOccurs="0" name="linkedWith">
+        <annotation>
+          <documentation>Specify a link to another EO product (e.g. ERS1 and ERS2 interferometric pair).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+        <complexType>
+          <complexContent>
+            <extension base="gml:AbstractMemberType">
+              <sequence minOccurs="0">
+                <element ref="eop:EarthObservation"/>
+              </sequence>
+              <attributeGroup ref="gml:AssociationAttributeGroup"/>
+            </extension>
+          </complexContent>
+        </complexType>
+      </element>
+      <element minOccurs="0" name="processing" type="eop:ProcessingInformationPropertyType"/>
+      <element maxOccurs="unbounded" minOccurs="0" name="vendorSpecific" type="eop:SpecificInformationPropertyType"/>
+    </sequence>
+  </complexType>
+  <complexType name="EarthObservationMetaDataPropertyType">
+    <sequence>
+      <element ref="eop:EarthObservationMetaData"/>
+    </sequence>
+  </complexType>
+  <element name="Instrument" substitutionGroup="gml:AbstractObject" type="eop:InstrumentType"/>
+  <complexType name="InstrumentType">
+    <sequence>
+      <element name="shortName" type="string">
+        <annotation>
+          <documentation>Instrument short name&#13;
+&#13;
+e.g. EOLI : instShNm.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="InstrumentPropertyType">
+    <sequence>
+      <element ref="eop:Instrument"/>
+    </sequence>
+  </complexType>
+  <element name="SpecificInformation" substitutionGroup="gml:AbstractObject" type="eop:SpecificInformationType"/>
+  <complexType name="SpecificInformationType">
+    <sequence>
+      <element name="localAttribute" type="string">
+        <annotation>
+          <documentation>Container for ad-hoc metadata that does not merit a mission specific schema or extension, the localAttribute describes the name of the attribute&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="localValue" type="string">
+        <annotation>
+          <documentation>Container for ad-hoc metadata that does not merit a mission specific schema or extension, the localAttribute describes the value of the attribute&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SpecificInformationPropertyType">
+    <sequence>
+      <element ref="eop:SpecificInformation"/>
+    </sequence>
+  </complexType>
+  <element name="EarthObservationResult" substitutionGroup="gml:AbstractFeature" type="eop:EarthObservationResultType"/>
+  <complexType name="EarthObservationResultType">
+    <complexContent>
+      <extension base="gml:AbstractFeatureType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="browse" type="eop:BrowseInformationPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="product" type="eop:ProductInformationPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="mask" type="eop:MaskInformationPropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationResultPropertyType">
+    <sequence minOccurs="0">
+      <element ref="eop:EarthObservationResult"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Sensor" substitutionGroup="gml:AbstractObject" type="eop:SensorType"/>
+  <complexType name="SensorType">
+    <sequence>
+      <element minOccurs="0" name="sensorType" type="gml:CodeType"/>
+      <element minOccurs="0" name="operationalMode">
+        <annotation>
+          <documentation>Sensor mode. Possible values are mission specific and should be retrieved using codespace. (eg. PHR : PA, XS or PX).&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="resolution" type="gml:MeasureType">
+        <annotation>
+          <documentation>Image resolution.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="swathIdentifier">
+        <annotation>
+          <documentation>Swath identifier (e.g. Envisat ASAR has 7 distinct swaths (I1,I2,I3...I7) that correspond to precise incidence angles for the sensor). Value list can be retrieved with codeSpace.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="SensorPropertyType">
+    <sequence>
+      <element ref="eop:Sensor"/>
+    </sequence>
+  </complexType>
+  <element name="ProcessingInformation" substitutionGroup="gml:AbstractObject" type="eop:ProcessingInformationType"/>
+  <complexType name="ProcessingInformationType">
+    <sequence>
+      <element minOccurs="0" name="processingCenter">
+        <annotation>
+          <documentation>Processing centre code. Possible values are mission specific and should be retrieved using codespace.</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="processingDate" type="dateTime">
+        <annotation>
+          <documentation>Processing date time</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="compositeType" type="eop:CompositeTypeValueType">
+        <annotation>
+          <documentation>Composite type of product, if available</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="method" type="string">
+        <annotation>
+          <documentation>Method used to compute datalayer. (e.g. Kalman filtering, ROSE)</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="methodVersion" type="string">
+        <annotation>
+          <documentation>Method version (e.g. 1.0)</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="processorName" type="string">
+        <annotation>
+          <documentation>Processor sofware name (e.g. FastROSE)</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="processorVersion" type="string">
+        <annotation>
+          <documentation>Processor software version (e.g. 1.0)</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="processingLevel" type="eop:ProcessingLevelValueType">
+        <annotation>
+          <documentation>Processing level applied to the product</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="nativeProductFormat" type="string">
+        <annotation>
+          <documentation>Native product format</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="ProcessingInformationPropertyType">
+    <sequence>
+      <element ref="eop:ProcessingInformation"/>
+    </sequence>
+  </complexType>
+  <element name="MaskInformation" substitutionGroup="gml:AbstractObject" type="eop:MaskInformationType"/>
+  <complexType name="MaskInformationType">
+    <sequence>
+      <element name="type" type="gml:CodeType">
+        <annotation>
+          <documentation>Mask type. Possible values are : SNOW, CLOUD and QUALITY.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="format" type="gml:CodeType">
+        <annotation>
+          <documentation>Mask format. Possible values are : RASTER or VECTOR.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element minOccurs="0" name="referenceSystemIdentifier" type="gml:CodeType">
+        <annotation>
+          <documentation>Indicates if mask is geo-referenced, and thus can be assumed to be displayed directly on a map (in which case should point to a code space for the CRS), when not supplied it is assumed that the mask is provided in "raw" satellite frame of reference.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+      <element name="fileName" type="string">
+        <annotation>
+          <documentation>Path to the mask (could be any kind of URL : &#13;
+direct link to the image or WMS/WCS interface in case of RASTER mask; direct link to the file or WFS interface in case of VECTOR file), it is assumed that if a client is prepared to "manage" a mask delivered by e.g. WMS they would parse the URL to identify that it contains the OGC standard SERVICE=WMS.&#13;
+&#13;
+[06-080r4]</documentation>
+        </annotation>
+      </element>
+    </sequence>
+  </complexType>
+  <complexType name="MaskInformationPropertyType">
+    <sequence>
+      <element ref="eop:MaskInformation"/>
+    </sequence>
+  </complexType>
+</schema>

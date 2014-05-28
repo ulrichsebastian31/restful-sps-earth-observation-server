@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid XML Studio Developer Edition 9.0.11.3078 (http://www.liquid-technologies.com)-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:gml="http://www.opengis.net/gml/3.2" 
+		xmlns:eosps="http://www.opengis.net/eosps/2.0" 
+		xmlns:swe="http://www.opengis.net/swe/2.0" 
+		xmlns:sps="http://www.opengis.net/sps/2.1" 
+		attributeFormDefault="unqualified" 
+		elementFormDefault="qualified" targetNamespace="http://www.opengis.net/eosps/2.0" >
+    <import schemaLocation="http://schemas.opengis.net/sweCommon/2.0/swe.xsd" namespace="http://www.opengis.net/swe/2.0" />
+    <import schemaLocation="../../eop/2.0/eop.xsd" namespace="http://earth.esa.int/eop" />
+    <import schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd" namespace="http://www.opengis.net/gml/3.2" />
+    <annotation>
+        <documentation>EO SPS schema for tasking parameters</documentation>
+    </annotation>
+    <element name="TaskingParameters" type="eosps:TaskingParametersType">
+        <annotation>
+            <documentation>Caracteristics of a task request</documentation>
+        </annotation>
+    </element>
+    <complexType name="TaskingParametersType">
+        <choice>
+            <element ref="eosps:CoverageProgrammingRequest" />
+            <element ref="eosps:SwathProgrammingRequest" />
+        </choice>
+    </complexType>
+    <element name="CoverageProgrammingRequest" type="eosps:CoverageProgrammingRequestType">
+        <annotation>
+            <documentation>Coverage Programming Request</documentation>
+        </annotation>
+    </element>
+    <complexType name="CoverageProgrammingRequestType">
+        <sequence>
+            <element ref="eosps:RegionOfInterest" />
+            <element ref="eosps:TimeOfInterest" />
+            <element ref="eosps:QualityOfService" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>Find possible values</documentation>
+                </annotation>
+            </element>
+            <element ref="eosps:AcquisitionType" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:ValidationParameters" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="SwathProgrammingRequest" type="eosps:SwathProgrammingRequestType">
+        <annotation>
+            <documentation>Swath Programming Request</documentation>
+        </annotation>
+    </element>
+    <complexType name="SwathProgrammingRequestType">
+        <sequence>
+            <element ref="eosps:SwathSegment" />
+            <element ref="eosps:TimeOfInterest" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:QualityOfService" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:AcquisitionType" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:ValidationParameters" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="QualityOfService" type="eosps:QualityOfServiceType">
+        <annotation>
+            <documentation>Quality Of Service</documentation>
+        </annotation>
+    </element>
+    <complexType name="QualityOfServiceType">
+        <sequence>
+            <element name="PriorityLevel" type="swe:CategoryType">
+                <annotation>
+                    <documentation>STANDARD or HIGH</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+    <element name="SwathSegment" type="eosps:SwathSegmentType">
+        <annotation>
+            <documentation>Swath Segment</documentation>
+        </annotation>
+    </element>
+    <complexType name="SwathSegmentType">
+        <sequence>
+            <element name="StartOrbit" type="swe:CountType" />
+            <element name="StopOrbit" type="swe:CountType" />
+            <element name="StartFrame" type="swe:CountType" />
+            <element name="StopFrame" type="swe:CountType" />
+            <element name="Cycle" type="swe:CountType" minOccurs="0" maxOccurs="1" />
+            <element name="Track" type="swe:CountType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="RegionOfInterest" type="eosps:RegionOfInterestType">
+        <annotation>
+            <documentation>Region of Interest</documentation>
+        </annotation>
+    </element>
+    <complexType name="RegionOfInterestType">
+        <sequence>
+            <choice minOccurs="1" maxOccurs="unbounded">
+                <element name="Polygon" type="gml:PolygonType" />
+                <element name="Circle" type="gml:CircleType" />
+            </choice>
+        </sequence>
+    </complexType>
+    <element name="TimeOfInterest" type="eosps:TimeOfInterestType">
+        <annotation>
+            <documentation>Time of Interest</documentation>
+        </annotation>
+    </element>
+    <complexType name="TimeOfInterestType">
+        <sequence>
+            <element ref="eosps:SurveyPeriod" minOccurs="0" maxOccurs="unbounded" />
+            <element ref="eosps:TimeSeries"  minOccurs="0" maxOccurs="unbounded" />
+        </sequence>
+    </complexType>
+    <element name="TimeSeries" type="eosps:TimeSeriesType">
+        <annotation>
+            <documentation>TimeSeries</documentation>
+        </annotation>
+    </element>
+    <complexType name="TimeSeriesType">
+        <sequence>
+            <element ref="eosps:SurveyPeriod" />
+            <element name="Occurences" type="swe:CountType" />
+            <element name="PeriodicityRange" type="swe:QuantityRangeType" />
+            <element name="LatestStart" type="swe:TimeType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="SurveyPeriod">
+        <annotation>
+            <documentation>SurveyPeriod</documentation>
+        </annotation>
+		<complexType>
+			<sequence>
+				<element ref="gml:TimePeriod"/>
+			</sequence>
+		</complexType>
+    </element>
+    <element name="AcquisitionType" type="eosps:AcquisitionTypeType">
+        <annotation>
+            <documentation>Acquisition Type</documentation>
+        </annotation>
+    </element>
+    <complexType name="AcquisitionTypeType">
+        <sequence>
+            <choice minOccurs="1" maxOccurs="unbounded">
+                <element ref="eosps:MonoscopicAcquisition" />
+                <element ref="eosps:StereoscopicAcquisition" />
+            </choice>
+        </sequence>
+    </complexType>
+    <element name="MonoscopicAcquisition" type="eosps:MonoscopicAcquisitionType">
+        <annotation>
+            <documentation>Monoscopic Acquisition</documentation>
+        </annotation>
+    </element>
+    <complexType name="MonoscopicAcquisitionType">
+        <sequence>
+            <element name="CoverageType" type="swe:CategoryType" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>SINGLE OR MULTIPLE</documentation>
+                </annotation>
+            </element>
+            <element name="BHRatio" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:1-->
+            <element name="MaxCoupleDelay" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:d-->
+            <element ref="eosps:AcquisitionAngle" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:AcquisitionParameters" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="StereoscopicAcquisition" type="eosps:StereoscopicAcquisitionType">
+        <annotation>
+            <documentation>Stereoscopic Acquisition</documentation>
+        </annotation>
+    </element>
+    <complexType name="StereoscopicAcquisitionType">
+        <sequence>
+            <element name="CoverageType" type="swe:CategoryType" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>SINGLE OR MULTIPLE</documentation>
+                </annotation>
+            </element>
+            <element ref="eosps:AcquisitionAngle" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:AcquisitionParameters" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="AcquisitionAngle" type="eosps:AcquisitionAngleType">
+        <annotation>
+            <documentation>AcquisitionAngle</documentation>
+        </annotation>
+    </element>
+    <complexType name="AcquisitionAngleType">
+        <sequence>
+            <element ref="eosps:PointingRange" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:IncidenceRange" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="IncidenceRange" type="eosps:IncidenceRangeType">
+        <annotation>
+            <documentation>IncidenceRange</documentation>
+        </annotation>
+    </element>
+    <complexType name="IncidenceRangeType">
+        <sequence>
+            <element name="AzimuthAngle" type="swe:QuantityRangeType" />
+            <!-- uom deg-->
+            <element name="ElevationAngle" type="swe:QuantityRangeType" />
+            <!-- uom deg-->
+        </sequence>
+    </complexType>
+    <element name="PointingRange" type="eosps:PointingRangeType">
+        <annotation>
+            <documentation>PointingRange</documentation>
+        </annotation>
+    </element>
+    <complexType name="PointingRangeType">
+        <sequence>
+            <element name="AlongTrackAngle" type="swe:QuantityRangeType" />
+            <!-- uom deg-->
+            <element name="AcrossTrackAngle" type="swe:QuantityRangeType" />
+            <!-- uom deg-->
+        </sequence>
+    </complexType>
+    <element name="AcquisitionParameters" type="eosps:AcquisitionParametersType">
+        <annotation>
+            <documentation>AcquisitionParameters</documentation>
+        </annotation>
+    </element>
+    <complexType name="AcquisitionParametersType">
+        <sequence>
+            <element ref="eosps:AcquisitionParametersOPT" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:AcquisitionParametersSAR" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="AcquisitionParametersOPT" type="eosps:AcquisitionParametersOPTType">
+        <annotation>
+            <documentation>AcquisitionParametersOPT</documentation>
+        </annotation>
+    </element>
+    <complexType name="AcquisitionParametersOPTType">
+        <sequence>
+            <element name="GroundResolution" type="swe:QuantityRangeType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:m-->
+            <element name="MinLuminosity" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:%-->
+            <element name="InstrumentMode" type="swe:CategoryType" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>PANCHROMATIC or MULTISPECTRAL</documentation>
+                </annotation>
+            </element>
+            <element name="FusionAccepted" type="swe:BooleanType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="AcquisitionParametersSAR" type="eosps:AcquisitionParametersSARType">
+        <annotation>
+            <documentation>AcquisitionParametersSAR</documentation>
+        </annotation>
+    </element>
+    <complexType name="AcquisitionParametersSARType">
+        <sequence>
+            <element name="GroundResolution" type="swe:QuantityRangeType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:m-->
+            <element name="InstrumentMode" type="swe:CategoryType" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>PANCHROMATIC or MULTISPECTRAL</documentation>
+                </annotation>
+            </element>
+            <element name="PolarizationMode" type="swe:CategoryType" minOccurs="0" maxOccurs="1">
+                <annotation>
+                    <documentation>horizontal or vertical</documentation>
+                </annotation>
+            </element>
+            <element name="FusionAccepted" type="swe:BooleanType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="ValidationParameters" type="eosps:ValidationParametersType">
+        <annotation>
+            <documentation>ValidationParameters</documentation>
+        </annotation>
+    </element>
+    <complexType name="ValidationParametersType">
+        <sequence>
+            <element ref="eosps:ValidationParametersOPT" minOccurs="0" maxOccurs="1" />
+            <element ref="eosps:ValidationParametersSAR" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="ValidationParametersOPT" type="eosps:ValidationParametersOPTType">
+        <annotation>
+            <documentation>ValidationParametersOPT</documentation>
+        </annotation>
+    </element>
+    <complexType name="ValidationParametersOPTType">
+        <sequence>
+            <element name="MaxCloudCover" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:%-->
+            <element name="MaxSnowCover" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:%-->
+            <element name="MaxSunGlint" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:%-->
+            <element name="HazeAccepted" type="swe:BooleanType" minOccurs="0" maxOccurs="1" />
+            <element name="SandWindAccepted" type="swe:BooleanType" minOccurs="0" maxOccurs="1" />
+        </sequence>
+    </complexType>
+    <element name="ValidationParametersSAR" type="eosps:ValidationParametersSARType">
+        <annotation>
+            <documentation>ValidationParametersSAR</documentation>
+        </annotation>
+    </element>
+    <complexType name="ValidationParametersSARType">
+        <sequence>
+            <element name="MaxNoiseLevel" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:dB-->
+            <element name="MaxAmbiguityLevel" type="swe:QuantityType" minOccurs="0" maxOccurs="1" />
+            <!-- to define uom:dB-->
+        </sequence>
+    </complexType>
+</schema>

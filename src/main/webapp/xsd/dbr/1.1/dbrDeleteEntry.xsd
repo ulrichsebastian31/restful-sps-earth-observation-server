@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<schema xmlns:dbr="http://www.astrium.eads.net/dbr/1.1" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.astrium.eads.net/dbr/1.1" xmlns="http://www.w3.org/2001/XMLSchema">
+    <annotation>
+        <documentation>Schema for the DeleteEntry operation</documentation>
+    </annotation>
+    <!-- ================================================= -->
+    <element name="DeleteEntry" type="dbr:DeleteEntryType" />
+    <complexType name="DeleteEntryType">
+        <sequence>
+            <element name="UserName" type="string">
+                <annotation>
+                    <documentation>UserName</documentation>
+                </annotation>
+            </element>
+            <element name="Password" type="string">
+                <annotation>
+                    <documentation>Password</documentation>
+                </annotation>
+            </element>
+			<element name="DataBaseName" type="string">
+                <annotation>
+                    <documentation>DataBaseName</documentation>
+                </annotation>
+            </element>
+            <element name="TableName" type="string">
+                <annotation>
+                    <documentation>TableName</documentation>
+                </annotation>
+            </element>
+            <element name="Parameter" maxOccurs="unbounded">
+                <complexType>
+                    <attribute name="Name" type="string" />
+                    <attribute name="Value" type="string" />
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+    <element name="DeleteEntryResponse" type="dbr:DeleteEntryResponseType" />
+    <complexType name="DeleteEntryResponseType">
+        <sequence>
+            <element name="response" type="string" maxOccurs="unbounded">
+                <annotation>
+                    <documentation>the entry deleted if successful (if more than one entry is deleted, all of them)</documentation>
+                </annotation>
+            </element>
+        </sequence>
+    </complexType>
+</schema>

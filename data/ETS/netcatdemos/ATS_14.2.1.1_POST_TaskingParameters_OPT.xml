@@ -1,0 +1,99 @@
+<eosps:eoTaskingParameters xmlns:eosps="http://www.opengis.net/eosps/2.0" xmlns:sps="http://www.opengis.net/sps/2.1" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:swe="http://www.opengis.net/swe/2.0">
+	<eosps:CoverageProgrammingRequest>
+		<eosps:RegionOfInterest>
+			<eosps:Polygon gml:id="Region_Of_Interest">
+				<gml:exterior>
+					<gml:LinearRing>
+						<gml:coordinates decimal="." cs="," ts=" ">4.46,42.19 8.14,42.19 8.14,51.05 4.46,51.05 4.46,42.19</gml:coordinates>
+					</gml:LinearRing>
+				</gml:exterior>
+			</eosps:Polygon>
+		</eosps:RegionOfInterest>
+		<eosps:TimeOfInterest>
+			<eosps:SurveyPeriod>
+				<gml:TimePeriod gml:id="Survey_Period">
+					<gml:beginPosition>2013-08-01T00:00:00Z</gml:beginPosition>
+					<gml:endPosition>2013-08-10T00:00:00Z</gml:endPosition>
+				</gml:TimePeriod>
+			</eosps:SurveyPeriod>
+		</eosps:TimeOfInterest>
+		<eosps:AcquisitionType>
+			<eosps:MonoscopicAcquisition>
+				<eosps:AcquisitionAngle>
+					<eosps:PointingRange>
+						<eosps:AlongTrackAngle>
+							<swe:label>Pointing_Along_Track_Angle</swe:label>
+							<swe:uom code="deg"/>
+							<swe:value>-90.0 90.0</swe:value>
+						</eosps:AlongTrackAngle>
+						<eosps:AcrossTrackAngle>
+							<swe:label>Pointing_Across_Track_Angle</swe:label>
+							<swe:uom code="deg"/>
+							<swe:value>-90.0 90.0</swe:value>
+						</eosps:AcrossTrackAngle>
+					</eosps:PointingRange>
+					<eosps:IncidenceRange>
+						<eosps:AzimuthAngle>
+							<swe:label>Incidence_Azimuth_Angle</swe:label>
+							<swe:uom code="deg"/>
+							<swe:value>-90.0 90.0</swe:value>
+						</eosps:AzimuthAngle>
+						<eosps:ElevationAngle>
+							<swe:label>Incidence_Elevation_Angle</swe:label>
+							<swe:uom code="deg"/>
+							<swe:value>-90.0 90.0</swe:value>
+						</eosps:ElevationAngle>
+					</eosps:IncidenceRange>
+				</eosps:AcquisitionAngle>
+				<eosps:AcquisitionParameters>
+					<eosps:AcquisitionParametersOPT>
+						<eosps:GroundResolution>
+							<swe:label>Ground_Resolution</swe:label>
+							<swe:uom code="m"/>
+							<swe:value>10.0 100.0</swe:value>
+						</eosps:GroundResolution>
+						<eosps:MinLuminosity>
+							<swe:label>Minimum_Luminosity</swe:label>
+							<swe:uom code="W"/>
+						</eosps:MinLuminosity>
+						<eosps:InstrumentMode>
+							<swe:label>Instrument_Mode</swe:label>
+							<swe:value>MSI</swe:value>
+						</eosps:InstrumentMode>
+						<eosps:FusionAccepted>
+							<swe:label>Coverage_Type</swe:label>
+							<swe:value>true</swe:value>
+						</eosps:FusionAccepted>
+					</eosps:AcquisitionParametersOPT>
+				</eosps:AcquisitionParameters>
+			</eosps:MonoscopicAcquisition>
+		</eosps:AcquisitionType>
+		<eosps:ValidationParameters>
+			<eosps:ValidationParametersOPT>
+				<eosps:MaxCloudCover>
+					<swe:label>Cloud_Cover</swe:label>
+					<swe:uom code="%"/>
+					<swe:value>30.0</swe:value>
+				</eosps:MaxCloudCover>
+				<eosps:MaxSnowCover>
+					<swe:label>Snow_Cover</swe:label>
+					<swe:uom code="%"/>
+					<swe:value>30.0</swe:value>
+				</eosps:MaxSnowCover>
+				<eosps:MaxSunGlint>
+					<swe:label>Maximum_Sun_Glint</swe:label>
+					<swe:uom code="%"/>
+					<swe:value>30.0</swe:value>
+				</eosps:MaxSunGlint>
+				<eosps:HazeAccepted>
+					<swe:label>Haze_accepted</swe:label>
+					<swe:value>true</swe:value>
+				</eosps:HazeAccepted>
+				<eosps:SandWindAccepted>
+					<swe:label>Sand_Wind_Accepted</swe:label>
+					<swe:value>true</swe:value>
+				</eosps:SandWindAccepted>
+			</eosps:ValidationParametersOPT>
+		</eosps:ValidationParameters>
+	</eosps:CoverageProgrammingRequest>
+</eosps:eoTaskingParameters>

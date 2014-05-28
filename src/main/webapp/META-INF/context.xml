@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/HMASResetServices">
+<Resource name="jdbc/HMASDatabase" auth="Container" type="javax.sql.DataSource" 
+    removeAbandoned="true" removeAbandonedTimeout="30" maxActive="80"   
+    maxIdle="30" maxWait="10000" username="postgres" password="postgres"
+    driverClassName="org.postgresql.Driver"
+    url = "jdbc:postgresql://127.0.0.1:5432/HMASDatabase" useUnicode="true"
+    characterEncoding="utf-8" characterSetResults="utf8"/>
+</Context>

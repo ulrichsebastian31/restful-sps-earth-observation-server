@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<swe:DataRecord definition="urn:ogc:def:data:CSML:Trajectory"  
+   xmlns:swe="http://www.opengis.net/swe/2.0"
+   xmlns:gml="http://www.opengis.net/gml/3.2"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xsi:schemaLocation="http://www.opengis.net/swe/2.0 http://schemas.opengis.net/sweCommon/2.0/swe.xsd">
+   <!-- -->
+   <swe:field name="domainSet">
+      <swe:DataArray>
+         <swe:elementCount>
+            <swe:Count>
+               <swe:value>100</swe:value>
+            </swe:Count>
+         </swe:elementCount>
+         <swe:elementType name="samplingPoint">
+            <swe:DataRecord definition="urn:ogc:data:ISO19123:PointSeriesCoverage">
+               <swe:field name="time">
+                  <swe:Time definition="urn:ogc:def:property:OGC::SamplingTime">
+                     <swe:label>Sampling Time</swe:label>
+                     <swe:uom xlink:href="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
+                  </swe:Time>
+               </swe:field>
+               <swe:field name="location">
+                  <swe:Vector definition="urn:ogc:def:property:OGC::SamplingLocation" referenceFrame="urn:ogc:def:crs:EPSG:7.1:4979">
+                     <swe:label>Sampling Location</swe:label>
+                     <swe:coordinate name="lat">
+                        <swe:Quantity definition="urn:ogc:def:property:OGC::GeodeticLatitude" axisID="Lat">
+                           <swe:uom code="deg"/>
+                        </swe:Quantity>
+                     </swe:coordinate>
+                     <swe:coordinate name="lon">
+                        <swe:Quantity definition="urn:ogc:def:property:OGC::Longitude" axisID="Long">
+                           <swe:uom code="deg"/>
+                        </swe:Quantity>
+                     </swe:coordinate>
+                     <swe:coordinate name="alt">
+                        <swe:Quantity definition="urn:ogc:def:property:OGC::EllipsoidalHeight" axisID="h">
+                           <swe:uom code="m"/>
+                        </swe:Quantity>
+                     </swe:coordinate>
+                  </swe:Vector>
+               </swe:field>
+            </swe:DataRecord>
+         </swe:elementType>
+      </swe:DataArray>
+   </swe:field>
+   <!-- -->
+   <swe:field name="rangeValues">
+      <swe:DataArray>
+         <swe:elementCount>
+            <swe:Count>
+               <swe:value>100</swe:value>
+            </swe:Count>
+         </swe:elementCount>
+         <swe:elementType name="rangeSet">
+            <swe:DataRecord>
+               <swe:field name="property1">
+                  <swe:Time definition="urn:ogc:def:property:OGC::MyControlledProperty1">
+                     <swe:label>Property 1</swe:label>
+                     <swe:uom code="degC"/>
+                  </swe:Time>
+               </swe:field>
+               <swe:field name="property2">
+                  <swe:Time definition="urn:ogc:def:property:OGC::MyControlledProperty2">
+                     <swe:label>Property 2</swe:label>
+                     <swe:uom code="%"/>
+                  </swe:Time>
+               </swe:field>
+               <swe:field name="property3">
+                  <swe:Time definition="urn:ogc:def:property:OGC::MyControlledProperty1">
+                     <swe:label>Property 3</swe:label>
+                     <swe:uom code="m"/>
+                  </swe:Time>
+               </swe:field>
+            </swe:DataRecord>
+         </swe:elementType>
+      </swe:DataArray>
+   </swe:field>
+</swe:DataRecord>

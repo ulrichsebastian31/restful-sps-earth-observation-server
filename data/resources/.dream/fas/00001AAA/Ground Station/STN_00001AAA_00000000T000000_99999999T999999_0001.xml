@@ -1,0 +1,817 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Earth_Explorer_File xmlns="http://eop-cfi.esa.int/CFI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="2.1" xsi:schemaLocation="http://eop-cfi.esa.int/CFI http://eop-cfi.esa.int/CFI/EE_CFI_SCHEMAS/EO_OPER_INT_SATCFG_0201.XSD">
+     <Earth_Explorer_Header>
+          <Fixed_Header/>
+          <File_Name>STN_00001AAA_00000000T000000_99999999T999999_0001.xml</File_Name>
+          <File_Description>Satellite Configuration</File_Description>
+          <Notes>Satellite Configuration</Notes>
+          <Mission>00001AAA</Mission>
+          <File_Class/>
+          <File_Type>INT_SATCFG</File_Type>
+          <File_Version>0001</File_Version>
+          <Validity_Period>
+               <Validity_Start>00000000T000000</Validity_Start>
+               <Validity_Stop>99999999T999999</Validity_Stop>
+          </Validity_Period>
+          <Source>
+               <System>FAS</System>
+               <Creator/>
+               <Creator_Version/>
+               <Creation_Date>20140403T094556</Creation_Date>
+          </Source>
+          <Variable_Header/>
+     </Earth_Explorer_Header>
+     <Data_Block type="xml">
+          <List_of_Ground_Stations count="3">
+               <Ground_Station>
+                    <Station_id>GFUCINBX</Station_id>
+                    <Descriptor>Fucino (ITALY)</Descriptor>
+                    <Antenna>X-BAND</Antenna>
+                    <Purpose>GLOBAL + REGIONAL</Purpose>
+                    <Type/>
+                    <Location>
+                         <Long unit="deg">+013.60399</Long>
+                         <Lat unit="deg">+041.97800</Lat>
+                         <Alt unit="m">+663.00000</Alt>
+                    </Location>
+                    <Default_El unit="deg">+005.00000</Default_El>
+                    <List_of_Mask_Points count="73">
+                         <Mask_Point>
+                              <Az unit="deg">+000.00000</Az>
+                              <El unit="deg">+004.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+005.00000</Az>
+                              <El unit="deg">+005.07000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+010.00000</Az>
+                              <El unit="deg">+004.88999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+015.00000</Az>
+                              <El unit="deg">+004.59999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+020.00000</Az>
+                              <El unit="deg">+003.14999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+025.00000</Az>
+                              <El unit="deg">+002.58300</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+030.00000</Az>
+                              <El unit="deg">+002.39999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+035.00000</Az>
+                              <El unit="deg">+003.68000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+040.00000</Az>
+                              <El unit="deg">+003.04999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+045.00000</Az>
+                              <El unit="deg">+002.93000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+050.00000</Az>
+                              <El unit="deg">+003.39999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+055.00000</Az>
+                              <El unit="deg">+002.83000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+060.00000</Az>
+                              <El unit="deg">+003.29999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+065.00000</Az>
+                              <El unit="deg">+004.29999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+070.00000</Az>
+                              <El unit="deg">+005.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+075.00000</Az>
+                              <El unit="deg">+005.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+080.00000</Az>
+                              <El unit="deg">+004.66999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+085.00000</Az>
+                              <El unit="deg">+004.59999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+090.00000</Az>
+                              <El unit="deg">+004.59999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+095.00000</Az>
+                              <El unit="deg">+004.20000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+100.00000</Az>
+                              <El unit="deg">+003.89999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+105.00000</Az>
+                              <El unit="deg">+003.79999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+110.00000</Az>
+                              <El unit="deg">+003.79999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+115.00000</Az>
+                              <El unit="deg">+004.20000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+120.00000</Az>
+                              <El unit="deg">+003.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+125.00000</Az>
+                              <El unit="deg">+003.79999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+130.00000</Az>
+                              <El unit="deg">+003.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+135.00000</Az>
+                              <El unit="deg">+004.09999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+140.00000</Az>
+                              <El unit="deg">+004.09999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+145.00000</Az>
+                              <El unit="deg">+003.79999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+150.00000</Az>
+                              <El unit="deg">+004.29000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+155.00000</Az>
+                              <El unit="deg">+005.20000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+160.00000</Az>
+                              <El unit="deg">+006.17999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+165.00000</Az>
+                              <El unit="deg">+005.58999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+170.00000</Az>
+                              <El unit="deg">+005.13999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+175.00000</Az>
+                              <El unit="deg">+004.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+180.00000</Az>
+                              <El unit="deg">+005.17999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+185.00000</Az>
+                              <El unit="deg">+004.25999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+190.00000</Az>
+                              <El unit="deg">+004.59999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+195.00000</Az>
+                              <El unit="deg">+004.75999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+200.00000</Az>
+                              <El unit="deg">+004.48000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+205.00000</Az>
+                              <El unit="deg">+004.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+210.00000</Az>
+                              <El unit="deg">+005.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+215.00000</Az>
+                              <El unit="deg">+004.55999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+220.00000</Az>
+                              <El unit="deg">+004.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+225.00000</Az>
+                              <El unit="deg">+005.42999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+230.00000</Az>
+                              <El unit="deg">+004.79999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+235.00000</Az>
+                              <El unit="deg">+005.16000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+240.00000</Az>
+                              <El unit="deg">+004.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+245.00000</Az>
+                              <El unit="deg">+004.29999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+250.00000</Az>
+                              <El unit="deg">+003.77999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+255.00000</Az>
+                              <El unit="deg">+003.14000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+260.00000</Az>
+                              <El unit="deg">+002.66000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+265.00000</Az>
+                              <El unit="deg">+002.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+270.00000</Az>
+                              <El unit="deg">+002.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+275.00000</Az>
+                              <El unit="deg">+001.62999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+280.00000</Az>
+                              <El unit="deg">+001.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+285.00000</Az>
+                              <El unit="deg">+001.40999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+290.00000</Az>
+                              <El unit="deg">+001.30000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+295.00000</Az>
+                              <El unit="deg">+000.78000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+300.00000</Az>
+                              <El unit="deg">+000.96000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+305.00000</Az>
+                              <El unit="deg">+001.10000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+310.00000</Az>
+                              <El unit="deg">+002.25000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+315.00000</Az>
+                              <El unit="deg">+003.41999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+320.00000</Az>
+                              <El unit="deg">+003.52000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+325.00000</Az>
+                              <El unit="deg">+003.70000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+330.00000</Az>
+                              <El unit="deg">+003.75000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+335.00000</Az>
+                              <El unit="deg">+002.58000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+340.00000</Az>
+                              <El unit="deg">+003.68000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+345.00000</Az>
+                              <El unit="deg">+004.75999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+350.00000</Az>
+                              <El unit="deg">+003.54000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+355.00000</Az>
+                              <El unit="deg">+004.48000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+360.00000</Az>
+                              <El unit="deg">+004.70000</El>
+                         </Mask_Point>
+                    </List_of_Mask_Points>
+               </Ground_Station>
+               <Ground_Station>
+                    <Station_id>GKIRUNBX</Station_id>
+                    <Descriptor>Kiruna (SWEDEN)</Descriptor>
+                    <Antenna>X-BAND</Antenna>
+                    <Purpose>GLOBAL + REGIONAL</Purpose>
+                    <Type/>
+                    <Location>
+                         <Long unit="deg">+020.96399</Long>
+                         <Lat unit="deg">+067.85699</Lat>
+                         <Alt unit="m">+362.00000</Alt>
+                    </Location>
+                    <Default_El unit="deg">+000.00000</Default_El>
+                    <List_of_Mask_Points count="73">
+                         <Mask_Point>
+                              <Az unit="deg">+000.00000</Az>
+                              <El unit="deg">+001.25000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+004.00000</Az>
+                              <El unit="deg">+001.14999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+010.00000</Az>
+                              <El unit="deg">+001.27000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+024.00000</Az>
+                              <El unit="deg">+001.82000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+040.00000</Az>
+                              <El unit="deg">+001.67999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+046.50000</Az>
+                              <El unit="deg">+002.41999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+055.00000</Az>
+                              <El unit="deg">+002.72000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+058.00000</Az>
+                              <El unit="deg">+002.56999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+061.00000</Az>
+                              <El unit="deg">+002.29999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+062.50000</Az>
+                              <El unit="deg">+002.06000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+064.00000</Az>
+                              <El unit="deg">+001.78000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+067.50000</Az>
+                              <El unit="deg">+001.77000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+073.00000</Az>
+                              <El unit="deg">+001.87999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+078.00000</Az>
+                              <El unit="deg">+001.92999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+083.00000</Az>
+                              <El unit="deg">+002.29000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+090.00000</Az>
+                              <El unit="deg">+002.08000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+092.00000</Az>
+                              <El unit="deg">+001.87000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+097.50000</Az>
+                              <El unit="deg">+001.82000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+099.00000</Az>
+                              <El unit="deg">+002.35999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+104.50000</Az>
+                              <El unit="deg">+002.71000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+111.00000</Az>
+                              <El unit="deg">+002.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+127.50000</Az>
+                              <El unit="deg">+001.31000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+135.00000</Az>
+                              <El unit="deg">+000.81000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+137.00000</Az>
+                              <El unit="deg">+000.63000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+145.00000</Az>
+                              <El unit="deg">+000.53000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+153.00000</Az>
+                              <El unit="deg">+000.68000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+169.00000</Az>
+                              <El unit="deg">+000.18000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+173.00000</Az>
+                              <El unit="deg">+000.15000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+176.00000</Az>
+                              <El unit="deg">+000.22000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+179.00000</Az>
+                              <El unit="deg">+000.13000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+182.50000</Az>
+                              <El unit="deg">+000.17000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+186.00000</Az>
+                              <El unit="deg">+000.14000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+189.00000</Az>
+                              <El unit="deg">+000.18000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+199.00000</Az>
+                              <El unit="deg">+000.63000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+205.00000</Az>
+                              <El unit="deg">+000.40000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+208.50000</Az>
+                              <El unit="deg">+000.51000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+212.50000</Az>
+                              <El unit="deg">+000.58000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+215.00000</Az>
+                              <El unit="deg">+000.54000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+218.00000</Az>
+                              <El unit="deg">+000.58000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+221.00000</Az>
+                              <El unit="deg">+000.58000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+223.50000</Az>
+                              <El unit="deg">+000.54000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+226.50000</Az>
+                              <El unit="deg">+000.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+228.00000</Az>
+                              <El unit="deg">+000.81000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+232.00000</Az>
+                              <El unit="deg">+000.80000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+237.00000</Az>
+                              <El unit="deg">+000.31000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+243.00000</Az>
+                              <El unit="deg">+000.28000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+246.00000</Az>
+                              <El unit="deg">+000.33000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+248.00000</Az>
+                              <El unit="deg">+000.29000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+250.50000</Az>
+                              <El unit="deg">+000.35000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+254.50000</Az>
+                              <El unit="deg">+000.28000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+259.00000</Az>
+                              <El unit="deg">+000.77000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+265.00000</Az>
+                              <El unit="deg">+000.62000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+278.00000</Az>
+                              <El unit="deg">+001.41999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+281.00000</Az>
+                              <El unit="deg">+001.33000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+289.00000</Az>
+                              <El unit="deg">+001.97000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+294.00000</Az>
+                              <El unit="deg">+001.94000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+295.00000</Az>
+                              <El unit="deg">+001.81000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+297.50000</Az>
+                              <El unit="deg">+001.71000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+301.00000</Az>
+                              <El unit="deg">+001.75000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+307.00000</Az>
+                              <El unit="deg">+001.77000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+309.50000</Az>
+                              <El unit="deg">+001.64999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+313.50000</Az>
+                              <El unit="deg">+000.91000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+319.00000</Az>
+                              <El unit="deg">+000.28000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+323.50000</Az>
+                              <El unit="deg">+000.57000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+328.00000</Az>
+                              <El unit="deg">+000.53000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+331.50000</Az>
+                              <El unit="deg">+000.85000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+334.00000</Az>
+                              <El unit="deg">+000.52000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+336.00000</Az>
+                              <El unit="deg">+000.42000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+340.00000</Az>
+                              <El unit="deg">+000.41000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+344.50000</Az>
+                              <El unit="deg">+000.53000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+348.00000</Az>
+                              <El unit="deg">+000.81000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+354.00000</Az>
+                              <El unit="deg">+001.02000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+360.00000</Az>
+                              <El unit="deg">+001.25000</El>
+                         </Mask_Point>
+                    </List_of_Mask_Points>
+               </Ground_Station>
+               <Ground_Station>
+                    <Station_id>GMASPABX</Station_id>
+                    <Descriptor>Maspalomas (SPAIN)</Descriptor>
+                    <Antenna>X-BAND</Antenna>
+                    <Purpose>REGIONAL</Purpose>
+                    <Type/>
+                    <Location>
+                         <Long unit="deg">-015.63160</Long>
+                         <Lat unit="deg">+027.76269</Lat>
+                         <Alt unit="m">+155.00000</Alt>
+                    </Location>
+                    <Default_El unit="deg">+000.00000</Default_El>
+                    <List_of_Mask_Points count="40">
+                         <Mask_Point>
+                              <Az unit="deg">+000.00000</Az>
+                              <El unit="deg">+004.33000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+000.30000</Az>
+                              <El unit="deg">+004.20000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+004.33000</Az>
+                              <El unit="deg">+004.33000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+007.66999</Az>
+                              <El unit="deg">+004.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+012.00000</Az>
+                              <El unit="deg">+004.40000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+015.33000</Az>
+                              <El unit="deg">+004.42999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+018.00000</Az>
+                              <El unit="deg">+004.20000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+026.00000</Az>
+                              <El unit="deg">+003.87000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+030.00000</Az>
+                              <El unit="deg">+003.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+030.32999</Az>
+                              <El unit="deg">+003.12999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+032.32999</Az>
+                              <El unit="deg">+003.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+035.00000</Az>
+                              <El unit="deg">+003.66999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+040.17000</Az>
+                              <El unit="deg">+003.66999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+046.17000</Az>
+                              <El unit="deg">+003.22999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+053.00000</Az>
+                              <El unit="deg">+002.52999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+060.67000</Az>
+                              <El unit="deg">+001.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+070.00000</Az>
+                              <El unit="deg">+000.80000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+071.00000</Az>
+                              <El unit="deg">+000.13000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+099.00000</Az>
+                              <El unit="deg">+000.13000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+100.00000</Az>
+                              <El unit="deg">+000.93000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+110.00000</Az>
+                              <El unit="deg">+000.93000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+111.00000</Az>
+                              <El unit="deg">+000.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+130.00000</Az>
+                              <El unit="deg">+000.50000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+131.00000</Az>
+                              <El unit="deg">+000.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+150.00000</Az>
+                              <El unit="deg">+000.60000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+151.00000</Az>
+                              <El unit="deg">+000.80000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+210.00000</Az>
+                              <El unit="deg">+000.80000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+211.00000</Az>
+                              <El unit="deg">+000.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+299.00000</Az>
+                              <El unit="deg">+000.00000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+300.00000</Az>
+                              <El unit="deg">+001.92999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+309.00000</Az>
+                              <El unit="deg">+001.66999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+325.00000</Az>
+                              <El unit="deg">+003.16999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+330.32999</Az>
+                              <El unit="deg">+003.16999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+338.67000</Az>
+                              <El unit="deg">+003.73000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+342.67000</Az>
+                              <El unit="deg">+003.73000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+345.00000</Az>
+                              <El unit="deg">+003.89999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+349.00000</Az>
+                              <El unit="deg">+003.62999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+352.67000</Az>
+                              <El unit="deg">+003.85999</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+357.32999</Az>
+                              <El unit="deg">+004.33000</El>
+                         </Mask_Point>
+                         <Mask_Point>
+                              <Az unit="deg">+360.00000</Az>
+                              <El unit="deg">+004.33000</El>
+                         </Mask_Point>
+                    </List_of_Mask_Points>
+               </Ground_Station>
+          </List_of_Ground_Stations>
+     </Data_Block>
+</Earth_Explorer_File>

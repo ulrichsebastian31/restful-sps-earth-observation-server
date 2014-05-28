@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:eop="http://earth.esa.int/eop" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:opt="http://earth.esa.int/opt" elementFormDefault="qualified" targetNamespace="http://earth.esa.int/opt" version="1.2beta">
+  <import namespace="http://earth.esa.int/eop" schemaLocation="eop.xsd"/>
+  <import namespace="http://www.opengis.net/gml/3.2" schemaLocation="http://schemas.opengis.net/gml/3.2.1/gml.xsd"/>
+  <!--XML Schema document created by ShapeChange-->
+  <element name="EarthObservation" substitutionGroup="eop:EarthObservation" type="opt:EarthObservationType">
+    <annotation>
+      <documentation>eop root element for Optical Earth Observation Product description</documentation>
+    </annotation>
+  </element>
+  <complexType name="EarthObservationType">
+    <complexContent>
+      <extension base="eop:EarthObservationType">
+        <sequence/>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationPropertyType">
+    <sequence minOccurs="0">
+      <element ref="opt:EarthObservation"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="EarthObservationResult" substitutionGroup="eop:EarthObservationResult" type="opt:EarthObservationResultType"/>
+  <complexType name="EarthObservationResultType">
+    <complexContent>
+      <extension base="eop:EarthObservationResultType">
+        <sequence>
+          <element minOccurs="0" name="cloudCoverPercentage" type="gml:MeasureType">
+            <annotation>
+              <documentation>Must be expressed in percents</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="cloudCoverPercentageAssessmentConfidence" type="gml:MeasureType">
+            <annotation>
+              <documentation>Cloud cover assessment confidence. Expressed in percents.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="cloudCoverPercentageQuotationMode" type="gml:CodeType">
+            <annotation>
+              <documentation>Indicator to know how the cloud cover percentage has been calculated</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="snowCoverPercentage" type="gml:MeasureType">
+            <annotation>
+              <documentation>Must be expressed in percents</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="snowCoverPercentageAssessmentConfidence" type="gml:MeasureType">
+            <annotation>
+              <documentation>Snow cover assessment confidence. Expressed in percents.</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="snowCoverPercentageQuotationMode" type="gml:CodeType">
+            <annotation>
+              <documentation>Indicator to know how the snow cover percentage has been calculated</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EarthObservationResultPropertyType">
+    <sequence minOccurs="0">
+      <element ref="opt:EarthObservationResult"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+    <attributeGroup ref="gml:OwnershipAttributeGroup"/>
+  </complexType>
+  <element name="Acquisition" substitutionGroup="eop:Acquisition" type="opt:AcquisitionType"/>
+  <complexType name="AcquisitionType">
+    <complexContent>
+      <extension base="eop:AcquisitionType">
+        <sequence>
+          <element minOccurs="0" name="illuminationAzimuthAngle" type="gml:AngleType">
+            <annotation>
+              <documentation>Solar Azimuth angle given in degrees. EOLI : illAziAng (F)</documentation>
+            </annotation>
+          </element>
+          <element minOccurs="0" name="illuminationElevationAngle" type="gml:AngleType">
+            <annotation>
+              <documentation>Solar Elevation angle given in degrees. EOLI : illElevAng (F)</documentation>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AcquisitionPropertyType">
+    <sequence>
+      <element ref="opt:Acquisition"/>
+    </sequence>
+  </complexType>
+</schema>
